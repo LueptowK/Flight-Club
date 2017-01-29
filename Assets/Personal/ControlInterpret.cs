@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class ControlInterpret : MonoBehaviour {
 
     private Controller control;
-
+    private int JumpDown;
 
     private List<inputItem> inputHistory;
 
@@ -163,7 +163,14 @@ public class ControlInterpret : MonoBehaviour {
         inputHistory.Insert(0, i);
         #endregion
 
-        
+        if (control.Jump > 0.55f)
+        {
+            JumpDown += 1;
+        }
+        else
+        {
+            JumpDown = 0;
+        }
     }
 
     public Vector2 move{
@@ -172,7 +179,16 @@ public class ControlInterpret : MonoBehaviour {
             return inputHistory[0].dir;
         }
        }
-
+    public bool Jump {
+        get
+        {
+            if (JumpDown == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
     // for lookup
     private int timeIndex(float time)
     {

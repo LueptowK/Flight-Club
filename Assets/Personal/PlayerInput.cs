@@ -37,5 +37,12 @@ public class PlayerInput : Controller {
             return hor;
         }
     }
-
+    public override float Jump
+    {
+        get
+        {
+            float jump = Input.GetAxis("Jump");
+            return jump;
+        }
+    }
 }
