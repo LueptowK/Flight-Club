@@ -45,4 +45,20 @@ public class PlayerInput : Controller {
             return jump;
         }
     }
+    public override float Dash
+    {
+        get
+        {
+            float dash = Input.GetAxis("Dash");
+            return dash;
+        }
+    }
+    public override bool Stall
+    {
+        get
+        {
+            bool stall = Input.GetButton("Stall");
+            return stall;
+        }
+    }
 }

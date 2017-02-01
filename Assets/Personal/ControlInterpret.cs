@@ -7,6 +7,7 @@ public class ControlInterpret : MonoBehaviour {
 
     private Controller control;
     private int JumpDown;
+    private int DashDown;
 
     private List<inputItem> inputHistory;
 
@@ -147,7 +148,7 @@ public class ControlInterpret : MonoBehaviour {
         return stick;
     }
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
 
         #region history
         inputItem i = new inputItem();
@@ -171,6 +172,15 @@ public class ControlInterpret : MonoBehaviour {
         {
             JumpDown = 0;
         }
+
+        if (control.Dash > 0.55f)
+        {
+            DashDown += 1;
+        }
+        else
+        {
+            DashDown = 0;
+        }
     }
 
     public Vector2 move{
@@ -187,6 +197,24 @@ public class ControlInterpret : MonoBehaviour {
                 return true;
             }
             return false;
+        }
+    }
+    public bool Dash
+    {
+        get
+        {
+            if (DashDown == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+    public bool Stall
+    {
+        get
+        {
+            return control.Stall;
         }
     }
     // for lookup

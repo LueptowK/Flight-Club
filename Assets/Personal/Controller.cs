@@ -8,4 +8,6 @@ public abstract class Controller : MonoBehaviour {
     public abstract float LookVer { get; }
     public abstract float LookHor { get; }
     public abstract float Jump { get; }
+    public abstract float Dash { get; }
+    public abstract bool Stall { get; }
 }
