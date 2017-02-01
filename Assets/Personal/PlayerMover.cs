@@ -49,10 +49,6 @@ public class PlayerMover : MonoBehaviour {
             if (!dashAvailable) { dashAvailable = true; }
             if (ci.Jump) { desired += new Vector2(0, jumpVel); }
         }
-        //else
-        //{
-        //    desired = AirControl(desired,move);
-        //}
         else
         {
             if (ci.Dash && dashAvailable && ci.move != Vector2.zero)
