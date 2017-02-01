@@ -26,6 +26,10 @@ public class PlayerMover : MonoBehaviour {
         float airSpeed = 0.8f;
         float maxAirSpeed = 8f;
         float dashMagnitude = 20f;
+        float gravity = 2f;
+        float jumpVel = 10f;
+        float dashEndMomentum = 0.65f;
+        int dashTime = 10;
 
         Vector2 move = ci.move;
         move.y = 0;
@@ -34,72 +38,62 @@ public class PlayerMover : MonoBehaviour {
         {
             move.Normalize();
         }
-
-
         Vector2 desired = Vector2.zero;
+
+        //flip sprite direction to movement direction on ground
         if (grounded)
         {
             desired.x = move.x * moveSpeed;
-            if (desired.x < 0)
-            {
-                transform.localRotation = Quaternion.Euler(0, 180, 0);
-            }
-            else if (desired.x > 0)
-            {
-                transform.localRotation = Quaternion.Euler(0, 0, 0);
-            }
+            if (desired.x < 0) { transform.localRotation = Quaternion.Euler(0, 180, 0); }
+            else if (desired.x > 0) { transform.localRotation = Quaternion.Euler(0, 0, 0); }
             if (!dashAvailable) { dashAvailable = true; }
         }
         else
         {
             desired.x = rb.velocity.x;
             float newVel = rb.velocity.x + move.x * airSpeed;
+            //if the current x speed is lower than the desired speed, we use the new speed, UNLESS the new speed is higher than the max speed and the current speed is less than the max speed
+            //which is when we use the max speed, or the current speed is higher than the max speed, which is when we allow the speed to go down but not up.
+            desired.x = newVel;
             if (Math.Abs(rb.velocity.x) < Math.Abs(newVel))
             {
-                if (Math.Abs(newVel) < maxAirSpeed)
+                if (Math.Abs(newVel) > maxAirSpeed && Math.Abs(rb.velocity.x) < maxAirSpeed)
                 {
-                    desired.x = newVel;
+                    desired.x = maxAirSpeed * Mathf.Sign(newVel);
+                    print(desired.x);
+                }
+                else if (Math.Abs(newVel) > maxAirSpeed)
+                {
+                    desired.x = rb.velocity.x;
                 }
             }
-            else
-            {
-                desired.x = newVel;
-            }
         }
-        
+
         if (ci.Jump && grounded)
         {
-            desired += new Vector2(0, 10f);
+            desired += new Vector2(0, jumpVel);
         }
 
         if (ci.Dash && !grounded && dashAvailable && ci.move != Vector2.zero)
         {
             dashVel = ci.move.normalized * dashMagnitude;
-            dashCounter = 10;
+            dashCounter = dashTime;
             dashAvailable = false;
-        }
-        if (dashCounter > 0)
-        {
-            if (dashCounter == 2)
-            {
-                dashVel *= 0.65f;
-            }
-            if (grounded)
-            {
-                dashVel.y = 0;
-            }
-            dashCounter--;
         }
 
         if (dashCounter == 0 && !grounded && ci.Stall)
         {
-            dashCounter = 10;
+            dashCounter = dashTime;
             dashVel = Vector2.zero;
         }
         
-        rb.velocity = desired + new Vector2(0, rb.velocity.y);
+        rb.velocity = desired + new Vector2(0, rb.velocity.y - gravity*9.8f*Time.fixedDeltaTime);
+
         if (dashCounter > 0)
         {
+            if (dashCounter == 2) { dashVel *= dashEndMomentum; }
+            if (grounded) { dashVel.y = 0; }
+            dashCounter--;
             rb.velocity = dashVel;
         }
     }
