@@ -25,8 +25,6 @@ public class ControlInterpret : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         control = GetComponent<Controller>();
-
-
         inputHistory = new List<inputItem>(historyMax);
         inputItem i = new inputItem();
         i.time = Time.time;
@@ -36,21 +34,6 @@ public class ControlInterpret : MonoBehaviour {
     }
 
     #region Joystick motions
-    public bool circle() // THis is wrong Right now
-    {
-        float buffer = 0.15f;
-        float angle = 90f;
-
-
-
-
-
-        if (Vector2.Angle(inputHistory[0].dir, inputHistory[timeIndex(buffer)].dir) > angle)
-        {
-            return true;
-        }
-        return false;
-    }
 
 
     private bool outer = false;
