@@ -6,7 +6,7 @@ public class PlayerMover : MonoBehaviour {
 
     Rigidbody2D rb;
     ControlInterpret ci;
-    Collider2D collider;
+
     Vector2 dashVel = Vector2.zero;
     int dashCounter;
     bool dashAvailable;
@@ -23,14 +23,14 @@ public class PlayerMover : MonoBehaviour {
     void Start () {
         rb = GetComponent<Rigidbody2D>();
         ci = GetComponent<ControlInterpret>();
-        collider = GetComponent<Collider2D>();
+
         dashVel = Vector2.zero;
         dashAvailable = true;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        
+
         Vector2 move = ci.move;
         move.y = 0;
         move.x += 0.15f * Math.Sign(move.x);
@@ -73,7 +73,7 @@ public class PlayerMover : MonoBehaviour {
         }
         else
         {
-            desired = AirControl(move);
+            if (!grounded) { desired = AirControl(move); }
             rb.velocity = desired + new Vector2(0, rb.velocity.y - gravity * 9.8f * Time.fixedDeltaTime);
         }
     }
@@ -82,7 +82,7 @@ public class PlayerMover : MonoBehaviour {
     {
         get
         {
-            RaycastHit2D ray = Physics2D.Raycast(transform.position, -transform.up, collider.bounds.extents.y + 0.1f, 1<<8);
+            RaycastHit2D ray = Physics2D.BoxCast(transform.position, new Vector2(1f, 1f), 0, -transform.up, 0.08f, 1 << 8);
             return ray;
         }
     }

@@ -4,16 +4,16 @@ using System;
 
 public class PlayerInput : Controller {
     public float AxisAdjust = 0.15f;
-
+    public int PlayerNumber = 1;
 
     public override float MoveVer { get {
-            float ver = Input.GetAxis("Vertical");
+            float ver = Input.GetAxis("Vertical" + PlayerNumber);
             return ver;
             
         }
     }
     public override float MoveHor { get {
-            float hor = Input.GetAxis("Horizontal");
+            float hor = Input.GetAxis("Horizontal" + PlayerNumber);
             return hor;
         } }
     public override float LookVer
@@ -41,7 +41,7 @@ public class PlayerInput : Controller {
     {
         get
         {
-            float jump = Input.GetAxis("Jump");
+            float jump = Input.GetAxis("Jump" + PlayerNumber);
             return jump;
         }
     }
@@ -49,7 +49,7 @@ public class PlayerInput : Controller {
     {
         get
         {
-            float dash = Input.GetAxis("Dash");
+            float dash = Input.GetAxis("Dash" + PlayerNumber);
             return dash;
         }
     }
@@ -57,7 +57,7 @@ public class PlayerInput : Controller {
     {
         get
         {
-            bool stall = Input.GetButton("Stall");
+            bool stall = Input.GetButton("Stall" + PlayerNumber);
             return stall;
         }
     }
