@@ -172,7 +172,7 @@ public class ControlInterpret : MonoBehaviour {
         {
             JumpDown = 0;
         }
-
+        //print(JumpDown);
         if (control.Dash > 0.55f)
         {
             DashDown += 1;

@@ -1,19 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using XInputDotNetPure;
 
 public class PlayerInput : Controller {
     public float AxisAdjust = 0.15f;
     public int PlayerNumber = 1;
 
+    private GamePadState state;
+    
+    void FixedUpdate()
+    {
+        state = GamePad.GetState((PlayerIndex)PlayerNumber);
+    }
+
     public override float MoveVer { get {
-            float ver = Input.GetAxis("Vertical" + PlayerNumber);
+            //float ver = Input.GetAxis("Vertical" + PlayerNumber);
+            float ver = state.ThumbSticks.Left.Y;
             return ver;
             
         }
     }
     public override float MoveHor { get {
-            float hor = Input.GetAxis("Horizontal" + PlayerNumber);
+            float hor = state.ThumbSticks.Left.X;
             return hor;
         } }
     public override float LookVer
@@ -41,7 +50,8 @@ public class PlayerInput : Controller {
     {
         get
         {
-            float jump = Input.GetAxis("Jump" + PlayerNumber);
+            float jump = state.Triggers.Right;
+            //print(jump + "  --  " + PlayerNumber);
             return jump;
         }
     }
@@ -49,7 +59,7 @@ public class PlayerInput : Controller {
     {
         get
         {
-            float dash = Input.GetAxis("Dash" + PlayerNumber);
+            float dash = state.Triggers.Left;
             return dash;
         }
     }
@@ -57,7 +67,7 @@ public class PlayerInput : Controller {
     {
         get
         {
-            bool stall = Input.GetButton("Stall" + PlayerNumber);
+            bool stall = state.Buttons.LeftStick == ButtonState.Pressed;
             return stall;
         }
     }
