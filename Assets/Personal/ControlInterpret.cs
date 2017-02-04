@@ -29,7 +29,11 @@ public class ControlInterpret : MonoBehaviour {
         inputItem i = new inputItem();
         i.time = Time.time;
         i.dir = new Vector2();
-        inputHistory.Insert(0,i);
+        for(int j=0; j<10;j++)
+        {
+            inputHistory.Insert(0, i);
+        }
+        
 
     }
 
@@ -172,6 +176,21 @@ public class ControlInterpret : MonoBehaviour {
             return inputHistory[0].dir;
         }
        }
+    int idleFrames=4;
+    public bool idle
+    {
+        get
+        {
+            for(int i = 0; i < idleFrames; i++)
+            {
+                if (inputHistory[i].dir.x != 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
     public bool Jump {
         get
         {

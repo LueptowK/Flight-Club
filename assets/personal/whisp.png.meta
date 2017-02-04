@@ -1,0 +1,3408 @@
+fileFormatVersion: 2
+guid: a070a38cc86633e4fa11b388939222a6
+timeCreated: 1486192208
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: whisp_0
+    21300002: whisp_1
+    21300004: whisp_2
+    21300006: whisp_3
+    21300008: whisp_4
+    21300010: whisp_5
+    21300012: whisp_6
+    21300014: whisp_7
+    21300016: whisp_8
+    21300018: whisp_9
+    21300020: whisp_10
+    21300022: whisp_11
+    21300024: whisp_12
+    21300026: whisp_13
+    21300028: whisp_14
+    21300030: whisp_15
+    21300032: whisp_16
+    21300034: whisp_17
+    21300036: whisp_18
+    21300038: whisp_19
+    21300040: whisp_20
+    21300042: whisp_21
+    21300044: whisp_22
+    21300046: whisp_23
+    21300048: whisp_24
+    21300050: whisp_25
+    21300052: whisp_26
+    21300054: whisp_27
+    21300056: whisp_28
+    21300058: whisp_29
+    21300060: whisp_30
+    21300062: whisp_31
+    21300064: whisp_32
+    21300066: whisp_33
+    21300068: whisp_34
+    21300070: whisp_35
+    21300072: whisp_36
+    21300074: whisp_37
+    21300076: whisp_38
+    21300078: whisp_39
+    21300080: whisp_40
+    21300082: whisp_41
+    21300084: whisp_42
+    21300086: whisp_43
+    21300088: whisp_44
+    21300090: whisp_45
+    21300092: whisp_46
+    21300094: whisp_47
+    21300096: whisp_48
+    21300098: whisp_49
+    21300100: whisp_50
+    21300102: whisp_51
+    21300104: whisp_52
+    21300106: whisp_53
+    21300108: whisp_54
+    21300110: whisp_55
+    21300112: whisp_56
+    21300114: whisp_57
+    21300116: whisp_58
+    21300118: whisp_59
+    21300120: whisp_60
+    21300122: whisp_61
+    21300124: whisp_62
+    21300126: whisp_63
+    21300128: whisp_64
+    21300130: whisp_65
+    21300132: whisp_66
+    21300134: whisp_67
+    21300136: whisp_68
+    21300138: whisp_69
+    21300140: whisp_70
+    21300142: whisp_71
+    21300144: whisp_72
+    21300146: whisp_73
+    21300148: whisp_74
+    21300150: whisp_75
+    21300152: whisp_76
+    21300154: whisp_77
+    21300156: whisp_78
+    21300158: whisp_79
+    21300160: whisp_80
+    21300162: whisp_81
+    21300164: whisp_82
+    21300166: whisp_83
+    21300168: whisp_84
+    21300170: whisp_85
+    21300172: whisp_86
+    21300174: whisp_87
+    21300176: whisp_88
+    21300178: whisp_89
+    21300180: whisp_90
+    21300182: whisp_91
+    21300184: whisp_92
+    21300186: whisp_93
+    21300188: whisp_94
+    21300190: whisp_95
+    21300192: whisp_96
+    21300194: whisp_97
+    21300196: whisp_98
+    21300198: whisp_99
+    21300200: whisp_100
+    21300202: whisp_101
+    21300204: whisp_102
+    21300206: whisp_103
+    21300208: whisp_104
+    21300210: whisp_105
+    21300212: whisp_106
+    21300214: whisp_107
+    21300216: whisp_108
+    21300218: whisp_109
+    21300220: whisp_110
+    21300222: whisp_111
+    21300224: whisp_112
+    21300226: whisp_113
+    21300228: whisp_114
+    21300230: whisp_115
+    21300232: whisp_116
+    21300234: whisp_117
+    21300236: whisp_118
+    21300238: whisp_119
+    21300240: whisp_120
+    21300242: whisp_121
+    21300244: whisp_122
+    21300246: whisp_123
+    21300248: whisp_124
+    21300250: whisp_125
+    21300252: whisp_126
+    21300254: whisp_127
+    21300256: whisp_128
+    21300258: whisp_129
+    21300260: whisp_130
+    21300262: whisp_131
+    21300264: whisp_132
+    21300266: whisp_133
+    21300268: whisp_134
+    21300270: whisp_135
+    21300272: whisp_136
+    21300274: whisp_137
+    21300276: whisp_138
+    21300278: whisp_139
+    21300280: whisp_140
+    21300282: whisp_141
+    21300284: whisp_142
+    21300286: whisp_143
+    21300288: whisp_144
+    21300290: whisp_145
+    21300292: whisp_146
+    21300294: whisp_147
+    21300296: whisp_148
+    21300298: whisp_149
+    21300300: whisp_150
+    21300302: whisp_151
+    21300304: whisp_152
+    21300306: whisp_153
+    21300308: whisp_154
+    21300310: whisp_155
+    21300312: whisp_156
+    21300314: whisp_157
+    21300316: whisp_158
+    21300318: whisp_159
+    21300320: whisp_160
+    21300322: whisp_161
+    21300324: whisp_162
+    21300326: whisp_163
+    21300328: whisp_164
+    21300330: whisp_165
+    21300332: whisp_166
+    21300334: whisp_167
+    21300336: whisp_168
+    21300338: whisp_169
+    21300340: whisp_170
+    21300342: whisp_171
+    21300344: whisp_172
+    21300346: whisp_173
+    21300348: whisp_174
+    21300350: whisp_175
+    21300352: whisp_176
+    21300354: whisp_177
+    21300356: whisp_178
+    21300358: whisp_179
+    21300360: whisp_180
+    21300362: whisp_181
+    21300364: whisp_182
+    21300366: whisp_183
+    21300368: whisp_184
+    21300370: whisp_185
+    21300372: whisp_186
+    21300374: whisp_187
+    21300376: whisp_188
+    21300378: whisp_189
+    21300380: whisp_190
+    21300382: whisp_191
+    21300384: whisp_192
+    21300386: whisp_193
+    21300388: whisp_194
+    21300390: whisp_195
+    21300392: whisp_196
+    21300394: whisp_197
+    21300396: whisp_198
+    21300398: whisp_199
+    21300400: whisp_200
+    21300402: whisp_201
+    21300404: whisp_202
+    21300406: whisp_203
+    21300408: whisp_204
+    21300410: whisp_205
+    21300412: whisp_206
+    21300414: whisp_207
+    21300416: whisp_208
+    21300418: whisp_209
+    21300420: whisp_210
+    21300422: whisp_211
+    21300424: whisp_212
+    21300426: whisp_213
+    21300428: whisp_214
+    21300430: whisp_215
+    21300432: whisp_216
+    21300434: whisp_217
+    21300436: whisp_218
+    21300438: whisp_219
+    21300440: whisp_220
+    21300442: whisp_221
+    21300444: whisp_222
+    21300446: whisp_223
+    21300448: whisp_224
+    21300450: whisp_225
+    21300452: whisp_226
+    21300454: whisp_227
+    21300456: whisp_228
+    21300458: whisp_229
+    21300460: whisp_230
+    21300462: whisp_231
+    21300464: whisp_232
+    21300466: whisp_233
+    21300468: whisp_234
+    21300470: whisp_235
+    21300472: whisp_236
+    21300474: whisp_237
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 35
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: whisp_0
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 1623
+        width: 39
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_1
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 1623
+        width: 37
+        height: 47
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_2
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 1623
+        width: 35
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_3
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 1623
+        width: 35
+        height: 47
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_4
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 1623
+        width: 35
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_5
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 1623
+        width: 35
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_6
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 1623
+        width: 35
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_7
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 1568
+        width: 49
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_8
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 1568
+        width: 48
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_9
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 1568
+        width: 49
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_10
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 1568
+        width: 49
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_11
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 1568
+        width: 42
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_12
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 1568
+        width: 39
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_13
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 1568
+        width: 37
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_14
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 1494
+        width: 40
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_15
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 1494
+        width: 46
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_16
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 1494
+        width: 54
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_17
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 1494
+        width: 95
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_18
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 1486
+        width: 101
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_19
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 1485
+        width: 102
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_20
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 1418
+        width: 100
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_21
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 1418
+        width: 70
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_22
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 1423
+        width: 50
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_23
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 1425
+        width: 48
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_24
+      rect:
+        serializedVersion: 2
+        x: 363
+        y: 1427
+        width: 48
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_25
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 1427
+        width: 48
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_26
+      rect:
+        serializedVersion: 2
+        x: 473
+        y: 1427
+        width: 39
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_27
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 1427
+        width: 39
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_28
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 1356
+        width: 26
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_29
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 1357
+        width: 23
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_30
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 1360
+        width: 24
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_31
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 1357
+        width: 26
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_32
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 1359
+        width: 27
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_33
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 1362
+        width: 34
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_34
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 1359
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_35
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 1356
+        width: 29
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_36
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 1357
+        width: 31
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_37
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 1355
+        width: 30
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_38
+      rect:
+        serializedVersion: 2
+        x: 486
+        y: 1355
+        width: 32
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_39
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 1290
+        width: 33
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_40
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 1290
+        width: 31
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_41
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 1290
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_42
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 1291
+        width: 40
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_43
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 1291
+        width: 46
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_44
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 1290
+        width: 48
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_45
+      rect:
+        serializedVersion: 2
+        x: 413
+        y: 1290
+        width: 39
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_46
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 1290
+        width: 30
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_47
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 1232
+        width: 30
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_48
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 1233
+        width: 35
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_49
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 1232
+        width: 40
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_50
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 1232
+        width: 42
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_51
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 1231
+        width: 42
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_52
+      rect:
+        serializedVersion: 2
+        x: 373
+        y: 1231
+        width: 38
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_53
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 1231
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_54
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 1231
+        width: 29
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_55
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1178
+        width: 34
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_56
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 1177
+        width: 46
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_57
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 1177
+        width: 53
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_58
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 1177
+        width: 57
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_59
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 1177
+        width: 38
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_60
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 1177
+        width: 31
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_61
+      rect:
+        serializedVersion: 2
+        x: 419
+        y: 1177
+        width: 41
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_62
+      rect:
+        serializedVersion: 2
+        x: 466
+        y: 1177
+        width: 34
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_63
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 1124
+        width: 38
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_64
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 1125
+        width: 42
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_65
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 1123
+        width: 48
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_66
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 1123
+        width: 48
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_67
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 1124
+        width: 52
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_68
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 1124
+        width: 52
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_69
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 1068
+        width: 36
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_70
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 1068
+        width: 36
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_71
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 1065
+        width: 35
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_72
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 1065
+        width: 35
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_73
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 1063
+        width: 36
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_74
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 1063
+        width: 36
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_75
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 1061
+        width: 36
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_76
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 1061
+        width: 36
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_77
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 1063
+        width: 38
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_78
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 1063
+        width: 38
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_79
+      rect:
+        serializedVersion: 2
+        x: 475
+        y: 1065
+        width: 41
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_80
+      rect:
+        serializedVersion: 2
+        x: 519
+        y: 1065
+        width: 41
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_81
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 1001
+        width: 40
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_82
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 1001
+        width: 40
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_83
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 999
+        width: 39
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_84
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 999
+        width: 39
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_85
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 999
+        width: 39
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_86
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 999
+        width: 39
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_87
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 998
+        width: 40
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_88
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 998
+        width: 40
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_89
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 998
+        width: 43
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_90
+      rect:
+        serializedVersion: 2
+        x: 486
+        y: 998
+        width: 43
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_91
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 928
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_92
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 927
+        width: 37
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_93
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 931
+        width: 53
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_94
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 928
+        width: 81
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_95
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 927
+        width: 99
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_96
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 927
+        width: 56
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_97
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 927
+        width: 45
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_98
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 927
+        width: 37
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_99
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 872
+        width: 46
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_100
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 872
+        width: 46
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_101
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 871
+        width: 45
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_102
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 871
+        width: 45
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_103
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 871
+        width: 46
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_104
+      rect:
+        serializedVersion: 2
+        x: 349
+        y: 871
+        width: 46
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_105
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 873
+        width: 51
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_106
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 872
+        width: 51
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_107
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 818
+        width: 54
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_108
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 818
+        width: 54
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_109
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 817
+        width: 54
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_110
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 817
+        width: 54
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_111
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 817
+        width: 49
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_112
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 817
+        width: 49
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_113
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 817
+        width: 44
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_114
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 817
+        width: 44
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_115
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 764
+        width: 43
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_116
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 764
+        width: 43
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_117
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 764
+        width: 47
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_118
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 764
+        width: 47
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_119
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 764
+        width: 50
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_120
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 764
+        width: 50
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_121
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 766
+        width: 54
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_122
+      rect:
+        serializedVersion: 2
+        x: 456
+        y: 766
+        width: 54
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_123
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 707
+        width: 53
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_124
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 707
+        width: 53
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_125
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 707
+        width: 51
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_126
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 707
+        width: 51
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_127
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 706
+        width: 45
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_128
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 706
+        width: 45
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_129
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 706
+        width: 44
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_130
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 706
+        width: 44
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_131
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 653
+        width: 46
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_132
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 653
+        width: 46
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_133
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 653
+        width: 57
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_134
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 653
+        width: 57
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_135
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 653
+        width: 63
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_136
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 653
+        width: 63
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_137
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 653
+        width: 67
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_138
+      rect:
+        serializedVersion: 2
+        x: 493
+        y: 653
+        width: 67
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_139
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 597
+        width: 49
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_140
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 597
+        width: 49
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_141
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 596
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_142
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 596
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_143
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 596
+        width: 45
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_144
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 596
+        width: 45
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_145
+      rect:
+        serializedVersion: 2
+        x: 406
+        y: 596
+        width: 49
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_146
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 596
+        width: 49
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_147
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 541
+        width: 38
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_148
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 553
+        width: 40
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_149
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 550
+        width: 37
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_150
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 553
+        width: 40
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_151
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 542
+        width: 40
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_152
+      rect:
+        serializedVersion: 2
+        x: 349
+        y: 542
+        width: 40
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_153
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 543
+        width: 40
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_154
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 549
+        width: 40
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_155
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 482
+        width: 29
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_156
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 491
+        width: 41
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_157
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 497
+        width: 53
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_158
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 496
+        width: 57
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_159
+      rect:
+        serializedVersion: 2
+        x: 363
+        y: 485
+        width: 41
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_160
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 475
+        width: 29
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_161
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 410
+        width: 32
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_162
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 406
+        width: 35
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_163
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 408
+        width: 34
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_164
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 408
+        width: 32
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_165
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 408
+        width: 31
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_166
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 410
+        width: 28
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_167
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 412
+        width: 39
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_168
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 412
+        width: 39
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_169
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 409
+        width: 44
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_170
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 409
+        width: 44
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_171
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 340
+        width: 45
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_172
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 340
+        width: 45
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_173
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 340
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_174
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 340
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_175
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 340
+        width: 39
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_176
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 340
+        width: 39
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_177
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 342
+        width: 38
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_178
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 341
+        width: 38
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_179
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 265
+        width: 28
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_180
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 264
+        width: 35
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_181
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 264
+        width: 89
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_182
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 263
+        width: 90
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_183
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 263
+        width: 92
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_184
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 263
+        width: 72
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_185
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 263
+        width: 46
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_186
+      rect:
+        serializedVersion: 2
+        x: 526
+        y: 262
+        width: 35
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_187
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 263
+        width: 35
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_188
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 176
+        width: 30
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_189
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 178
+        width: 33
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_190
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 174
+        width: 28
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_191
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 174
+        width: 24
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_192
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 178
+        width: 30
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_193
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 179
+        width: 33
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_194
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 175
+        width: 28
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_195
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 174
+        width: 24
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_196
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 177
+        width: 34
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_197
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 198
+        width: 31
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_198
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 205
+        width: 32
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_199
+      rect:
+        serializedVersion: 2
+        x: 456
+        y: 175
+        width: 37
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_200
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 174
+        width: 35
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_201
+      rect:
+        serializedVersion: 2
+        x: 543
+        y: 175
+        width: 37
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_202
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 112
+        width: 34
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_203
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 112
+        width: 29
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_204
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 107
+        width: 51
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_205
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 109
+        width: 43
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_206
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 111
+        width: 33
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_207
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 110
+        width: 33
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_208
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 110
+        width: 33
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_209
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 110
+        width: 33
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_210
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 110
+        width: 33
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_211
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 110
+        width: 33
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_212
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 110
+        width: 33
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_213
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 78
+        width: 14
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_214
+      rect:
+        serializedVersion: 2
+        x: 364
+        y: 73
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_215
+      rect:
+        serializedVersion: 2
+        x: 395
+        y: 16
+        width: 55
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_216
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 84
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_217
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 20
+        width: 46
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_218
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 26
+        width: 6
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_219
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 65
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_220
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 12
+        width: 44
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_221
+      rect:
+        serializedVersion: 2
+        x: 395
+        y: 68
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_222
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 69
+        width: 4
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_223
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 70
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_224
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 13
+        width: 38
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_225
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 14
+        width: 35
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_226
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 12
+        width: 44
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_227
+      rect:
+        serializedVersion: 2
+        x: 381
+        y: 37
+        width: 9
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_228
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 57
+        width: 4
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_229
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 12
+        width: 35
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_230
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 13
+        width: 33
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_231
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 13
+        width: 34
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_232
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 29
+        width: 8
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_233
+      rect:
+        serializedVersion: 2
+        x: 446
+        y: 44
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_234
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 49
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_235
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 48
+        width: 13
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_236
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 40
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: whisp_237
+      rect:
+        serializedVersion: 2
+        x: 395
+        y: 38
+        width: 5
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

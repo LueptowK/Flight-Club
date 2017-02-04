@@ -78,7 +78,7 @@ public class PlayerMover : MonoBehaviour {
         }
     }
 
-    bool grounded
+    public bool grounded
     {
         get
         {

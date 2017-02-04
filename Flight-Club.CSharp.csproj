@@ -79,7 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
-    <Compile Include="Assets\Personal\Controller.cs" />
+    <Compile Include="Assets\Personal\PlayerAnimator.cs" />
     <Compile Include="Assets\Personal\PlayerInput.cs" />
     <Compile Include="Assets\Personal\PlayerMover.cs" />
     <Compile Include="Assets\Xinputdotnet\Examples\XInputTestCS.cs" />
