@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class ControlInterpret : MonoBehaviour {
 
-    private Controller control;
+    private PlayerInput control;
     private int JumpDown;
     private int DashDown;
 
@@ -24,7 +24,7 @@ public class ControlInterpret : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        control = GetComponent<Controller>();
+        control = GetComponent<PlayerInput>();
         inputHistory = new List<inputItem>(historyMax);
         inputItem i = new inputItem();
         i.time = Time.time;
