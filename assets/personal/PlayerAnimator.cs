@@ -7,6 +7,7 @@ public class PlayerAnimator : MonoBehaviour {
     Rigidbody2D rb;
     ControlInterpret ci;
     Animator ani;
+    PlayerMover pm;
 
     List<UnityEditor.Animations.AnimatorControllerLayer> layers = new List<UnityEditor.Animations.AnimatorControllerLayer>();
     List<UnityEditor.Animations.AnimatorState> statesBase = new List<UnityEditor.Animations.AnimatorState>();
@@ -16,6 +17,7 @@ public class PlayerAnimator : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         ci = GetComponent<ControlInterpret>();
         ani = GetComponent<Animator>();
+        pm = GetComponent<PlayerMover>();
 
 
         UnityEditor.Animations.AnimatorController ac = (UnityEditor.Animations.AnimatorController)ani.runtimeAnimatorController;
@@ -33,20 +35,27 @@ public class PlayerAnimator : MonoBehaviour {
     }
 
     // Update is called once per frame
-    float animSpd = 0.3f;
+    float animSpd = 0.15f;
+    private AnimatorStateInfo currentBaseState;
+
     void FixedUpdate() {
-        foreach (UnityEditor.Animations.AnimatorState state in statesBase)
-        {
-            if (state.name == "walkstart")
-            {
-                state.speed = rb.velocity.magnitude* animSpd*3f;
-            }
-            else if(state.name == "walkloop")
-            {
-                state.speed = rb.velocity.magnitude * animSpd;
-            }
+        if (CompareBaseState("Base.walkloop")){
+            ani.speed = animSpd * Mathf.Pow(rb.velocity.x,10);
         }
+        else
+        {
+            ani.speed = 1;
+        }
+    }
+
+    void LateUpdate()
+    {
         ani.SetBool("Running", running);
+        ani.SetBool("Grounded", pm.grounded);
+    }
+    public void jump()
+    {
+        ani.SetTrigger("Jump");
     }
 
     bool running
@@ -63,7 +72,7 @@ public class PlayerAnimator : MonoBehaviour {
         }
     }
 
-    #region unused
+
     protected bool CompareBaseState(string stateName)
     {
         AnimatorStateInfo currentState = ani.GetCurrentAnimatorStateInfo(0);
@@ -71,5 +80,5 @@ public class PlayerAnimator : MonoBehaviour {
         if (currentState.fullPathHash == Animator.StringToHash(stateName)) { return true; }
         return false;
     }
-    #endregion
+
 }

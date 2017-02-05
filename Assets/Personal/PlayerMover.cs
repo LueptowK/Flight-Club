@@ -6,6 +6,8 @@ public class PlayerMover : MonoBehaviour {
 
     Rigidbody2D rb;
     ControlInterpret ci;
+    PlayerAnimator pani;
+    Collider2D col;
 
     Vector2 dashVel = Vector2.zero;
     int dashCounter;
@@ -25,7 +27,8 @@ public class PlayerMover : MonoBehaviour {
     void Start () {
         rb = GetComponent<Rigidbody2D>();
         ci = GetComponent<ControlInterpret>();
-
+        pani = GetComponent<PlayerAnimator>();
+        col = GetComponent<Collider2D>();
         dashVel = Vector2.zero;
         dashAvailable = true;
 	}
@@ -49,7 +52,7 @@ public class PlayerMover : MonoBehaviour {
             if (desired.x < 0) { transform.localRotation = Quaternion.Euler(0, 180, 0); }
             else if (desired.x > 0) { transform.localRotation = Quaternion.Euler(0, 0, 0); }
             if (!dashAvailable) { dashAvailable = true; }
-            if (ci.Jump) { desired += new Vector2(0, jumpVel); }
+            if (ci.Jump) { desired += new Vector2(0, jumpVel); pani.jump(); }
         }
         else
         {
@@ -89,7 +92,7 @@ public class PlayerMover : MonoBehaviour {
     {
         get
         {
-            RaycastHit2D ray = Physics2D.BoxCast(transform.position, new Vector2(1f, 1f), 0, -transform.up, 0.08f, 1 << 8);
+            RaycastHit2D ray = Physics2D.BoxCast(transform.position, col.bounds.extents*2, 0, -transform.up, 0.08f, 1 << 8);
             return ray;
         }
     }
@@ -98,8 +101,22 @@ public class PlayerMover : MonoBehaviour {
     {
         get
         {
-            RaycastHit2D ray = Physics2D.BoxCast(transform.position, new Vector2(1f, 0.5f), 0, transform.right, 0.08f, 1 << 8);
-            return ray;
+            return OnRightWall || OnLeftWall;
+        }
+    }
+
+    public bool OnRightWall
+    {
+        get
+        {
+            return Physics2D.Raycast(transform.position, transform.right, col.bounds.extents.x + 0.1f, 1 << 8);
+        }
+    }
+    public bool OnLeftWall
+    {
+        get
+        {
+            return Physics2D.Raycast(transform.position, -transform.right, col.bounds.extents.x + 0.1f, 1 << 8);
         }
     }
 
