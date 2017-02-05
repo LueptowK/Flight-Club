@@ -73,6 +73,7 @@ public class PlayerMover : MonoBehaviour {
         if (onWall)
         {
             if (ci.Jump) { rb.velocity += new Vector2(wallJumpXVel*-Math.Sign(move.x), wallJumpYVel); }
+            if (!dashAvailable) { dashAvailable = true; }
         }
 
         if (dashCounter > 0)
