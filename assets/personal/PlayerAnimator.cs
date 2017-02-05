@@ -52,6 +52,7 @@ public class PlayerAnimator : MonoBehaviour {
     {
         ani.SetBool("Running", running);
         ani.SetBool("Grounded", pm.grounded);
+        ani.SetBool("OnWall", OnWall);
     }
     public void jump()
     {
@@ -69,6 +70,14 @@ public class PlayerAnimator : MonoBehaviour {
                 return true;
             }
             return false;
+        }
+    }
+
+    bool OnWall
+    {
+        get
+        {
+            return (pm.OnRightWall && ci.move.x > 0f) || (pm.OnLeftWall && ci.move.x < 0f);
         }
     }
 

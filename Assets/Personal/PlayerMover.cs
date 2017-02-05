@@ -37,6 +37,7 @@ public class PlayerMover : MonoBehaviour {
 	void FixedUpdate () {
 
         Vector2 move = ci.move;
+        //print(move);
         move.y = 0;
         move.x += 0.15f * Math.Sign(move.x);
         if(move.magnitude> 1f)
@@ -92,7 +93,7 @@ public class PlayerMover : MonoBehaviour {
     {
         get
         {
-            RaycastHit2D ray = Physics2D.BoxCast(transform.position, col.bounds.extents*2, 0, -transform.up, 0.08f, 1 << 8);
+            RaycastHit2D ray = Physics2D.BoxCast(transform.position, new Vector2(col.bounds.extents.x*2f, col.bounds.extents.y*2f), 0, -transform.up, 0.08f, 1 << 10);
             return ray;
         }
     }
@@ -109,14 +110,16 @@ public class PlayerMover : MonoBehaviour {
     {
         get
         {
-            return Physics2D.Raycast(transform.position, transform.right, col.bounds.extents.x + 0.1f, 1 << 8);
+            return Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.1f, 1 << 8);
         }
     }
     public bool OnLeftWall
     {
         get
         {
-            return Physics2D.Raycast(transform.position, -transform.right, col.bounds.extents.x + 0.1f, 1 << 8);
+            
+            return Physics2D.Raycast(transform.position, -Vector2.right, col.bounds.extents.x + 0.1f, 1 << 8);
+
         }
     }
 
