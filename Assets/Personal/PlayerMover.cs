@@ -16,6 +16,8 @@ public class PlayerMover : MonoBehaviour {
     float dashMagnitude = 20f;
     float gravity = 2f;
     float jumpVel = 10f;
+    float wallJumpXVel = 15f;
+    float wallJumpYVel = 5f;
     float dashEndMomentum = 0.65f;
     int dashTime = 10;
 
@@ -63,7 +65,12 @@ public class PlayerMover : MonoBehaviour {
                 dashVel = Vector2.zero;
             }
         }
-        
+
+        if (onWall)
+        {
+            if (ci.Jump) { rb.velocity += new Vector2(wallJumpXVel*-Math.Sign(move.x), wallJumpYVel); }
+        }
+
         if (dashCounter > 0)
         {
             if (dashCounter == 2) { dashVel *= dashEndMomentum; }
@@ -83,6 +90,15 @@ public class PlayerMover : MonoBehaviour {
         get
         {
             RaycastHit2D ray = Physics2D.BoxCast(transform.position, new Vector2(1f, 1f), 0, -transform.up, 0.08f, 1 << 8);
+            return ray;
+        }
+    }
+
+    public bool onWall
+    {
+        get
+        {
+            RaycastHit2D ray = Physics2D.BoxCast(transform.position, new Vector2(1f, 0.5f), 0, transform.right, 0.08f, 1 << 8);
             return ray;
         }
     }
