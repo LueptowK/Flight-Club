@@ -35,17 +35,14 @@ public class PlayerAnimator : MonoBehaviour {
     }
 
     // Update is called once per frame
-    float animSpd = 0.15f;
+    float animSpd = 0.2f;
     private AnimatorStateInfo currentBaseState;
 
     void FixedUpdate() {
-        if (CompareBaseState("Base.walkloop")){
-            ani.speed = animSpd * Mathf.Pow(rb.velocity.x,10);
-        }
-        else
-        {
-            ani.speed = 1;
-        }
+
+
+
+
     }
 
     void LateUpdate()
@@ -53,12 +50,21 @@ public class PlayerAnimator : MonoBehaviour {
         ani.SetBool("Running", running);
         ani.SetBool("Grounded", pm.grounded);
         ani.SetBool("OnWall", pm.onWall);
+        ani.SetFloat("WalkSpeed", animSpd * Mathf.Pow(Mathf.Abs(rb.velocity.x), 1.1f));
+
+
     }
     public void jump()
     {
         ani.SetTrigger("Jump");
     }
+    public void dash()
+    {
+        ani.SetTrigger("Dash");
 
+    }
+
+ 
     bool running
     {
         get
@@ -73,15 +79,14 @@ public class PlayerAnimator : MonoBehaviour {
         }
     }
 
-    
+   
 
 
-    public bool CompareBaseState(string stateName)
+    protected bool CompareBaseState(string stateName)
     {
         AnimatorStateInfo currentState = ani.GetCurrentAnimatorStateInfo(0);
 
-
-        if (currentState.fullPathHash == Animator.StringToHash(stateName)) { return true; }
+        if (currentState.fullPathHash == Animator.StringToHash(stateName)) {  return true; }
         return false;
     }
 

@@ -191,6 +191,22 @@ public class ControlInterpret : MonoBehaviour {
             return true;
         }
     }
+    int fallFrames = 1;
+    public bool fall
+    {
+        get
+        {
+            for (int i = 0; i < fallFrames; i++)
+            {
+                Vector2 dir = inputHistory[i].dir;
+                if (!(Math.Abs(dir.x)<0.1f&&dir.y<-0.9))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
     public bool Jump {
         get
         {

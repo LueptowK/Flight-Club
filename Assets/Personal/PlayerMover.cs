@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class PlayerMover : MonoBehaviour {
 
@@ -8,6 +9,33 @@ public class PlayerMover : MonoBehaviour {
     ControlInterpret ci;
     PlayerAnimator pani;
     Collider2D col;
+
+
+
+
+
+    enum PState
+    {
+        Free,
+        Dash,
+        Stall,
+        Hitstun,
+        Delay
+    }
+    struct StatePair
+    {
+        public PState state;
+        public int delay;
+        public StatePair(PState state, int delay)
+        {
+            this.state = state;
+            this.delay = delay;
+        }
+    }
+
+    StatePair current = new StatePair(PState.Free, 0);
+    Queue<StatePair> states = new Queue<StatePair>();
+
 
     Vector2 dashVel = Vector2.zero;
     int dashCounter;
@@ -22,6 +50,12 @@ public class PlayerMover : MonoBehaviour {
     float wallJumpYVel = 8f;
     float dashEndMomentum = 0.65f;
     int dashTime = 10;
+    int stallTime = 6;
+    bool falling = false;
+    float maxFallSpeed = 22f;
+
+    int stallCooldown = 40;
+    int stallCooldownCurrent = 0;
 
     bool FacingLeft = false;
 
@@ -48,90 +82,135 @@ public class PlayerMover : MonoBehaviour {
         }
         Vector2 desired = Vector2.zero;
         float tempGrav = gravity;
+        stallCooldownCurrent--;
 
-        //flip sprite direction to movement direction on ground
-        if (grounded)
+
+        switch (current.state)
         {
-            desired.x = move.x * moveSpeed;
-            if (desired.x < 0) { FacingLeft = true; }
-            else if (desired.x > 0) { FacingLeft = false; }
-
-            
-            dashAvailable = true; 
-            if (ci.Jump) { desired += new Vector2(0, jumpVel); pani.jump(); }
-        }
-        else
-        {
-            desired = AirControl(move);
-            if (ci.Dash && dashAvailable && ci.move != Vector2.zero) // DASH
-            {
-                dashVel = ci.move.normalized * dashMagnitude;
-                dashCounter = dashTime;
-                dashAvailable = false;
-            }
-            else if (dashCounter == 0 && ci.Stall) //STALL
-            {
-                dashCounter = 1;
-                dashVel = Vector2.zero;
-            }
-            if (nearWall) //WALL - NEAR
-            {
-                if((desired.x>0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
+            case PState.Free:
+                if (grounded)
                 {
-                    desired.x = 0;
-                }
+                    desired.x = move.x * moveSpeed;
+                    //flip sprite direction to movement direction on ground
+                    if (desired.x < 0) { FacingLeft = true; }
+                    else if (desired.x > 0) { FacingLeft = false; }
+                    falling = false;
 
-                if (onWall) //WALL - HANG
-                {
-                    if (rb.velocity.y > 0)
-                    {
-                        rb.velocity = Vector2.zero;
-                    }
-                    if (OnRightWall)
-                    {
-                        FacingLeft = false;
- 
-                    }
-                    else
-                    {
-                        FacingLeft = true;
-                    }
                     dashAvailable = true;
-                    tempGrav = 0.3f;
+                    if (ci.Jump)
+                    {
+                        desired += new Vector2(0, jumpVel);
+                        pani.jump();
+                    }
                 }
-                if (ci.Jump) // WALLJUMP
+                else
                 {
-                    dashAvailable = true;
-                    if (OnRightWall)
+                    desired = AirControl(move);
+                    tryDash();//DASH
+                    tryStall();//STALL
+                    if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
                     {
-                        desired = new Vector2(-wallJumpXVel, wallJumpYVel);
-                        FacingLeft = true;
+                        falling = true;
                     }
-                    else
+                    if (nearWall) //WALL - NEAR
                     {
-                        desired = new Vector2(wallJumpXVel, wallJumpYVel);
-                        FacingLeft = false;
+                        if ((desired.x > 0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
+                        {
+                            desired.x = 0;
+                        }
+                        dashAvailable = true;
+
+                        if (onWall) //WALL - HANG
+                        {
+                            falling = false;
+                            if (rb.velocity.y > 0)
+                            {
+
+                                rb.velocity = Vector2.zero;
+                            }
+                            else if (rb.velocity.y < -3)
+                            {
+                                rb.velocity = new Vector2(0, -3);
+                            }
+
+                            if (OnRightWall)
+                            {
+                                FacingLeft = false;
+
+                            }
+                            else
+                            {
+                                FacingLeft = true;
+                            }
+
+                            
+                            tempGrav = 0.3f;
+                        }
+                        if (ci.Jump) // WALLJUMP
+                        {
+                            rb.velocity = Vector2.zero;
+                            if (onWall)
+                            {
+                                pani.jump();
+                            }
+
+
+                            if (OnRightWall)
+                            {
+                                desired = new Vector2(-wallJumpXVel, wallJumpYVel);
+                                FacingLeft = true;
+                            }
+                            else
+                            {
+                                desired = new Vector2(wallJumpXVel, wallJumpYVel);
+                                FacingLeft = false;
+                            }
+                        }
+
                     }
                 }
+                if (falling)
+                {
+                    tempGrav *= 5;
+                }
+                rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+                if (rb.velocity.y < -maxFallSpeed)
+                {
+                    rb.velocity = desired + new Vector2(0, -maxFallSpeed);
+                }
+                break;
+            case PState.Dash:
+                rb.velocity = dashVel;
+                falling = false;
+                
+                if(current.delay == dashTime) { pani.dash(); }
+                if (current.delay == 1) { dashVel *= dashEndMomentum; }
+                if (grounded) { dashVel.y = 0; }
+                if (current.delay < dashTime / 2 && states.Count < 1)
+                {
+                    tryStall();
+                }
 
-            }
+                break;
+            case PState.Stall:
+                rb.velocity = Vector2.zero;
+                falling = false;
+
+                if (current.delay == stallTime) { stallCooldownCurrent = stallCooldown; }
+                if (current.delay < stallTime && states.Count < 1)
+                {
+                    tryDash();
+                }
+                break;
+            case PState.Delay:
+
+                break;
         }
-
-
-
-        if (dashCounter > 0) //DASH OR STALL MOVEMENT
+        current.delay -= 1;
+        if (current.delay < 0)
         {
-            if (dashCounter == 2) { dashVel *= dashEndMomentum; }
-            if (grounded) { dashVel.y = 0; }
-            dashCounter--;
-            rb.velocity = dashVel;
+            nextState();
         }
-        else
-        {
-
-            rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
-        }
-
         if (FacingLeft)
         {
             transform.localRotation = Quaternion.Euler(0, 180, 0);
@@ -141,7 +220,42 @@ public class PlayerMover : MonoBehaviour {
             transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
     }
+    void tryDash()
+    {
+        if (ci.Dash && dashAvailable) // DASH
+        {
+            Vector2 input = ci.move.normalized;
+            if(input == Vector2.zero)
+            {
+                if(Physics2D.Raycast(transform.position, transform.right, col.bounds.extents.x + 0.1f, 1 << 8))
+                {
+                    input = -transform.right;
+                    changeFace();
+                }
+                else
+                {
+                    input = transform.right;
+                }
+                
+            }
+            dashVel = input * dashMagnitude;
 
+            dashAvailable = false;
+            states.Enqueue(new StatePair(PState.Dash, dashTime));
+        }
+    }
+    void changeFace()
+    {
+        FacingLeft = !FacingLeft;
+    }
+    void tryStall()
+    {
+        if (ci.Stall && stallCooldownCurrent<= 0)
+        {
+            states.Enqueue(new StatePair(PState.Stall, stallTime));
+            
+        }
+    }
     public bool grounded
     {
         get
@@ -183,7 +297,17 @@ public class PlayerMover : MonoBehaviour {
 
         }
     }
-
+    void nextState()
+    {
+        if (states.Count==0)
+        {
+            current = new StatePair(PState.Free, 0);
+        }
+        else
+        {
+            current = states.Dequeue();
+        }
+    }
     Vector2 AirControl(Vector2 move)
     {
         Vector2 desired = new Vector2 (rb.velocity.x, 0);
