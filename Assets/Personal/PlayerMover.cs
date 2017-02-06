@@ -19,7 +19,7 @@ public class PlayerMover : MonoBehaviour {
     float gravity = 2f;
     float jumpVel = 10f;
     float wallJumpXVel = 15f;
-    float wallJumpYVel = 5f;
+    float wallJumpYVel = 8f;
     float dashEndMomentum = 0.65f;
     int dashTime = 10;
 
@@ -72,7 +72,7 @@ public class PlayerMover : MonoBehaviour {
 
         if (onWall)
         {
-            if (ci.Jump) { rb.velocity += new Vector2(wallJumpXVel*-Math.Sign(move.x), wallJumpYVel); }
+            if (ci.Jump) { rb.velocity = new Vector2(wallJumpXVel*-Math.Sign(move.x), wallJumpYVel); }
             if (!dashAvailable) { dashAvailable = true; }
         }
 
