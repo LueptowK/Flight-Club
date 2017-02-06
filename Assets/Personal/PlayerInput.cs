@@ -66,4 +66,11 @@ public class PlayerInput : MonoBehaviour {
             return stall;
         }
     }
+    public bool TauntD
+    {
+        get
+        {
+            return state.DPad.Down==ButtonState.Pressed;
+        }
+    }
 }

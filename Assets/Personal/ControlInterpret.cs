@@ -9,6 +9,7 @@ public class ControlInterpret : MonoBehaviour {
     private int JumpDown;
     private int DashDown;
 
+
     private List<inputItem> inputHistory;
 
     public float AxisAdjust = 0.15f;
@@ -168,6 +169,8 @@ public class ControlInterpret : MonoBehaviour {
         {
             DashDown = 0;
         }
+
+
     }
 
     public Vector2 move{
@@ -233,6 +236,13 @@ public class ControlInterpret : MonoBehaviour {
         get
         {
             return control.Stall;
+        }
+    }
+    public bool TauntDown
+    {
+        get
+        {
+            return control.TauntD;
         }
     }
     // for lookup

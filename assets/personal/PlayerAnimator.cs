@@ -58,10 +58,18 @@ public class PlayerAnimator : MonoBehaviour {
     {
         ani.SetTrigger("Jump");
     }
+    public void jumpSquat()
+    {
+        ani.SetTrigger("JumpSquat");
+    }
     public void dash()
     {
         ani.SetTrigger("Dash");
 
+    }
+    public void TauntD()
+    {
+        ani.SetTrigger("TauntD");
     }
 
  
@@ -71,7 +79,7 @@ public class PlayerAnimator : MonoBehaviour {
         {
             float hor = ci.move.x;
             float vel = rb.velocity.x;
-            if (!ci.idle && Mathf.Sign(hor) * Mathf.Sign(vel)!= -1)
+            if (!ci.idle && Mathf.Sign(hor) * Mathf.Sign(vel)!= -1&&vel!=0)
             {
                 return true;
             }
