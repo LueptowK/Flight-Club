@@ -200,7 +200,7 @@ public class PlayerMover : MonoBehaviour {
                 falling = false;
                 
                 if(current.delay == dashTime) { pani.dash(); }
-                if (current.delay == 1) { dashVel *= dashEndMomentum; }
+                if (current.delay == 2) { dashVel *= dashEndMomentum; }
                 if (grounded) { dashVel.y = 0; }
                 if (current.delay < dashTime / 2 && states.Count < 1)
                 {
