@@ -52,7 +52,7 @@ public class PlayerAnimator : MonoBehaviour {
     {
         ani.SetBool("Running", running);
         ani.SetBool("Grounded", pm.grounded);
-        ani.SetBool("OnWall", OnWall);
+        ani.SetBool("OnWall", pm.onWall);
     }
     public void jump()
     {
@@ -73,18 +73,13 @@ public class PlayerAnimator : MonoBehaviour {
         }
     }
 
-    bool OnWall
-    {
-        get
-        {
-            return (pm.OnRightWall && ci.move.x > 0f) || (pm.OnLeftWall && ci.move.x < 0f);
-        }
-    }
+    
 
 
-    protected bool CompareBaseState(string stateName)
+    public bool CompareBaseState(string stateName)
     {
         AnimatorStateInfo currentState = ani.GetCurrentAnimatorStateInfo(0);
+
 
         if (currentState.fullPathHash == Animator.StringToHash(stateName)) { return true; }
         return false;

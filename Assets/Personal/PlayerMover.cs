@@ -23,6 +23,8 @@ public class PlayerMover : MonoBehaviour {
     float dashEndMomentum = 0.65f;
     int dashTime = 10;
 
+    bool FacingLeft = false;
+
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -45,38 +47,79 @@ public class PlayerMover : MonoBehaviour {
             move.Normalize();
         }
         Vector2 desired = Vector2.zero;
+        float tempGrav = gravity;
 
         //flip sprite direction to movement direction on ground
         if (grounded)
         {
             desired.x = move.x * moveSpeed;
-            if (desired.x < 0) { transform.localRotation = Quaternion.Euler(0, 180, 0); }
-            else if (desired.x > 0) { transform.localRotation = Quaternion.Euler(0, 0, 0); }
-            if (!dashAvailable) { dashAvailable = true; }
+            if (desired.x < 0) { FacingLeft = true; }
+            else if (desired.x > 0) { FacingLeft = false; }
+
+            
+            dashAvailable = true; 
             if (ci.Jump) { desired += new Vector2(0, jumpVel); pani.jump(); }
         }
         else
         {
-            if (ci.Dash && dashAvailable && ci.move != Vector2.zero)
+            desired = AirControl(move);
+            if (ci.Dash && dashAvailable && ci.move != Vector2.zero) // DASH
             {
                 dashVel = ci.move.normalized * dashMagnitude;
                 dashCounter = dashTime;
                 dashAvailable = false;
             }
-            else if (dashCounter == 0 && ci.Stall)
+            else if (dashCounter == 0 && ci.Stall) //STALL
             {
-                dashCounter = dashTime;
+                dashCounter = 1;
                 dashVel = Vector2.zero;
+            }
+            if (nearWall) //WALL - NEAR
+            {
+                if((desired.x>0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
+                {
+                    desired.x = 0;
+                }
+
+                if (onWall) //WALL - HANG
+                {
+                    if (rb.velocity.y > 0)
+                    {
+                        rb.velocity = Vector2.zero;
+                    }
+                    if (OnRightWall)
+                    {
+                        FacingLeft = false;
+ 
+                    }
+                    else
+                    {
+                        FacingLeft = true;
+                    }
+                    dashAvailable = true;
+                    tempGrav = 0.3f;
+                }
+                if (ci.Jump) // WALLJUMP
+                {
+                    dashAvailable = true;
+                    if (OnRightWall)
+                    {
+                        desired = new Vector2(-wallJumpXVel, wallJumpYVel);
+                        FacingLeft = true;
+                    }
+                    else
+                    {
+                        desired = new Vector2(wallJumpXVel, wallJumpYVel);
+                        FacingLeft = false;
+                    }
+                }
+
             }
         }
 
-        if (onWall)
-        {
-            if (ci.Jump) { rb.velocity = new Vector2(wallJumpXVel*-Math.Sign(move.x), wallJumpYVel); }
-            if (!dashAvailable) { dashAvailable = true; }
-        }
 
-        if (dashCounter > 0)
+
+        if (dashCounter > 0) //DASH OR STALL MOVEMENT
         {
             if (dashCounter == 2) { dashVel *= dashEndMomentum; }
             if (grounded) { dashVel.y = 0; }
@@ -85,8 +128,17 @@ public class PlayerMover : MonoBehaviour {
         }
         else
         {
-            if (!grounded) { desired = AirControl(move); }
-            rb.velocity = desired + new Vector2(0, rb.velocity.y - gravity * 9.8f * Time.fixedDeltaTime);
+
+            rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+        }
+
+        if (FacingLeft)
+        {
+            transform.localRotation = Quaternion.Euler(0, 180, 0);
+        }
+        else
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
     }
 
@@ -99,11 +151,19 @@ public class PlayerMover : MonoBehaviour {
         }
     }
 
-    public bool onWall
+    public bool nearWall
     {
         get
         {
             return OnRightWall || OnLeftWall;
+        }
+    }
+
+    public bool onWall
+    {
+        get
+        {
+            return (OnRightWall && ci.move.x > 0f) || (OnLeftWall && ci.move.x < 0f);
         }
     }
 
