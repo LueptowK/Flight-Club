@@ -74,7 +74,7 @@
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="XInputDotNetPure">
-      <HintPath>Assets\plugins\x86_64\XInputDotNetPure.dll</HintPath>
+      <HintPath>Assets\Plugins\x86_64\XInputDotNetPure.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -82,10 +82,10 @@
     <Compile Include="Assets\Personal\PlayerAnimator.cs" />
     <Compile Include="Assets\Personal\PlayerInput.cs" />
     <Compile Include="Assets\Personal\PlayerMover.cs" />
-    <Compile Include="Assets\Xinputdotnet\Examples\XInputTestCS.cs" />
+    <Compile Include="Assets\XInputDotNet\Examples\XInputTestCS.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Xinputdotnet\MITLicense.txt" />
+    <None Include="Assets\XInputDotNet\MITLicense.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

@@ -14,13 +14,14 @@ public class PlayerMover : MonoBehaviour {
 
 
 
-    enum PState
+    public enum PState
     {
         Free,
         Dash,
         Stall,
         Hitstun,
-        Delay
+        Delay,
+        CeilingHold
     }
     struct StatePair
     {
@@ -40,6 +41,7 @@ public class PlayerMover : MonoBehaviour {
     Vector2 dashVel = Vector2.zero;
     int dashCounter;
     bool dashAvailable;
+    bool ceilingAvaliable;
     float moveSpeed = 13f;
     float airSpeed = 0.8f;
     float maxAirSpeed = 8f;
@@ -53,6 +55,7 @@ public class PlayerMover : MonoBehaviour {
     int stallTime = 6;
     bool falling = false;
     float maxFallSpeed = 22f;
+    float friction = 7f;
 
     int stallCooldown = 40;
     int stallCooldownCurrent = 0;
@@ -66,9 +69,14 @@ public class PlayerMover : MonoBehaviour {
         pani = GetComponent<PlayerAnimator>();
         col = GetComponent<Collider2D>();
         dashVel = Vector2.zero;
+        restoreTools();
+
+    }
+	void restoreTools()
+    {
         dashAvailable = true;
-	}
-	
+        ceilingAvaliable = true;
+    }
 	// Update is called once per frame
 	void FixedUpdate () {
 
@@ -96,7 +104,7 @@ public class PlayerMover : MonoBehaviour {
                     else if (desired.x > 0) { FacingLeft = false; }
                     falling = false;
 
-                    dashAvailable = true;
+                    restoreTools();
                     if (ci.Jump)
                     {
                         desired += new Vector2(0, jumpVel);
@@ -112,26 +120,27 @@ public class PlayerMover : MonoBehaviour {
                     {
                         falling = true;
                     }
+                    #region wall
                     if (nearWall) //WALL - NEAR
                     {
                         if ((desired.x > 0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
                         {
                             desired.x = 0;
                         }
-                        dashAvailable = true;
+                        restoreTools();
 
                         if (onWall) //WALL - HANG
                         {
                             falling = false;
-                            if (rb.velocity.y > 0)
-                            {
+                            desired.y += applyFriction(rb.velocity.y);
 
-                                rb.velocity = Vector2.zero;
-                            }
-                            else if (rb.velocity.y < -3)
+
+                            if (rb.velocity.y < -3)
                             {
                                 rb.velocity = new Vector2(0, -3);
                             }
+
+                            
 
                             if (OnRightWall)
                             {
@@ -144,7 +153,7 @@ public class PlayerMover : MonoBehaviour {
                             }
 
                             
-                            tempGrav = 0.3f;
+                            //tempGrav = 0.3f;
                         }
                         if (ci.Jump) // WALLJUMP
                         {
@@ -166,7 +175,14 @@ public class PlayerMover : MonoBehaviour {
                                 FacingLeft = false;
                             }
                         }
-
+                        
+                    }
+                    #endregion
+                    else if (onCeiling && ci.move.y > 0&& ceilingAvaliable)
+                    {
+                        states.Enqueue(new StatePair(PState.CeilingHold, 30));
+                        ceilingAvaliable = false;
+                        dashAvailable = true;
                     }
                 }
                 if (falling)
@@ -205,9 +221,38 @@ public class PlayerMover : MonoBehaviour {
             case PState.Delay:
 
                 break;
+            case PState.CeilingHold:
+                rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x), 0);
+
+                if (ci.Jump)
+                {
+                    rb.velocity += new Vector2(0, -maxFallSpeed);
+                    states.Enqueue(new StatePair(PState.Free, 0));
+                }
+                if(states.Count<1){
+                    tryDash();
+                }
+                if (states.Count < 1)
+                {
+                    tryStall();
+                }
+                if (states.Count < 1 &&ci.move.y < 0)
+                {
+                    states.Enqueue(new StatePair(PState.Free, 0));
+                }
+
+
+
+
+                if (states.Count > 0)
+                {
+                    current.delay = 1;
+                }
+                break;
+
         }
         current.delay -= 1;
-        if (current.delay < 0)
+        if (current.delay <= 0)
         {
             nextState();
         }
@@ -256,14 +301,30 @@ public class PlayerMover : MonoBehaviour {
             
         }
     }
+    public PState currentState
+    {
+        get
+        {
+            return current.state;
+        }
+    }
+    
     public bool grounded
     {
         get
         {
-            RaycastHit2D ray = Physics2D.BoxCast(transform.position, new Vector2(col.bounds.extents.x*2f, col.bounds.extents.y*2f), 0, -transform.up, 0.08f, 1 << 10);
+            RaycastHit2D ray = Physics2D.BoxCast(transform.position-new Vector3(0, col.bounds.extents.y,0), new Vector2(col.bounds.extents.x*1.8f, col.bounds.extents.y*1f), 0, -transform.up, 0.08f, 1 << 10);
             return ray;
         }
     }
+    public bool onCeiling
+    {
+        get
+        {
+            return Physics2D.Raycast(transform.position, transform.up, col.bounds.extents.y + 0.1f, 1 << 10);
+        }
+    }
+
 
     public bool nearWall
     {
@@ -327,5 +388,14 @@ public class PlayerMover : MonoBehaviour {
             }
         }
         return desired;
+    }
+    float applyFriction(float vel)
+    {
+        float newVel = -Math.Sign(vel) * friction * Time.fixedDeltaTime;
+        if (Math.Sign(vel + newVel) != Math.Sign(vel))
+        {
+            newVel = -vel;
+        }
+        return newVel;
     }
 }

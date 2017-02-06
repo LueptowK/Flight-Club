@@ -51,7 +51,7 @@ public class PlayerAnimator : MonoBehaviour {
         ani.SetBool("Grounded", pm.grounded);
         ani.SetBool("OnWall", pm.onWall);
         ani.SetFloat("WalkSpeed", animSpd * Mathf.Pow(Mathf.Abs(rb.velocity.x), 1.1f));
-
+        ani.SetBool("Ceiling", pm.currentState==PlayerMover.PState.CeilingHold);
 
     }
     public void jump()
