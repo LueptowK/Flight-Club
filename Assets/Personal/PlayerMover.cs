@@ -236,7 +236,7 @@ public class PlayerMover : MonoBehaviour {
                 {
                     tryStall();
                 }
-                if (states.Count < 1 &&ci.move.y < 0)
+                if ((states.Count < 1 &&ci.move.y < 0) || !onCeiling)
                 {
                     states.Enqueue(new StatePair(PState.Free, 0));
                 }
