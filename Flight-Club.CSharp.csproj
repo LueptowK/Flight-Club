@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
+    <Compile Include="Assets\Personal\HitboxProperties.cs" />
     <Compile Include="Assets\Personal\PlayerAnimator.cs" />
     <Compile Include="Assets\Personal\PlayerInput.cs" />
     <Compile Include="Assets\Personal\PlayerMover.cs" />

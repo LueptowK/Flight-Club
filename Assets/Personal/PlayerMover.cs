@@ -119,6 +119,7 @@ public class PlayerMover : MonoBehaviour {
             case PState.Ground:
                 {
                     desired.x = move.x * moveSpeed;
+                    desired.y = rb.velocity.y;
                     //flip sprite direction to movement direction on ground
                     if (desired.x < 0) { FacingLeft = true; }
                     else if (desired.x > 0) { FacingLeft = false; }
@@ -279,6 +280,8 @@ public class PlayerMover : MonoBehaviour {
                     tryDash();
                 }
                 break;
+            #endregion
+            #region Delay State
             case PState.Delay:
                 switch (current.action)
                 {
