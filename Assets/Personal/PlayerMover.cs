@@ -28,7 +28,8 @@ public class PlayerMover : MonoBehaviour {
     public enum ExecState
     {
         None,
-        Jump
+        Jump,
+        hitLag
     }
 
     struct StatePair
@@ -55,6 +56,8 @@ public class PlayerMover : MonoBehaviour {
 
 
     Vector2 dashVel = Vector2.zero;
+    Vector2 hitVector;
+    float hitstunFriction = 0.98f;
     int dashCounter;
     bool dashAvailable;
     bool ceilingAvaliable;
@@ -108,7 +111,8 @@ public class PlayerMover : MonoBehaviour {
         stallCooldownCurrent--;
 
         switch (current.state)
-        {      
+        {
+            #region Ground State
             case PState.Ground:
                 {
                     desired.x = move.x * moveSpeed;
@@ -144,6 +148,8 @@ public class PlayerMover : MonoBehaviour {
                     rb.velocity = desired;
                     break;
                 }
+            #endregion
+            #region Air State
             case PState.Air:
                 {
                     if (grounded)
@@ -233,6 +239,8 @@ public class PlayerMover : MonoBehaviour {
                     rb.velocity = desired + new Vector2(0, -maxFallSpeed);
                 }
                 break;
+            #endregion
+            #region Dash State
             case PState.Dash:
                 rb.velocity = dashVel;
                 falling = false;
@@ -246,6 +254,8 @@ public class PlayerMover : MonoBehaviour {
                 }
 
                 break;
+            #endregion
+            #region Stall State
             case PState.Stall:
                 rb.velocity = Vector2.zero;
                 falling = false;
@@ -265,6 +275,8 @@ public class PlayerMover : MonoBehaviour {
                 }
                 
                 break;
+            #endregion
+            #region CeilingHold State
             case PState.CeilingHold:
                 rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x), 0);
 
@@ -284,16 +296,46 @@ public class PlayerMover : MonoBehaviour {
                 {
                     states.Enqueue(new StatePair(PState.Air, 0));
                 }
-
-
-
-
+                
                 if (states.Count > 0)
                 {
                     current.delay = 1;
                 }
                 break;
+            #endregion
+            #region Hitstun State
+            case PState.Hitstun:
+                if (grounded)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, -rb.velocity.y);
+                }
+                if (nearWall) //WALL - NEAR
+                {
+                    restoreTools();
+                    
+                    if (OnRightWall && rb.velocity.x > 0)
+                    {
+                        rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
 
+                    }
+                    else if (OnLeftWall && rb.velocity.x < 0)
+                    {
+                        rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
+
+                    }
+
+                }
+                if (onCeiling && rb.velocity.y > 0)
+                {
+                    dashAvailable = true;
+                    rb.velocity = new Vector2(rb.velocity.x, -rb.velocity.y);
+                }
+                if(rb.velocity.magnitude > 1.5*moveSpeed)
+                {
+                    rb.velocity = rb.velocity * hitstunFriction;
+                }
+                break;
+                #endregion
         }
         current.delay -= 1;
         if (current.delay <= 0)
@@ -307,6 +349,9 @@ public class PlayerMover : MonoBehaviour {
                     states.Enqueue(new StatePair(PState.Air, 0));
                     pani.jump();
                     break;
+                case ExecState.hitLag:
+                    rb.velocity = hitVector;
+                    break;
             }
             nextState();
         }
@@ -318,6 +363,16 @@ public class PlayerMover : MonoBehaviour {
         {
             transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D hitbox)
+    {
+        HitboxProperties hitProp = hitbox.GetComponent<HitboxProperties>();
+        current = new StatePair(PState.Delay, hitProp.hitlag, ExecState.hitLag);
+        states.Enqueue(new StatePair(PState.Hitstun, hitProp.hitstun));
+        rb.velocity = Vector2.zero;
+        hitVector = hitProp.hitboxVector;
+        //DAMAGE CODE ALSO GOES HERE
     }
     #region try moves
     void tryDash()
