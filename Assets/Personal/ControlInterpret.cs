@@ -245,6 +245,13 @@ public class ControlInterpret : MonoBehaviour {
             return control.TauntD;
         }
     }
+    public bool AttackD
+    {
+        get
+        {
+            return control.AttackD;
+        }
+    }
     // for lookup
     private int timeIndex(float time)
     {

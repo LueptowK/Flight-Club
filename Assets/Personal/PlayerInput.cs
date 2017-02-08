@@ -73,4 +73,11 @@ public class PlayerInput : MonoBehaviour {
             return state.DPad.Down==ButtonState.Pressed;
         }
     }
+    public bool AttackD
+    {
+        get
+        {
+            return state.Buttons.A == ButtonState.Pressed;
+        }
+    }
 }

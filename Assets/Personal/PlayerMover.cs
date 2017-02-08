@@ -22,14 +22,16 @@ public class PlayerMover : MonoBehaviour {
         Stall,
         Hitstun,
         Delay,
-        CeilingHold
+        CeilingHold,
+        AirAttack
     }
 
     public enum ExecState
     {
         None,
         Jump,
-        hitLag
+        hitLag,
+        Attack
     }
 
     struct StatePair
@@ -57,6 +59,7 @@ public class PlayerMover : MonoBehaviour {
 
     Vector2 dashVel = Vector2.zero;
     Vector2 hitVector;
+    GameObject activeHitbox;
     float hitstunFriction = 0.98f;
     int dashCounter;
     bool dashAvailable;
@@ -79,7 +82,7 @@ public class PlayerMover : MonoBehaviour {
     int stallCooldown = 40;
     int stallCooldownCurrent = 0;
 
-    bool FacingLeft = false;
+    public bool FacingLeft = false;
 
     // Use this for initialization
     void Start () {
@@ -152,82 +155,92 @@ public class PlayerMover : MonoBehaviour {
             #region Air State
             case PState.Air:
                 {
-                    if (grounded)
+                if (grounded)
+                {
+                    states.Enqueue(new StatePair(PState.Ground, 0));
+                }
+                desired = AirControl(move);
+                tryDash();//DASH
+                tryStall();//STALL
+                
+
+                if (ci.AttackD)
                     {
-                        states.Enqueue(new StatePair(PState.Ground, 0));
+                        states.Enqueue(new StatePair(PState.AirAttack, 10, ExecState.Attack));
+                        activeHitbox = transform.Find("testHitbox").gameObject;
+                        activeHitbox.SetActive(true);
                     }
-                    desired = AirControl(move);
-                    tryDash();//DASH
-                    tryStall();//STALL
-                    if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
+
+
+                if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
+                {
+                    falling = true;
+                }
+                #region wall
+                if (nearWall) //WALL - NEAR
+                {
+                    if ((desired.x > 0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
                     {
-                        falling = true;
+                        desired.x = 0;
                     }
-                    #region wall
-                    if (nearWall) //WALL - NEAR
+                    restoreTools();
+
+                    if (onWall) //WALL - HANG
                     {
-                        if ((desired.x > 0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
+                        falling = false;
+                        desired.y += applyFriction(rb.velocity.y);
+
+
+                        if (rb.velocity.y < -3)
                         {
-                            desired.x = 0;
+                            rb.velocity = new Vector2(0, -3);
                         }
-                        restoreTools();
-
-                        if (onWall) //WALL - HANG
-                        {
-                            falling = false;
-                            desired.y += applyFriction(rb.velocity.y);
-
-
-                            if (rb.velocity.y < -3)
-                            {
-                                rb.velocity = new Vector2(0, -3);
-                            }
 
                             
 
-                            if (OnRightWall)
-                            {
-                                FacingLeft = false;
+                        if (OnRightWall)
+                        {
+                            FacingLeft = false;
 
-                            }
-                            else
-                            {
-                                FacingLeft = true;
-                            }
+                        }
+                        else
+                        {
+                            FacingLeft = true;
+                        }
 
                             
-                            //tempGrav = 0.3f;
-                        }
-                        if (ci.Jump) // WALLJUMP
+                        //tempGrav = 0.3f;
+                    }
+                    if (ci.Jump) // WALLJUMP
+                    {
+                        falling = false;
+                        rb.velocity = Vector2.zero;
+                        if (onWall)
                         {
-                            falling = false;
-                            rb.velocity = Vector2.zero;
-                            if (onWall)
-                            {
-                                pani.jump();
-                            }
-
-
-                            if (OnRightWall)
-                            {
-                                desired = new Vector2(-wallJumpXVel, wallJumpYVel);
-                                FacingLeft = true;
-                            }
-                            else
-                            {
-                                desired = new Vector2(wallJumpXVel, wallJumpYVel);
-                                FacingLeft = false;
-                            }
+                            pani.jump();
                         }
+
+
+                        if (OnRightWall)
+                        {
+                            desired = new Vector2(-wallJumpXVel, wallJumpYVel);
+                            FacingLeft = true;
+                        }
+                        else
+                        {
+                            desired = new Vector2(wallJumpXVel, wallJumpYVel);
+                            FacingLeft = false;
+                        }
+                    }
                         
-                    }
-                    #endregion
-                    else if (onCeiling && ci.move.y >= 0&& ceilingAvaliable)
-                    {
-                        states.Enqueue(new StatePair(PState.CeilingHold, 30));
-                        ceilingAvaliable = false;
-                        dashAvailable = true;
-                    }
+                }
+                #endregion
+                else if (onCeiling && ci.move.y >= 0&& ceilingAvaliable)
+                {
+                    states.Enqueue(new StatePair(PState.CeilingHold, 30));
+                    ceilingAvaliable = false;
+                    dashAvailable = true;
+                }
                 }
                 if (falling)
                 {
@@ -334,6 +347,30 @@ public class PlayerMover : MonoBehaviour {
                 {
                     rb.velocity = rb.velocity * hitstunFriction;
                 }
+                rb.velocity += new Vector2(0, -gravity * 9.8f * Time.fixedDeltaTime);
+                break;
+            #endregion
+            #region AirAttack State
+            case PState.AirAttack:
+                if (grounded)
+                {
+                    current = (new StatePair(PState.Ground, 0));
+                    activeHitbox.SetActive(false);
+                }
+                desired = AirControl(move);
+                if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
+                {
+                    falling = true;
+                }
+                if (falling)
+                {
+                    tempGrav *= 5;
+                }
+                rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+                if (rb.velocity.y < -maxFallSpeed)
+                {
+                    rb.velocity = desired + new Vector2(0, -maxFallSpeed);
+                }
                 break;
                 #endregion
         }
@@ -352,6 +389,10 @@ public class PlayerMover : MonoBehaviour {
                 case ExecState.hitLag:
                     rb.velocity = hitVector;
                     break;
+                case ExecState.Attack:
+                    activeHitbox.SetActive(false);
+                    activeHitbox = null;
+                    break;
             }
             nextState();
         }
@@ -367,11 +408,31 @@ public class PlayerMover : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D hitbox)
     {
+        if (hitbox.tag != "Hitbox" && hitbox.tag != "Hazard")
+        {
+            return;
+        }
+
         HitboxProperties hitProp = hitbox.GetComponent<HitboxProperties>();
+        if (hitbox.tag == "Hitbox")
+        {
+            if (hitbox.transform.parent.gameObject.GetComponent<PlayerMover>().FacingLeft)
+            {
+                hitVector = new Vector2(-hitProp.hitboxVector.x, hitProp.hitboxVector.y);
+            }
+            else
+            {
+                hitVector = hitProp.hitboxVector;
+            }
+        }
+        else
+        {
+            hitVector = hitProp.hitboxVector;
+        }
+
         current = new StatePair(PState.Delay, hitProp.hitlag, ExecState.hitLag);
         states.Enqueue(new StatePair(PState.Hitstun, hitProp.hitstun));
         rb.velocity = Vector2.zero;
-        hitVector = hitProp.hitboxVector;
         //DAMAGE CODE ALSO GOES HERE
     }
     #region try moves
