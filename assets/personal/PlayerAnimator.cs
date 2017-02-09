@@ -20,17 +20,6 @@ public class PlayerAnimator : MonoBehaviour {
         pm = GetComponent<PlayerMover>();
 
 
-        UnityEditor.Animations.AnimatorController ac = (UnityEditor.Animations.AnimatorController)ani.runtimeAnimatorController;
-        foreach (UnityEditor.Animations.AnimatorControllerLayer acl in ac.layers)
-        {
-            layers.Add(acl);
-        }
-
-        // Base layer states
-        foreach (UnityEditor.Animations.ChildAnimatorState s in layers[0].stateMachine.states)
-        {
-            statesBase.Add(s.state);
-        }
         
     }
 
