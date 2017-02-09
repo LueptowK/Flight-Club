@@ -48,13 +48,15 @@ public class PlayerAnimator : MonoBehaviour {
     }
     enum AnimationState
     {
-        Unknown,
+        Unknown, //0
         Ground,
         JumpSquat,
         Air,
         Ceiling,
-        Dash,
-        Stall
+        Dash, //5
+        Stall,
+        Hitlag,
+        Hitstun //8
         
     }
     void LateUpdate()
@@ -105,6 +107,10 @@ public class PlayerAnimator : MonoBehaviour {
             {
                 ani.SetInteger("State", (int)AnimationState.JumpSquat);
             }
+            else if (c.action == PlayerMover.ExecState.hitLag)
+            {
+                ani.SetInteger("State", (int)AnimationState.Hitlag);
+            }
             else
             {
                 ani.SetInteger("State", (int)AnimationState.Unknown);
@@ -125,6 +131,10 @@ public class PlayerAnimator : MonoBehaviour {
         else if (c.state == PlayerMover.PState.Stall)
         {
             ani.SetInteger("State", (int)AnimationState.Stall);
+        }
+        else if (c.state == PlayerMover.PState.Hitstun)
+        {
+            ani.SetInteger("State", (int)AnimationState.Hitstun);
         }
         else
         {

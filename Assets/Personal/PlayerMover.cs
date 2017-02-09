@@ -59,6 +59,7 @@ public class PlayerMover : MonoBehaviour {
     Vector2 dashVel = Vector2.zero;
     Vector2 hitVector;
     GameObject activeHitbox;
+    bool registerHit = false;
     float hitstunFriction = 0.98f;
     int dashCounter;
     bool dashAvailable;
@@ -283,6 +284,9 @@ public class PlayerMover : MonoBehaviour {
                     case ExecState.Jump:
                         rb.velocity *= 0.80f;
                         break;
+                    case ExecState.hitLag:
+                        rb.velocity = Vector2.zero;
+                        break;
                 }
                 
                 break;
@@ -393,6 +397,16 @@ public class PlayerMover : MonoBehaviour {
             }
             nextState();
         }
+        else if (registerHit) // hit in the queue
+        {
+            int safety = states.Count;
+            while ((current.state != PState.Delay || current.action != ExecState.hitLag)&&safety>0)
+            {
+                nextState();
+                safety--;
+            }
+            registerHit = false;
+        }
         else
         {
             pani.StateChange(false);
@@ -424,7 +438,9 @@ public class PlayerMover : MonoBehaviour {
             hitVector = hitProp.hitboxVector;
         }
 
-        current = new StatePair(PState.Delay, hitProp.hitlag, ExecState.hitLag);
+        //current = new StatePair(PState.Delay, hitProp.hitlag, ExecState.hitLag);
+        states.Enqueue(new StatePair(PState.Delay, hitProp.hitlag, ExecState.hitLag));
+        registerHit = true;
         states.Enqueue(new StatePair(PState.Hitstun, hitProp.hitstun));
         rb.velocity = Vector2.zero;
         //DAMAGE CODE ALSO GOES HERE
