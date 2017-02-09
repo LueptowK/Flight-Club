@@ -9,9 +9,6 @@ public class PlayerAnimator : MonoBehaviour {
     Animator ani;
     PlayerMover pm;
 
-    List<UnityEditor.Animations.AnimatorControllerLayer> layers = new List<UnityEditor.Animations.AnimatorControllerLayer>();
-    List<UnityEditor.Animations.AnimatorState> statesBase = new List<UnityEditor.Animations.AnimatorState>();
-
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -28,40 +25,115 @@ public class PlayerAnimator : MonoBehaviour {
     private AnimatorStateInfo currentBaseState;
 
     void FixedUpdate() {
+        PlayerMover.StatePair c = pm.currentState;
+        float a, b;
+        switch (c.state)
+        {
+            case PlayerMover.PState.Dash:
+                Vector2 v2 = rb.velocity - Vector2.right;
+                a = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
+                break;
+            default:
+                a = 0;
+                break;
 
+        }
 
+        if (pm.FacingLeft){ b = 180;}
+        else{b = 0;}
 
+        transform.rotation = Quaternion.Euler(0, b, a);
+        
 
     }
-
+    enum AnimationState
+    {
+        Unknown,
+        Ground,
+        JumpSquat,
+        Air,
+        Ceiling,
+        Dash,
+        Stall
+        
+    }
     void LateUpdate()
     {
+
+
         ani.SetBool("Running", running);
         ani.SetBool("Grounded", pm.grounded);
         ani.SetBool("OnWall", pm.onWall);
         ani.SetFloat("WalkSpeed", animSpd * Mathf.Pow(Mathf.Abs(rb.velocity.x), 1.1f));
-        ani.SetBool("Ceiling", pm.currentState==PlayerMover.PState.CeilingHold);
 
+
+        
     }
     public void jump()
     {
         ani.SetTrigger("Jump");
     }
-    public void jumpSquat()
-    {
-        ani.SetTrigger("JumpSquat");
-    }
-    public void dash()
-    {
-        ani.SetTrigger("Dash");
-
-    }
     public void TauntD()
     {
         ani.SetTrigger("TauntD");
     }
+    
 
- 
+    public void StateChange(bool s)
+    {
+
+        ani.SetBool("StateChange", s);
+        if (s)
+        {
+            ReadState();
+        }
+     
+
+
+    }
+
+    public void ReadState()
+    {
+        PlayerMover.StatePair c = pm.currentState;
+        if (c.state == PlayerMover.PState.Ground)
+        {
+            ani.SetInteger("State", (int)AnimationState.Ground);
+        }
+        else if (c.state == PlayerMover.PState.Delay)
+        {
+            if (c.action == PlayerMover.ExecState.Jump)
+            {
+                ani.SetInteger("State", (int)AnimationState.JumpSquat);
+            }
+            else
+            {
+                ani.SetInteger("State", (int)AnimationState.Unknown);
+            }
+        }
+        else if (c.state == PlayerMover.PState.Air)
+        {
+            ani.SetInteger("State", (int)AnimationState.Air);
+        }
+        else if (c.state == PlayerMover.PState.CeilingHold)
+        {
+            ani.SetInteger("State", (int)AnimationState.Ceiling);
+        }
+        else if (c.state == PlayerMover.PState.Dash)
+        {
+            ani.SetInteger("State", (int)AnimationState.Dash);
+        }
+        else if (c.state == PlayerMover.PState.Stall)
+        {
+            ani.SetInteger("State", (int)AnimationState.Stall);
+        }
+        else
+        {
+            ani.SetInteger("State", (int)AnimationState.Unknown);
+        }
+    }
+
+
+
     bool running
     {
         get
@@ -81,10 +153,12 @@ public class PlayerAnimator : MonoBehaviour {
 
     protected bool CompareBaseState(string stateName)
     {
-        AnimatorStateInfo currentState = ani.GetCurrentAnimatorStateInfo(0);
 
+        /*
         if (currentState.fullPathHash == Animator.StringToHash(stateName)) {  return true; }
+        */
         return false;
+        
     }
 
 }

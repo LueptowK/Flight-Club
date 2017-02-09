@@ -34,7 +34,7 @@ public class PlayerMover : MonoBehaviour {
         Attack
     }
 
-    struct StatePair
+    public struct StatePair
     {
         public PState state;
         public int delay;
@@ -55,7 +55,6 @@ public class PlayerMover : MonoBehaviour {
 
     StatePair current = new StatePair(PState.Air, 0);
     Queue<StatePair> states = new Queue<StatePair>();
-
 
     Vector2 dashVel = Vector2.zero;
     Vector2 hitVector;
@@ -82,7 +81,7 @@ public class PlayerMover : MonoBehaviour {
     int stallCooldown = 40;
     int stallCooldownCurrent = 0;
 
-    public bool FacingLeft = false;
+    [HideInInspector]public bool FacingLeft = false;
 
     // Use this for initialization
     void Start () {
@@ -147,7 +146,6 @@ public class PlayerMover : MonoBehaviour {
                     if (ci.Jump)
                     {
                         states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
-                        pani.jumpSquat();
                     }
                     rb.velocity = desired;
                     break;
@@ -216,10 +214,9 @@ public class PlayerMover : MonoBehaviour {
                     {
                         falling = false;
                         rb.velocity = Vector2.zero;
-                        if (onWall)
-                        {
-                            pani.jump();
-                        }
+
+                        pani.jump();
+                        
 
 
                         if (OnRightWall)
@@ -258,8 +255,6 @@ public class PlayerMover : MonoBehaviour {
             case PState.Dash:
                 rb.velocity = dashVel;
                 falling = false;
-                
-                if(current.delay == dashTime) { pani.dash(); }
                 if (current.delay == 2) { dashVel *= dashEndMomentum; }
                 if (grounded) { dashVel.y = 0; }
                 if (current.delay < dashTime / 2 && states.Count < 1)
@@ -308,7 +303,7 @@ public class PlayerMover : MonoBehaviour {
                 {
                     tryStall();
                 }
-                if ((states.Count < 1 &&ci.move.y <= 0) || !onCeiling)
+                if ((states.Count < 1 &&ci.move.y < 0) || !onCeiling)
                 {
                     states.Enqueue(new StatePair(PState.Air, 0));
                 }
@@ -387,7 +382,6 @@ public class PlayerMover : MonoBehaviour {
                 case ExecState.Jump:
                     rb.velocity =(rb.velocity*(Mathf.Pow(1f/0.8f, jumpSquatFrames))) + new Vector2(ci.move.x*0.7f*jumpVel, jumpVel);
                     states.Enqueue(new StatePair(PState.Air, 0));
-                    pani.jump();
                     break;
                 case ExecState.hitLag:
                     rb.velocity = hitVector;
@@ -399,14 +393,11 @@ public class PlayerMover : MonoBehaviour {
             }
             nextState();
         }
-        if (FacingLeft)
-        {
-            transform.localRotation = Quaternion.Euler(0, 180, 0);
-        }
         else
         {
-            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            pani.StateChange(false);
         }
+
     }
 
     void OnTriggerEnter2D(Collider2D hitbox)
@@ -446,16 +437,32 @@ public class PlayerMover : MonoBehaviour {
             Vector2 input = ci.move.normalized;
             if(input == Vector2.zero)
             {
-                if(Physics2D.Raycast(transform.position, transform.right, col.bounds.extents.x + 0.1f, 1 << 8))
+                if (FacingLeft)
                 {
-                    input = -transform.right;
-                    changeFace();
+                    if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.1f, 1 << 8))
+                    {
+                        input = Vector2.right;
+                        changeFace();
+                    }
+                    else
+                    {
+                        input = Vector2.left;
+                    }
                 }
                 else
                 {
-                    input = transform.right;
+                    if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.1f, 1 << 8))
+                    {
+                        input = Vector2.left;
+                        changeFace();
+                    }
+                    else
+                    {
+                        input = Vector2.right;
+                    }
                 }
-                
+
+
             }
             dashVel = input * dashMagnitude;
 
@@ -473,23 +480,31 @@ public class PlayerMover : MonoBehaviour {
         }
     }
     #endregion
-    void changeFace()
+    public void changeFace()
     {
         FacingLeft = !FacingLeft;
     }
-    public PState currentState
+    public StatePair currentState
     {
         get
         {
-            return current.state;
+            return current;
         }
     }
+    public Vector2 dashDirection
+    {
+        get
+        {
+            return dashVel;
+        }
+    }
+
     #region direction checks
     public bool grounded
     {
         get
         {
-            RaycastHit2D ray = Physics2D.BoxCast(transform.position - new Vector3(0, col.bounds.extents.y, 0), new Vector2(col.bounds.extents.x * 1.9f, col.bounds.extents.y * 1f), 0, -transform.up, 0.08f, 1 << 10);
+            RaycastHit2D ray = Physics2D.BoxCast(transform.position - new Vector3(0, col.bounds.extents.y, 0), new Vector2(col.bounds.extents.x * 1.9f, col.bounds.extents.y * 1f), 0, -Vector2.up, 0.08f, 1 << 10);
             if (rb.velocity.y <= 0) { return ray; }
             return false;
         }
@@ -498,7 +513,7 @@ public class PlayerMover : MonoBehaviour {
     {
         get
         {
-            return Physics2D.Raycast(transform.position, transform.up, col.bounds.extents.y + 0.1f, 1 << 10);
+            return Physics2D.Raycast(transform.position, Vector2.up, col.bounds.extents.y + 0.1f, 1 << 10);
         }
     }
 
@@ -545,11 +560,17 @@ public class PlayerMover : MonoBehaviour {
                 if ((current.state != PState.Ground) && (current.state != PState.Air))
                 {
                     current = new StatePair(PState.Air, 0);
+                    pani.StateChange(true);
+                }
+                else
+                {
+                    pani.StateChange(false);
                 }
             }
             else
             {
                 current = states.Dequeue();
+                pani.StateChange(true);
             }
         }
     }
