@@ -8,6 +8,7 @@ public class PlayerAnimator : MonoBehaviour {
     ControlInterpret ci;
     Animator ani;
     PlayerMover pm;
+    bool backDash =false;
 
     // Use this for initialization
     void Start () {
@@ -27,17 +28,36 @@ public class PlayerAnimator : MonoBehaviour {
     void FixedUpdate() {
         PlayerMover.StatePair c = pm.currentState;
         float a, b;
+
         switch (c.state)
         {
             case PlayerMover.PState.Dash:
-                Vector2 v2 = rb.velocity - Vector2.right;
-                a = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
+
+                if (pm.FacingLeft)
+                {
+                    Vector2 v2 = pm.dashDirection- Vector2.left;
+                    a = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg *-1;
+                    a += 180;
+
+                }
+                else
+                {
+                    Vector2 v2 = pm.dashDirection - Vector2.right;
+                    a = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
+
+                }
+                if (backDash)
+                {
+                    a += 200;
+                }
                 break;
             default:
                 a = 0;
                 break;
 
         }
+        
+
 
         if (pm.FacingLeft){ b = 180;}
         else{b = 0;}
@@ -127,6 +147,17 @@ public class PlayerAnimator : MonoBehaviour {
         else if (c.state == PlayerMover.PState.Dash)
         {
             ani.SetInteger("State", (int)AnimationState.Dash);
+            backDash = false;
+            if (pm.FacingLeft && pm.dashDirection.x > 0)
+            {
+                backDash = true;
+            }
+            else if (!pm.FacingLeft && pm.dashDirection.x < 0)
+            {
+                backDash = true;
+            }
+
+            ani.SetBool("DashBack", backDash);
         }
         else if (c.state == PlayerMover.PState.Stall)
         {
