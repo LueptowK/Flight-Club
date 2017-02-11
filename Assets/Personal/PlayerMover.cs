@@ -102,7 +102,6 @@ public class PlayerMover : MonoBehaviour {
     }
 	// Update is called once per frame
 	void FixedUpdate () {
-
         Vector2 move = ci.move;
         move.y = 0;
         move.x += 0.15f * Math.Sign(move.x);
@@ -425,7 +424,7 @@ public class PlayerMover : MonoBehaviour {
         {
             return;
         }
-
+        falling = false;
         HitboxProperties hitProp = hitbox.GetComponent<HitboxProperties>();
         if (hitbox.tag == "Hitbox")
         {
@@ -526,7 +525,10 @@ public class PlayerMover : MonoBehaviour {
         get
         {
             RaycastHit2D ray = Physics2D.BoxCast(transform.position - new Vector3(0, col.bounds.extents.y, 0), new Vector2(col.bounds.extents.x * 1.9f, col.bounds.extents.y * 1f), 0, -Vector2.up, 0.08f, 1 << 10);
-            if (rb.velocity.y <= 0) { return ray; }
+            if (rb.velocity.y <= 0)
+            {
+                return ray;
+            }
             return false;
         }
     }
@@ -619,6 +621,11 @@ public class PlayerMover : MonoBehaviour {
     {
         Vector2 angle = ci.move;
         float angleDiff = Vector2.Angle(hitVector, angle);
+
+        if (angleDiff > 90)
+        {
+            angleDiff -= 90;
+        }
         if (Vector3.Cross(new Vector3(hitVector.x, hitVector.y, 0), new Vector3(angle.x, angle.y, 0)).z < 0)
         {
             angleDiff = -angleDiff;
