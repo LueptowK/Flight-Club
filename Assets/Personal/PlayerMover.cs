@@ -59,6 +59,7 @@ public class PlayerMover : MonoBehaviour {
     Vector2 dashVel = Vector2.zero;
     Vector2 hitVector;
     GameObject activeHitbox;
+    float maxDI = 18; //Max DI affect on knockback, in degrees
     bool registerHit = false;
     float hitstunFriction = 0.98f;
     int dashCounter;
@@ -388,6 +389,10 @@ public class PlayerMover : MonoBehaviour {
                     states.Enqueue(new StatePair(PState.Air, 0));
                     break;
                 case ExecState.hitLag:
+                    if(ci.move != Vector2.zero)
+                    {
+                        calculateDI();
+                    }
                     rb.velocity = hitVector;
                     break;
                 case ExecState.Attack:
@@ -609,6 +614,18 @@ public class PlayerMover : MonoBehaviour {
             }
         }
         return desired;
+    }
+    void calculateDI()
+    {
+        Vector2 angle = ci.move;
+        float angleDiff = Vector2.Angle(hitVector, angle);
+        if (Vector3.Cross(new Vector3(hitVector.x, hitVector.y, 0), new Vector3(angle.x, angle.y, 0)).z < 0)
+        {
+            angleDiff = -angleDiff;
+        }
+        //after calculating the difference in degrees, we set it so a 90 degree difference corresponds to maxDI degrees of vector rotation
+        angleDiff = angleDiff * maxDI / 90;
+        hitVector = Quaternion.Euler(0, 0, angleDiff) * hitVector;
     }
     float applyFriction(float vel)
     {
