@@ -442,6 +442,17 @@ public class PlayerMover : MonoBehaviour {
             hitVector = hitProp.hitboxVector;
         }
 
+        if ((OnLeftWall && hitVector.x < 0) || (OnRightWall && hitVector.x > 0))
+        {
+            hitVector = new Vector2(-hitVector.x, hitVector.y);
+        }
+
+        if (activeHitbox!=null)
+        {
+            activeHitbox.SetActive(false);
+            activeHitbox = null;
+        }
+
         //current = new StatePair(PState.Delay, hitProp.hitlag, ExecState.hitLag);
         states.Enqueue(new StatePair(PState.Delay, hitProp.hitlag, ExecState.hitLag));
         registerHit = true;
