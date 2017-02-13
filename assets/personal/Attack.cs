@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,10 +10,27 @@ public class Attack : MonoBehaviour {
 
     List<GameObject> alreadyHit;
     int frameNum=0;
+    List<GameObject> activeBoxes;
+    List<List<GameObject>> frameByFrame;
 	void Start () {
         alreadyHit = new List<GameObject>();
         alreadyHit.Add(transform.parent.gameObject);
+        if (!isBasic) {
+            activeBoxes = new List<GameObject>();
+            frameByFrame = new List<List<GameObject>>();
+            for(int i =0; i<= atkTime; i++)
+            {
+                frameByFrame.Add(new List<GameObject>());
+            }
+            foreach (Transform child in transform)
+            {
+                string name = child.name;
+                int index = Int32.Parse(name.Remove(name.Length - 1)) - 1;
+                //print(index);
+                frameByFrame[index].Add(child.gameObject);
 
+            }
+        }
     }
     public int atkFrames
     {
@@ -36,6 +54,12 @@ public class Attack : MonoBehaviour {
                     }
                 }
             }
+            else
+            {
+                closeBoxes();
+                int frame = frameNum - windup - 1;
+                openBoxes(frame);
+            }
         }
         else if (frameNum > windup + atkTime)
         {
@@ -48,6 +72,10 @@ public class Attack : MonoBehaviour {
                     {
                         child.gameObject.SetActive(false);
                     }
+                }
+                else
+                {
+                    closeBoxes();
                 }
             }
             
@@ -68,6 +96,23 @@ public class Attack : MonoBehaviour {
         get
         {
             return alreadyHit;
+        }
+    }
+    void closeBoxes()
+    {
+        foreach(GameObject hitbox in activeBoxes)
+        {
+            hitbox.SetActive(false);
+
+        }
+        activeBoxes = new List<GameObject>();
+    }
+    void openBoxes(int frame)
+    {
+        foreach(GameObject box in frameByFrame[frame])
+        {
+            box.SetActive(true);
+            activeBoxes.Add(box);
         }
     }
 }
