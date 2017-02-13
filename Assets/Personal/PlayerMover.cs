@@ -160,10 +160,12 @@ public class PlayerMover : MonoBehaviour {
                     states.Enqueue(new StatePair(PState.Ground, 0));
                 }
                 desired = AirControl(move);
-                                
+                tryDash();//DASH
+                tryStall();//STALL
 
 
-                if (ci.AttackD)
+
+                    if (ci.AttackD)
                 {
                         states.Enqueue(new StatePair(PState.AirAttack, 10, ExecState.Attack));
                         activeHitbox = transform.Find("testHitbox").gameObject;
@@ -243,8 +245,6 @@ public class PlayerMover : MonoBehaviour {
                     dashAvailable = true;
                 }
 
-                    tryDash();//DASH
-                    tryStall();//STALL
 
                 }
                 if (falling)
@@ -509,7 +509,7 @@ public class PlayerMover : MonoBehaviour {
                 dashAvailable = false;
                 states.Enqueue(new StatePair(PState.Dash, dashTime));
             }
-            else if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8) && input.x > -0.2)
+            else if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8) && input.x > -0.6f)
             {
                 input.x = 0.2f;
                 dashVel = input * dashMagnitude;
@@ -517,7 +517,7 @@ public class PlayerMover : MonoBehaviour {
                 dashAvailable = false;
                 states.Enqueue(new StatePair(PState.Dash, dashTime));
             }
-            else if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8) && input.x < 0.2)
+            else if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8) && input.x < 0.6f)
             {
                 input.x = -0.2f;
                 dashVel = input * dashMagnitude;
