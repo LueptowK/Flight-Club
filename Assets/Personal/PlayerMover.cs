@@ -159,15 +159,16 @@ public class PlayerMover : MonoBehaviour {
                 {
                     states.Enqueue(new StatePair(PState.Ground, 0));
                 }
-                
-                
+                desired = AirControl(move);
+                                
+
 
                 if (ci.AttackD)
-                    {
+                {
                         states.Enqueue(new StatePair(PState.AirAttack, 10, ExecState.Attack));
                         activeHitbox = transform.Find("testHitbox").gameObject;
                         activeHitbox.SetActive(true);
-                    }
+                }
 
 
                 if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
@@ -209,7 +210,10 @@ public class PlayerMover : MonoBehaviour {
                             
                         //tempGrav = 0.3f;
                     }
-                    if (ci.Jump) // WALLJUMP
+
+
+
+                        if (ci.Jump) // WALLJUMP
                     {
                         falling = false;
                         rb.velocity = Vector2.zero;
@@ -239,9 +243,8 @@ public class PlayerMover : MonoBehaviour {
                     dashAvailable = true;
                 }
 
-                desired = AirControl(move);
-                tryDash();//DASH
-                tryStall();//STALL
+                    tryDash();//DASH
+                    tryStall();//STALL
 
                 }
                 if (falling)
