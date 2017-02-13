@@ -159,9 +159,7 @@ public class PlayerMover : MonoBehaviour {
                 {
                     states.Enqueue(new StatePair(PState.Ground, 0));
                 }
-                desired = AirControl(move);
-                tryDash();//DASH
-                tryStall();//STALL
+                
                 
 
                 if (ci.AttackD)
@@ -240,6 +238,11 @@ public class PlayerMover : MonoBehaviour {
                     ceilingAvaliable = false;
                     dashAvailable = true;
                 }
+
+                desired = AirControl(move);
+                tryDash();//DASH
+                tryStall();//STALL
+
                 }
                 if (falling)
                 {
@@ -495,16 +498,31 @@ public class PlayerMover : MonoBehaviour {
 
 
             }
-            
-            if(!((Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 1f, 1 << 8) && input.x < 0.2)
-                || (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 1f, 1 << 8) && input.x > -0.2)))
+            if (!((Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8) && input.x < 0.2)
+                || (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8) && input.x > -0.2)))
             {
                 dashVel = input * dashMagnitude;
 
                 dashAvailable = false;
                 states.Enqueue(new StatePair(PState.Dash, dashTime));
             }
-        }
+            else if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8) && input.x > -0.2)
+            {
+                input.x = 0.2f;
+                dashVel = input * dashMagnitude;
+
+                dashAvailable = false;
+                states.Enqueue(new StatePair(PState.Dash, dashTime));
+            }
+            else if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8) && input.x < 0.2)
+            {
+                input.x = -0.2f;
+                dashVel = input * dashMagnitude;
+
+                dashAvailable = false;
+                states.Enqueue(new StatePair(PState.Dash, dashTime));
+            }
+        } 
     }
 
     void tryStall()
