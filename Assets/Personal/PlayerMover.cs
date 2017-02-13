@@ -113,6 +113,18 @@ public class PlayerMover : MonoBehaviour {
         float tempGrav = gravity;
         stallCooldownCurrent--;
 
+
+        if (registerHit) // hit in the queue
+        {
+            int safety = states.Count;
+            while ((current.state != PState.Delay || current.action != ExecState.hitLag) && safety > 0)
+            {
+                nextState();
+                safety--;
+            }
+        }
+
+
         switch (current.state)
         {
             #region Ground State
@@ -407,19 +419,13 @@ public class PlayerMover : MonoBehaviour {
             }
             nextState();
         }
-        else if (registerHit) // hit in the queue
+        else if (!registerHit)
         {
-            int safety = states.Count;
-            while ((current.state != PState.Delay || current.action != ExecState.hitLag)&&safety>0)
-            {
-                nextState();
-                safety--;
-            }
-            registerHit = false;
+            pani.StateChange(false);
         }
         else
         {
-            pani.StateChange(false);
+            registerHit = false;
         }
 
     }
@@ -562,7 +568,7 @@ public class PlayerMover : MonoBehaviour {
         get
         {
             RaycastHit2D ray = Physics2D.BoxCast(transform.position - new Vector3(0, col.bounds.extents.y, 0), new Vector2(col.bounds.extents.x * 1.9f, col.bounds.extents.y * 1f), 0, -Vector2.up, 0.08f, 1 << 10);
-            if (rb.velocity.y <= 0)
+            if (rb.velocity.y <= 0.01)
             {
                 return ray;
             }
