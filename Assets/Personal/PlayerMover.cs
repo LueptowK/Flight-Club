@@ -495,10 +495,15 @@ public class PlayerMover : MonoBehaviour {
 
 
             }
-            dashVel = input * dashMagnitude;
+            
+            if(!((Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 1f, 1 << 8) && input.x < 0.2)
+                || (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 1f, 1 << 8) && input.x > -0.2)))
+            {
+                dashVel = input * dashMagnitude;
 
-            dashAvailable = false;
-            states.Enqueue(new StatePair(PState.Dash, dashTime));
+                dashAvailable = false;
+                states.Enqueue(new StatePair(PState.Dash, dashTime));
+            }
         }
     }
 
