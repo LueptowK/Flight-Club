@@ -75,7 +75,7 @@ public class PlayerMover : MonoBehaviour {
     float wallJumpYVel = 8f;
     float dashEndMomentum = 0.65f;
     int dashTime = 10;
-    int stallTime = 6;
+    int stallTime = 10;
     bool falling = false;
     float maxFallSpeed = 22f;
     float friction = 7f;
@@ -175,16 +175,7 @@ public class PlayerMover : MonoBehaviour {
                     desired = AirControl(move);
                     tryDash();//DASH
                     tryStall();//STALL
-
-
-
-                    if (ci.AttackD)
-                    {
-                        int frames = atk.makeAttack(AttackManager.AtkType.DownAir);
-                        states.Enqueue(new StatePair(PState.AirAttack, frames));
-                        //activeHitbox = transform.Find("testHitbox").gameObject;
-                        //activeHitbox.SetActive(true);
-                    }
+                    tryAttack();
 
 
                     if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
@@ -374,6 +365,7 @@ public class PlayerMover : MonoBehaviour {
                 if (grounded)
                 {
                     states.Enqueue(new StatePair(PState.Ground, 0));
+                    current.delay = 0;
                     atk.stopAttack();
                 }
                 desired = AirControl(move);
@@ -436,6 +428,10 @@ public class PlayerMover : MonoBehaviour {
         if ((OnLeftWall && hitVector.x < 0) || (OnRightWall && hitVector.x > 0))
         {
             hitVector = new Vector2(-hitVector.x, hitVector.y);
+        }
+        if ((onCeiling && hitVector.y > 0) || (grounded && hitVector.y < 0))
+        {
+            hitVector = new Vector2(hitVector.x, -hitVector.y);
         }
         atk.stopAttack();
         states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
@@ -515,6 +511,15 @@ public class PlayerMover : MonoBehaviour {
         {
             states.Enqueue(new StatePair(PState.Stall, stallTime));
             
+        }
+    }
+    void tryAttack()
+    {
+        if (ci.Attack && states.Count<1)
+        {
+            int frames = atk.makeAttack(QuadToType(ci.AttackQuad));
+            states.Enqueue(new StatePair(PState.AirAttack, frames));
+
         }
     }
     #endregion
@@ -664,5 +669,32 @@ public class PlayerMover : MonoBehaviour {
             newVel = -vel;
         }
         return newVel;
+    }
+    AttackManager.AtkType QuadToType(ControlInterpret.StickQuadrant q)
+    {
+        switch (q)
+        {
+            case ControlInterpret.StickQuadrant.Neutral:
+                return AttackManager.AtkType.NeutralAir;
+            case ControlInterpret.StickQuadrant.Up:
+                return AttackManager.AtkType.UpAir;
+            case ControlInterpret.StickQuadrant.Down:
+                return AttackManager.AtkType.DownAir;
+            case ControlInterpret.StickQuadrant.Left:
+                if (FacingLeft)
+                {
+                    return AttackManager.AtkType.ForwardAir;
+                }
+                return AttackManager.AtkType.BackAir;
+            case ControlInterpret.StickQuadrant.Right:
+                if (FacingLeft)
+                {
+                    return AttackManager.AtkType.BackAir;
+                }
+                return AttackManager.AtkType.ForwardAir;
+            default:
+                return AttackManager.AtkType.NeutralAir;
+
+        }
     }
 }

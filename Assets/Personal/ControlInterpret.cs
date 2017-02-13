@@ -14,6 +14,14 @@ public class ControlInterpret : MonoBehaviour {
 
     public float AxisAdjust = 0.15f;
 
+    public enum StickQuadrant
+    {
+        Neutral,
+        Down,
+        Up,
+        Left, 
+        Right
+    }
 
     private struct inputItem
     {
@@ -245,13 +253,64 @@ public class ControlInterpret : MonoBehaviour {
             return control.TauntD;
         }
     }
-    public bool AttackD
+
+    #region attack
+    Vector2 AttackStick
     {
         get
         {
-            return control.AttackD;
+            return fixStick(new Vector2(control.AtkHor, control.AtkVer));
         }
     }
+    public StickQuadrant AttackQuad
+    {
+        get
+        {
+            //print("get");
+            Vector2 stick = AttackStick;
+            if (stick == Vector2.zero)
+            {
+                return StickQuadrant.Neutral;
+            }
+            else
+            {
+
+                float angleDiff = Vector2.Angle(stick, new Vector2(1,1));
+
+
+                if (Vector3.Cross(new Vector3(stick.x, stick.y, 0), new Vector3(1, 1, 0)).z < 0)
+                {
+                    angleDiff = -angleDiff;
+                }
+
+                //print(angleDiff);
+
+                if (angleDiff < -90)
+                {
+                    return StickQuadrant.Left;
+                }
+                else if (angleDiff < 0)
+                {
+                    return StickQuadrant.Up;
+                }
+                else if (angleDiff < 90)
+                {
+                    return StickQuadrant.Right;
+                }
+                else
+                {
+                    return StickQuadrant.Down;
+                }
+            }
+        }
+    }
+    public bool Attack{
+        get
+        {
+            return control.Attack;
+        }
+    }
+    #endregion
     // for lookup
     private int timeIndex(float time)
     {

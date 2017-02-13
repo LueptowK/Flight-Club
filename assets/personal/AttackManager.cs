@@ -4,11 +4,19 @@ using UnityEngine;
 
 public class AttackManager : MonoBehaviour {
     public GameObject DownAir;
+    public GameObject UpAir;
+    public GameObject BackAir;
+    public GameObject ForwardAir;
+    public GameObject NeutralAir;
 
     GameObject currentAttack;
     public enum AtkType
     {
-        DownAir
+        DownAir,
+        UpAir,
+        ForwardAir,
+        BackAir,
+        NeutralAir
     }
 	// Use this for initialization
 	void Start () {
@@ -27,10 +35,21 @@ public class AttackManager : MonoBehaviour {
         {
             case AtkType.DownAir:
                 currentAttack = Instantiate(DownAir, transform,false);
-
+                break;
+            case AtkType.NeutralAir:
+                currentAttack = Instantiate(NeutralAir, transform, false);
+                break;
+            case AtkType.UpAir:
+                currentAttack = Instantiate(UpAir, transform, false);
+                break;
+            case AtkType.ForwardAir:
+                currentAttack = Instantiate(ForwardAir, transform, false);
+                break;
+            case AtkType.BackAir:
+                currentAttack = Instantiate(BackAir, transform, false);
                 break;
 
-            
+
         }
         return currentAttack.GetComponent<Attack>().atkFrames;
     }

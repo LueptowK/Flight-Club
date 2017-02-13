@@ -24,7 +24,7 @@ public class PlayerInput : MonoBehaviour {
             float hor = state.ThumbSticks.Left.X;
             return hor;
         } }
-    public float LookVer
+    public float AtkVer
     {
         get
         {
@@ -33,11 +33,11 @@ public class PlayerInput : MonoBehaviour {
 
         }
     }
-    public float LookHor
+    public float AtkHor
     {
         get
         {
-            float hor = state.ThumbSticks.Left.X;
+            float hor = state.ThumbSticks.Right.X;
             return hor;
         }
     }
@@ -78,6 +78,13 @@ public class PlayerInput : MonoBehaviour {
         get
         {
             return state.Buttons.A == ButtonState.Pressed;
+        }
+    }
+    public bool Attack
+    {
+        get
+        {
+            return state.Buttons.RightShoulder == ButtonState.Pressed;
         }
     }
 }
