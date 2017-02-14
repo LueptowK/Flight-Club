@@ -139,6 +139,10 @@ public class PlayerMover : MonoBehaviour {
                     falling = false;
 
                     restoreTools();
+                    if (ci.move.y >= 0)
+                    {
+                        tryDash();
+                    }
                     if (ci.TauntDown && desired.x == 0)
                     {
                         pani.TauntD();
