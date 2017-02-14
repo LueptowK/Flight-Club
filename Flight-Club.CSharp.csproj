@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Assets\Personal\Attack.cs" />
     <Compile Include="Assets\Personal\AttackManager.cs" />
+    <Compile Include="Assets\Personal\CameraController.cs" />
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
     <Compile Include="Assets\Personal\HitboxProperties.cs" />
     <Compile Include="Assets\Personal\PlayerAnimator.cs" />

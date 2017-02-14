@@ -11,7 +11,7 @@ public class ControlInterpret : MonoBehaviour {
 
 
     private List<inputItem> inputHistory;
-
+    List<StickQuadrant> Quads;
     public float AxisAdjust = 0.15f;
 
     public enum StickQuadrant
@@ -42,8 +42,10 @@ public class ControlInterpret : MonoBehaviour {
         {
             inputHistory.Insert(0, i);
         }
-        
 
+        Quads = new List<StickQuadrant>();
+        Quads.Add(StickQuadrant.Neutral);
+        Quads.Add(StickQuadrant.Neutral);
     }
 
     #region Joystick motions
@@ -177,7 +179,8 @@ public class ControlInterpret : MonoBehaviour {
         {
             DashDown = 0;
         }
-
+        Quads.RemoveAt(1);
+        Quads.Insert(0, AttackQuad);
 
     }
 
@@ -268,7 +271,7 @@ public class ControlInterpret : MonoBehaviour {
         {
             //print("get");
             Vector2 stick = AttackStick;
-            if (stick == Vector2.zero)
+            if (stick.magnitude<=0.5f)
             {
                 return StickQuadrant.Neutral;
             }
@@ -307,7 +310,15 @@ public class ControlInterpret : MonoBehaviour {
     public bool Attack{
         get
         {
-            return control.Attack;
+            if (control.Attack)
+            {
+                return true;
+            }
+            else if (Quads[0] != Quads[1]&& Quads[0]!= StickQuadrant.Neutral)
+            {
+                return true;
+            }
+            return false;
         }
     }
     #endregion
