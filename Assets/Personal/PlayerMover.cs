@@ -96,7 +96,7 @@ public class PlayerMover : MonoBehaviour {
         restoreTools();
 
     }
-    void restoreTools()
+    public void restoreTools()
     {
         dashAvailable = true;
         ceilingAvaliable = true;

@@ -90,6 +90,7 @@ public class Attack : MonoBehaviour {
     public void addHit(GameObject h)
     {
         alreadyHit.Add(h);
+        alreadyHit[0].GetComponent<PlayerMover>().restoreTools();
     }
     public List<GameObject> hit
     {
