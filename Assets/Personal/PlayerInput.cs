@@ -84,7 +84,7 @@ public class PlayerInput : MonoBehaviour {
     {
         get
         {
-            return state.Buttons.RightShoulder == ButtonState.Pressed;
+            return state.Buttons.A == ButtonState.Pressed;
         }
     }
 }

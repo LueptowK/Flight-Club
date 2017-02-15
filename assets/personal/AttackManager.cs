@@ -16,7 +16,12 @@ public class AttackManager : MonoBehaviour {
         UpAir,
         ForwardAir,
         BackAir,
-        NeutralAir
+        NeutralAir,
+        DownGround,
+        UpGround,
+        ForwardGround,
+        BackGround,
+        NeutralGround
     }
 	// Use this for initialization
 	void Start () {
@@ -47,6 +52,10 @@ public class AttackManager : MonoBehaviour {
                 break;
             case AtkType.BackAir:
                 currentAttack = Instantiate(BackAir, transform, false);
+                break;
+            default:
+                print("Not implemented");
+                currentAttack = Instantiate(NeutralAir, transform, false);
                 break;
 
 
