@@ -274,6 +274,10 @@ public class PlayerMover : MonoBehaviour {
                 {
                     tryStall();
                 }
+                if (current.delay < dashTime / 2 && states.Count < 1)
+                {
+                    tryAttack();
+                }
 
                 break;
             #endregion
@@ -287,6 +291,10 @@ public class PlayerMover : MonoBehaviour {
                 {
                     tryDash();
                 }
+                if (current.delay < stallTime && states.Count < 1)
+                {
+                    tryAttack();
+                }
                 break;
             #endregion
             #region Delay State
@@ -295,6 +303,14 @@ public class PlayerMover : MonoBehaviour {
                 {
                     case ExecState.Jump:
                         rb.velocity *= 0.80f;
+                        if (states.Count < 1)
+                        {
+                            tryDash();
+                        }
+                        if (states.Count < 1)
+                        {
+                            tryAttack();
+                        }
                         break;
                     case ExecState.hitLag:
                         rb.velocity = Vector2.zero;
@@ -332,9 +348,11 @@ public class PlayerMover : MonoBehaviour {
             #endregion
             #region Hitstun State
             case PState.Hitstun:
-                if (grounded)
+                if (grounded && rb.velocity.y < 0)
                 {
-                    rb.velocity = new Vector2(rb.velocity.x, -rb.velocity.y);
+                    hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
+                    calculateDI();
+                    rb.velocity = hitVector;
                 }
                 if (nearWall) //WALL - NEAR
                 {
@@ -342,20 +360,25 @@ public class PlayerMover : MonoBehaviour {
 
                     if (OnRightWall && rb.velocity.x > 0)
                     {
-                        rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
+                        hitVector = new Vector2(-rb.velocity.x, rb.velocity.y);
+                        calculateDI();
+                        rb.velocity = hitVector;
 
                     }
                     else if (OnLeftWall && rb.velocity.x < 0)
                     {
-                        rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
-
+                        hitVector = new Vector2(-rb.velocity.x, rb.velocity.y);
+                        calculateDI();
+                        rb.velocity = hitVector;
                     }
 
                 }
                 if (onCeiling && rb.velocity.y > 0)
                 {
                     dashAvailable = true;
-                    rb.velocity = new Vector2(rb.velocity.x, -rb.velocity.y);
+                    hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
+                    calculateDI();
+                    rb.velocity = hitVector;
                 }
                 if (rb.velocity.magnitude > 1.5 * moveSpeed)
                 {
@@ -523,7 +546,6 @@ public class PlayerMover : MonoBehaviour {
         {
             int frames = atk.makeAttack(QuadToType(ci.AttackQuad));
             states.Enqueue(new StatePair(PState.AirAttack, frames));
-
         }
     }
     #endregion
