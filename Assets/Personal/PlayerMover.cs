@@ -24,7 +24,8 @@ public class PlayerMover : MonoBehaviour {
         Delay,
         CeilingHold,
         AirAttack,
-        GroundAttack
+        GroundAttack,
+        Attack, 
     }
 
     public enum ExecState
@@ -32,7 +33,9 @@ public class PlayerMover : MonoBehaviour {
         None,
         Jump,
         hitLag,
-        Attack
+        AttackAir,
+        AttackGround,
+
     }
 
     public struct StatePair
@@ -59,7 +62,7 @@ public class PlayerMover : MonoBehaviour {
 
     Vector2 dashVel = Vector2.zero;
     Vector2 hitVector;
-    GameObject activeHitbox;
+    ControlInterpret.StickQuadrant attkQuad;
     float maxDI = 18; //Max DI affect on knockback, in degrees
     bool registerHit = false;
     float hitstunFriction = 0.98f;
@@ -133,17 +136,25 @@ public class PlayerMover : MonoBehaviour {
             case PState.Ground:
                 {
                     desired.x = move.x * moveSpeed;
-                    desired.y = rb.velocity.y;
+                    desired.y = rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime;
                     //flip sprite direction to movement direction on ground
                     if (desired.x < 0) { FacingLeft = true; }
                     else if (desired.x > 0) { FacingLeft = false; }
                     falling = false;
 
                     restoreTools();
-                    tryGroundedAttack();
+                    
+                    if (ci.Jump)
+                    {
+                        states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
+                    }
                     if (ci.move.y >= 0)
                     {
                         tryDash();
+                    }
+                    if (states.Count < 1)
+                    {
+                        tryAttack();
                     }
                     if (ci.TauntDown && desired.x == 0)
                     {
@@ -163,10 +174,7 @@ public class PlayerMover : MonoBehaviour {
                         states.Enqueue(new StatePair(PState.Air, 0));
                         break;
                     }
-                    if (ci.Jump)
-                    {
-                        states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
-                    }
+
                     rb.velocity = desired;
                     break;
                 }
@@ -181,11 +189,9 @@ public class PlayerMover : MonoBehaviour {
                     desired = AirControl(move);
                     if (!tryDash())
                     {
-                        if (!tryStall())
-                        {
-                            tryAerialAttack();
-                        }
+                        tryStall();
                     }
+                    tryAttack();
 
 
                     if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
@@ -280,7 +286,7 @@ public class PlayerMover : MonoBehaviour {
                 {
                     if (!tryStall())
                     {
-                        tryAerialAttack();
+                        tryAttack();
                     }
                 }
 
@@ -296,7 +302,7 @@ public class PlayerMover : MonoBehaviour {
                 {
                     if (!tryDash())
                     {
-                        tryAerialAttack();
+                        tryAttack();
                     }
                 }
                 break;
@@ -311,7 +317,7 @@ public class PlayerMover : MonoBehaviour {
                         {
                             if (!tryDash())
                             {
-                                tryAerialAttack();
+                                tryAttack();
                             }
                         }
                         break;
@@ -423,6 +429,8 @@ public class PlayerMover : MonoBehaviour {
         current.delay -= 1;
         if (current.delay <= 0)
         {
+            #region Exec States
+            int frames;
             switch (current.action)
             {
                 case ExecState.None:
@@ -438,11 +446,19 @@ public class PlayerMover : MonoBehaviour {
                     }
                     rb.velocity = hitVector;
                     break;
-                case ExecState.Attack:
-                    activeHitbox.SetActive(false);
-                    activeHitbox = null;
+                case ExecState.AttackAir:
+                    frames = atk.makeAttack(QuadToTypeAir(attkQuad));
+                    states.Enqueue(new StatePair(PState.AirAttack, frames));
                     break;
+                case ExecState.AttackGround:
+                    frames = atk.makeAttack(QuadToTypeGround(attkQuad));
+                    states.Enqueue(new StatePair(PState.GroundAttack, frames));
+                    states.Enqueue(new StatePair(PState.Ground, 0));
+                    break;
+
+                    
             }
+            #endregion
             nextState();
         }
         else if (!registerHit)
@@ -483,65 +499,62 @@ public class PlayerMover : MonoBehaviour {
     {
         if (ci.Dash && dashAvailable) // DASH
         {
-            Vector2 input = ci.move.normalized;
-            if(input == Vector2.zero)
+            dashAvailable = false;
+            states.Enqueue(new StatePair(PState.Dash, dashTime));
+            return true;
+        }
+        return false;
+    }
+    void calcDashVel()
+    {
+        Vector2 input = ci.move.normalized;
+        #region forward dash (no input)
+        if (input == Vector2.zero)
+        {
+            if (FacingLeft)
             {
-                if (FacingLeft)
+                if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.1f, 1 << 8))
                 {
-                    if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.1f, 1 << 8))
-                    {
-                        input = Vector2.right;
-                        changeFace();
-                    }
-                    else
-                    {
-                        input = Vector2.left;
-                    }
+                    input = Vector2.right;
+                    changeFace();
                 }
                 else
                 {
-                    if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.1f, 1 << 8))
-                    {
-                        input = Vector2.left;
-                        changeFace();
-                    }
-                    else
-                    {
-                        input = Vector2.right;
-                    }
+                    input = Vector2.left;
                 }
-
-
             }
-            if (!((Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8) && input.x < 0.2)
-                || (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8) && input.x > -0.2)))
+            else
             {
-                dashVel = input * dashMagnitude;
-
-                dashAvailable = false;
-                states.Enqueue(new StatePair(PState.Dash, dashTime));
-                return true;
+                if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.1f, 1 << 8))
+                {
+                    input = Vector2.left;
+                    changeFace();
+                }
+                else
+                {
+                    input = Vector2.right;
+                }
             }
-            else if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8) && input.x > -0.6f)
-            {
-                input.x = 0.2f;
-                dashVel = input * dashMagnitude;
 
-                dashAvailable = false;
-                states.Enqueue(new StatePair(PState.Dash, dashTime));
-                return true;
-            }
-            else if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8) && input.x < 0.6f)
-            {
-                input.x = -0.2f;
-                dashVel = input * dashMagnitude;
 
-                dashAvailable = false;
-                states.Enqueue(new StatePair(PState.Dash, dashTime));
-                return true;
-            }
         }
-        return false;
+        #endregion
+        if (!((Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8) && input.x < 0.2)
+            || (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8) && input.x > -0.2)))
+        {
+            //do nothing
+        }
+        else if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8) && input.x > -0.6f)
+        {
+            input.x = 0.2f;
+
+        }
+        else if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8) && input.x < 0.6f)
+        {
+            input.x = -0.2f;
+
+        }
+        dashVel = input * dashMagnitude;
     }
 
     bool tryStall()
@@ -553,12 +566,14 @@ public class PlayerMover : MonoBehaviour {
         }
         return false;
     }
+    /*
     bool tryAerialAttack()
     {
         if (ci.Attack && states.Count<1)
         {
-            int frames = atk.makeAttack(QuadToTypeAir(ci.AttackQuad));
-            states.Enqueue(new StatePair(PState.AirAttack, frames));
+
+            current.action = ExecState.AttackAir;
+            attkQuad = ci.AttackQuad;
             return true;
         }
         return false;
@@ -567,9 +582,20 @@ public class PlayerMover : MonoBehaviour {
     {
         if (ci.Attack && states.Count < 1)
         {
-            int frames = atk.makeAttack(QuadToTypeGround(ci.AttackQuad));
-            states.Enqueue(new StatePair(PState.GroundAttack, frames));
-            states.Enqueue(new StatePair(PState.Ground, 1));
+            current.action = ExecState.AttackGround;
+            attkQuad = ci.AttackQuad;
+            return true;
+        }
+        return false;
+    }
+
+    */
+    bool tryAttack()
+    {
+        if (ci.Attack)
+        {
+            states.Enqueue(new StatePair(PState.Attack, 0));
+            attkQuad = ci.AttackQuad;
             return true;
         }
         return false;
@@ -668,6 +694,28 @@ public class PlayerMover : MonoBehaviour {
             else
             {
                 current = states.Dequeue();
+
+
+                switch (current.state)
+                {
+                    case PState.Attack:
+                        int frames;
+                        if (grounded)
+                        {
+                            frames = atk.makeAttack(QuadToTypeGround(attkQuad));
+                            current = new StatePair(PState.GroundAttack, frames);
+                            states.Enqueue(new StatePair(PState.Ground, 0));
+                        }
+                        else
+                        {
+                            frames = atk.makeAttack(QuadToTypeAir(attkQuad));
+                            current = new StatePair(PState.AirAttack, frames);
+                        }
+                        break;
+                    case PState.Dash:
+                        calcDashVel();
+                        break;
+                }
                 pani.StateChange(true);
             }
         }
