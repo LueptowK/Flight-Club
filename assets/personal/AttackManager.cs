@@ -64,6 +64,15 @@ public class AttackManager : MonoBehaviour {
             case AtkType.UpGround:
                 currentAttack = Instantiate(UpGround, transform, false);
                 break;
+            case AtkType.BackGround:
+                currentAttack = Instantiate(BackGround, transform, false);
+                break;
+            case AtkType.ForwardGround:
+                currentAttack = Instantiate(ForwardGround, transform, false);
+                break;
+            case AtkType.NeutralGround:
+                currentAttack = Instantiate(NeutralGround, transform, false);
+                break;
             default:
                 print("Not implemented");
                 currentAttack = Instantiate(NeutralAir, transform, false);
