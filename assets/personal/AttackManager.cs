@@ -8,6 +8,11 @@ public class AttackManager : MonoBehaviour {
     public GameObject BackAir;
     public GameObject ForwardAir;
     public GameObject NeutralAir;
+    public GameObject DownGround;
+    public GameObject UpGround;
+    public GameObject BackGround;
+    public GameObject ForwardGround;
+    public GameObject NeutralGround;
 
     GameObject currentAttack;
     public enum AtkType
@@ -52,6 +57,12 @@ public class AttackManager : MonoBehaviour {
                 break;
             case AtkType.BackAir:
                 currentAttack = Instantiate(BackAir, transform, false);
+                break;
+            case AtkType.DownGround:
+                currentAttack = Instantiate(DownGround, transform, false);
+                break;
+            case AtkType.UpGround:
+                currentAttack = Instantiate(UpGround, transform, false);
                 break;
             default:
                 print("Not implemented");

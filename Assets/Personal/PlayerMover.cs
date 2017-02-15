@@ -569,6 +569,7 @@ public class PlayerMover : MonoBehaviour {
         {
             int frames = atk.makeAttack(QuadToTypeGround(ci.AttackQuad));
             states.Enqueue(new StatePair(PState.GroundAttack, frames));
+            states.Enqueue(new StatePair(PState.Ground, 1));
             return true;
         }
         return false;
