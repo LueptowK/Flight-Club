@@ -424,7 +424,7 @@ public class PlayerMover : MonoBehaviour {
             #endregion
             #region GroundAttack State
             case PState.GroundAttack:
-                rb.velocity = Vector2.zero;
+                rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x)*5, rb.velocity.y);
                 break;
                 #endregion
         }
@@ -502,6 +502,7 @@ public class PlayerMover : MonoBehaviour {
     {
         if (ci.Dash && dashAvailable) // DASH
         {
+            calcDashVel();
             dashAvailable = false;
             states.Enqueue(new StatePair(PState.Dash, dashTime));
             return true;
@@ -716,7 +717,7 @@ public class PlayerMover : MonoBehaviour {
                         }
                         break;
                     case PState.Dash:
-                        calcDashVel();
+                        //calcDashVel();
                         break;
                 }
                 pani.StateChange(true);

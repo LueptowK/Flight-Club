@@ -77,7 +77,8 @@ public class PlayerAnimator : MonoBehaviour {
         Stall,
         Hitlag,
         Hitstun, //8
-        AirAttack
+        AirAttack, 
+        GroundAttack
         
     }
     void LateUpdate()
@@ -171,6 +172,10 @@ public class PlayerAnimator : MonoBehaviour {
         else if (c.state == PlayerMover.PState.AirAttack)
         {
             ani.SetInteger("State", (int)AnimationState.AirAttack);
+        }
+        else if (c.state == PlayerMover.PState.GroundAttack)
+        {
+            ani.SetInteger("State", (int)AnimationState.GroundAttack);
         }
         else
         {
