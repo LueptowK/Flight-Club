@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour {
-    public int maxHealth = 200;
+    public int maxHealth = 100;
     public int currentHealth;
-    public Slider slider;
+    public Image img;
     
 
 	// Use this for initialization
@@ -23,7 +23,8 @@ public class PlayerHealth : MonoBehaviour {
 
     void FixedUpdate()
     {
-        slider.value = currentHealth;
+        print(currentHealth / 200f);
+        img.fillAmount = currentHealth/200f;
         print(currentHealth);
     }
 }
