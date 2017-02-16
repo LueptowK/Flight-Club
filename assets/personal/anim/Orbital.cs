@@ -12,6 +12,8 @@ public class Orbital : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         float pos = (Time.time%(Mathf.PI*2)*4)+offset* Mathf.PI;
-        transform.position = transform.parent.position+ (transform.right*Mathf.Sin(pos)+ transform.forward* Mathf.Cos(pos))*0.75f;
+        Vector3 mod = (transform.right * Mathf.Sin(pos) + transform.forward * Mathf.Cos(pos)) * 0.75f;
+        transform.position = transform.parent.position+ mod;
+        //transform.localPosition = mod;
 	}
 }

@@ -12,6 +12,10 @@ public class Attack : MonoBehaviour {
     int frameNum=0;
     List<GameObject> activeBoxes;
     List<List<GameObject>> frameByFrame;
+
+    public GameObject windUpBox; //only used in basic
+    GameObject animBox;
+    Transform target;
 	void Start () {
         alreadyHit = new List<GameObject>();
         alreadyHit.Add(transform.parent.gameObject);
@@ -31,6 +35,15 @@ public class Attack : MonoBehaviour {
 
             }
         }
+        else
+        {
+            foreach (Transform child in transform)
+            {
+                target = child.transform;
+            }
+            animBox = Instantiate(windUpBox, transform);
+            
+        }
     }
     public int atkFrames
     {
@@ -48,6 +61,7 @@ public class Attack : MonoBehaviour {
             {
                 if (frameNum == windup + 1)
                 {
+                    animBox.SetActive(false);
                     foreach(Transform child in transform)
                     {
                         child.gameObject.SetActive(true);
@@ -68,21 +82,42 @@ public class Attack : MonoBehaviour {
             {
                 if (isBasic)
                 {
+                    
                     foreach (Transform child in transform)
                     {
                         child.gameObject.SetActive(false);
                     }
+                    // THIS FUCKER
+                    //animBox.SetActive(true);
                 }
                 else
                 {
                     closeBoxes();
                 }
             }
+
+            if (isBasic)
+            {
+                //print((float)(frameNum - (windup + atkTime)) / (float)(endLag + 1));
+                //print(target.position + "  - --- " + transform.position);
+                // THIS SECTION DOESNT WORK - - TURN THAT ^^^^^^ BACK ON
+                animBox.transform.position = Vector3.Lerp( target.position, transform.position, (float)(frameNum-(windup+atkTime))/ (float)(endLag+1));
+                animBox.transform.localScale = Vector3.Lerp( target.localScale, new Vector3(0.2f, 0.2f, 1), (float)(frameNum - (windup + atkTime)) / (float)(endLag+1));
+            }
             
         }
         if (frameNum > atkFrames)
         {
             Destroy(gameObject);
+        }
+        else
+        {
+            if (isBasic)
+            {
+                animBox.transform.position = Vector3.Lerp(transform.position, target.position, (float)frameNum / (float)windup);
+                animBox.transform.localScale = Vector3.Lerp(new Vector3(0.2f, 0.2f, 1), target.localScale, (float)frameNum / (float)windup);
+                
+            }
         }
         
         frameNum++;

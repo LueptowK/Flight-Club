@@ -59,10 +59,11 @@ public class PlayerAnimator : MonoBehaviour {
         
 
 
-        if (pm.FacingLeft){ b = 180;}
-        else{b = 0;}
+        if (pm.FacingLeft){ b = -1; a += 180; }
+        else{b = 1;}
 
-        transform.rotation = Quaternion.Euler(0, b, a);
+        transform.rotation = Quaternion.Euler(0, 0, a);
+        transform.localScale = new Vector3(1, b, 1);
         
 
     }
