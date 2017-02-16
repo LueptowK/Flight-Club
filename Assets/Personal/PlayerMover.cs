@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿    using UnityEngine;
 using System.Collections;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ public class PlayerMover : MonoBehaviour {
     PlayerAnimator pani;
     Collider2D col;
     AttackManager atk;
+    PlayerHealth health;
 
 
 
@@ -96,6 +97,7 @@ public class PlayerMover : MonoBehaviour {
         pani = GetComponent<PlayerAnimator>();
         col = GetComponent<Collider2D>();
         atk = GetComponent<AttackManager>();
+        health = GetComponent<PlayerHealth>();
         dashVel = Vector2.zero;
         restoreTools();
 
@@ -282,7 +284,7 @@ public class PlayerMover : MonoBehaviour {
                 falling = false;
                 if (current.delay == 2) { dashVel *= dashEndMomentum; }
                 if (grounded) { dashVel.y = 0; }
-                if (current.delay < dashTime / 2 && states.Count < 1)
+                if (states.Count < 1)
                 {
                     if (!tryStall())
                     {
@@ -472,7 +474,7 @@ public class PlayerMover : MonoBehaviour {
 
     }
  
-    public void getHit(Vector2 knockback, int hitLag, int hitStun)
+    public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage)
     {
         //print(knockback + " ---- " + hitLag+" ---- " + hitStun);
         hitVector = knockback;
@@ -490,6 +492,7 @@ public class PlayerMover : MonoBehaviour {
         states.Enqueue(new StatePair(PState.Hitstun, hitStun));
         rb.velocity = Vector2.zero;
         //DAMAGE
+        health.takeDamage(damage);
     }
 
 

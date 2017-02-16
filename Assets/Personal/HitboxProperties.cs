@@ -7,6 +7,7 @@ public class HitboxProperties : MonoBehaviour
     public Vector2 hitboxVector;
     public int hitstun;
     public int hitlag;
+    public int damage;
     [HideInInspector]
     public List<GameObject> hitPlayers;
 
@@ -23,12 +24,12 @@ public class HitboxProperties : MonoBehaviour
         if (gameObject.CompareTag("Hazard"))
         {
             Vector2 knockback = new Vector2(hitboxVector.x * transform.right.x, hitboxVector.y);
-            playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun);
+            playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
         }
         else if (!atk.hit.Contains(playerCol.gameObject))
         {
             Vector2 knockback = new Vector2(hitboxVector.x * transform.right.x, hitboxVector.y);
-            playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun);
+            playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
             atk.addHit(playerCol.gameObject);
         }
         

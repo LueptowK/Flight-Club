@@ -8,6 +8,7 @@ public class ControlInterpret : MonoBehaviour {
     private PlayerInput control;
     private int JumpDown;
     private int DashDown;
+    private int AttackDown;
 
 
     private List<inputItem> inputHistory;
@@ -179,6 +180,14 @@ public class ControlInterpret : MonoBehaviour {
         {
             DashDown = 0;
         }
+        if (control.Attack)
+        {
+            AttackDown += 1;
+        }
+        else
+        {
+            AttackDown = 0;
+        }
         Quads.RemoveAt(1);
         Quads.Insert(0, AttackQuad);
 
@@ -310,7 +319,7 @@ public class ControlInterpret : MonoBehaviour {
     public bool Attack{
         get
         {
-            if (control.Attack)
+            if (AttackDown == 1)
             {
                 return true;
             }
