@@ -750,6 +750,10 @@ public class PlayerMover : MonoBehaviour {
     }
     void calculateDI()
     {
+        if (ci.move == Vector2.zero)
+        {
+            return;
+        }
         Vector2 angle = ci.move;
         float angleDiff = Vector2.Angle(hitVector, angle);
 

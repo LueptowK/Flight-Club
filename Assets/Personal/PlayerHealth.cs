@@ -17,14 +17,11 @@ public class PlayerHealth : MonoBehaviour {
 	// Update is called once per frame
 	public void takeDamage(int damage)
     {
-        print("damage taken");
         currentHealth -= damage;
     }
 
     void FixedUpdate()
     {
-        print(currentHealth / 200f);
         img.fillAmount = currentHealth/200f;
-        print(currentHealth);
     }
 }
