@@ -88,6 +88,7 @@ public class PlayerMover : MonoBehaviour {
     int jumpSquatFrames = 4; // needs to be set before entering ANY DELAY STATE
     int stallCooldown = 40;
     int stallCooldownCurrent = 0;
+    float ceilingBooster = 0f;
 
     [HideInInspector]public bool FacingLeft = false;
 
@@ -132,7 +133,6 @@ public class PlayerMover : MonoBehaviour {
                 safety--;
             }
         }
-
 
         switch (current.state)
         {
@@ -260,7 +260,7 @@ public class PlayerMover : MonoBehaviour {
 
                     }
                     #endregion
-                    else if (onCeiling && ci.move.y >= 0 && ceilingAvaliable)
+                    else if (onCeiling && ci.move.y >= -0.5f && ceilingAvaliable)
                     {
                         states.Enqueue(new StatePair(PState.CeilingHold, 30));
                         ceilingAvaliable = false;
@@ -334,7 +334,7 @@ public class PlayerMover : MonoBehaviour {
             #endregion
             #region CeilingHold State
             case PState.CeilingHold:
-                rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x), 0);
+                rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x), 0f);
 
                 if (ci.Jump)
                 {
@@ -430,6 +430,19 @@ public class PlayerMover : MonoBehaviour {
                 break;
                 #endregion
         }
+
+
+        #region ceiling booster
+        if (current.state == PState.Dash)// Used to find the ceiling after a dash
+        {
+            ceilingBooster = 0.2f;
+        }
+        else
+        {
+            ceilingBooster = 0f;
+        }
+        #endregion
+
         current.delay -= 1;
         if (current.delay <= 0)
         {
@@ -473,6 +486,8 @@ public class PlayerMover : MonoBehaviour {
         {
             registerHit = false;
         }
+
+        
 
     }
  
@@ -663,7 +678,7 @@ public class PlayerMover : MonoBehaviour {
     {
         get
         {
-            return Physics2D.Raycast(transform.position, Vector2.up, col.bounds.extents.y + 0.1f, 1 << 10);
+            return Physics2D.Raycast(transform.position, Vector2.up, col.bounds.extents.y + 0.1f+ceilingBooster, 1 << 10);
         }
     }
 
@@ -743,6 +758,10 @@ public class PlayerMover : MonoBehaviour {
                         {
                             current = new StatePair(PState.Air, 0);
                         }
+                        break;
+                    case PState.CeilingHold:
+                        RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.up, 2.0f, 1<<10);
+                        transform.position = new Vector3(transform.position.x, r.point.y -col.bounds.extents.y, 0);
                         break;
                 }
                 pani.StateChange(true);

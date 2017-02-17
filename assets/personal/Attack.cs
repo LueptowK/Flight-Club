@@ -61,11 +61,12 @@ public class Attack : MonoBehaviour {
             {
                 if (frameNum == windup + 1)
                 {
-                    animBox.SetActive(false);
+                    
                     foreach(Transform child in transform)
                     {
                         child.gameObject.SetActive(true);
                     }
+                    animBox.SetActive(false);
                 }
             }
             else
@@ -102,6 +103,7 @@ public class Attack : MonoBehaviour {
                 //print(target.position + "  - --- " + transform.position);
                 // THIS SECTION DOESNT WORK - - TURN THAT ^^^^^^ BACK ON
                 animBox.transform.position = Vector3.Lerp( target.position, transform.position, (float)(frameNum-(windup+atkTime))/ (float)(endLag+1));
+                //print(animBox.transform.position);
                 animBox.transform.localScale = Vector3.Lerp( target.localScale, new Vector3(0.2f, 0.2f, 1), (float)(frameNum - (windup + atkTime)) / (float)(endLag+1));
             }
             

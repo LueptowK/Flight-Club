@@ -38,7 +38,7 @@ public class PlayerAnimator : MonoBehaviour {
                 if (pm.FacingLeft)
                 {
                     Vector2 v2 = pm.dashDirection- Vector2.left;
-                    a = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg *-1;
+                    a = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg ;
                     a += 180;
 
                 }
