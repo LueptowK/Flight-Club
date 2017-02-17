@@ -505,16 +505,17 @@ public class PlayerMover : MonoBehaviour {
     {
         if (ci.Dash && dashAvailable) // DASH
         {
-            calcDashVel();
+            //calcDashVel();
             dashAvailable = false;
             states.Enqueue(new StatePair(PState.Dash, dashTime));
             return true;
         }
         return false;
     }
-    void calcDashVel()
+    bool calcDashVel()
     {
         Vector2 input = ci.move.normalized;
+        float marigin = 0.2f;
         #region forward dash (no input)
         if (input == Vector2.zero)
         {
@@ -546,22 +547,40 @@ public class PlayerMover : MonoBehaviour {
 
         }
         #endregion
-        if (!((Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8) && input.x < 0.2)
-            || (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8) && input.x > -0.2)))
+        if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8))
         {
-            //do nothing
-        }
-        else if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8) && input.x > -0.6f)
-        {
-            input.x = 0.2f;
+            if (input.x < marigin)
+            {
+                if (input.x >= -marigin && input.y != 0)
+                {
+                    input.x = 0.2f;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            
 
         }
-        else if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8) && input.x < 0.6f)
+        else if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8))
         {
-            input.x = -0.2f;
+            if (input.x > -marigin)
+            {
+                if (input.x <= marigin && input.y != 0)
+                {
+                    input.x = -0.2f;
+                }
+                else
+                {
+                    return false;
+                }
+            }
 
         }
+        input = input.normalized;
         dashVel = input * dashMagnitude;
+        return true;
     }
 
     bool tryStall()
@@ -720,7 +739,10 @@ public class PlayerMover : MonoBehaviour {
                         }
                         break;
                     case PState.Dash:
-                        //calcDashVel();
+                        if (!calcDashVel())
+                        {
+                            current = new StatePair(PState.Air, 0);
+                        }
                         break;
                 }
                 pani.StateChange(true);

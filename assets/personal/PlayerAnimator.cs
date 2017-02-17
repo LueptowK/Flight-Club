@@ -10,6 +10,8 @@ public class PlayerAnimator : MonoBehaviour {
     PlayerMover pm;
     bool backDash =false;
 
+    public float playerScale = 1.4f;
+
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -59,11 +61,11 @@ public class PlayerAnimator : MonoBehaviour {
         
 
 
-        if (pm.FacingLeft){ b = -1; a += 180; }
-        else{b = 1;}
+        if (pm.FacingLeft){ b = -playerScale; a += 180; }
+        else{b = playerScale;}
 
         transform.rotation = Quaternion.Euler(0, 0, a);
-        transform.localScale = new Vector3(1, b, 1);
+        transform.localScale = new Vector3(playerScale, b, playerScale);
         
 
     }
