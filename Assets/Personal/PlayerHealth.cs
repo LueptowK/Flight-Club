@@ -18,10 +18,6 @@ public class PlayerHealth : MonoBehaviour {
 	public void takeDamage(int damage)
     {
         currentHealth -= damage;
-    }
-
-    void FixedUpdate()
-    {
-        img.fillAmount = currentHealth/200f;
+        img.fillAmount = currentHealth / 200f;
     }
 }

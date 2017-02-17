@@ -126,6 +126,7 @@ public class Attack : MonoBehaviour {
     {
         alreadyHit.Add(h);
         alreadyHit[0].GetComponent<PlayerMover>().restoreTools();
+        alreadyHit[0].GetComponent<ComboCounter>().incrementCombo(1);
     }
     public List<GameObject> hit
     {

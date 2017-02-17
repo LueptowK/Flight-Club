@@ -11,6 +11,7 @@ public class PlayerMover : MonoBehaviour {
     Collider2D col;
     AttackManager atk;
     PlayerHealth health;
+    ComboCounter combo;
 
 
 
@@ -98,6 +99,7 @@ public class PlayerMover : MonoBehaviour {
         col = GetComponent<Collider2D>();
         atk = GetComponent<AttackManager>();
         health = GetComponent<PlayerHealth>();
+        combo = GetComponent<ComboCounter>();
         dashVel = Vector2.zero;
         restoreTools();
 
@@ -493,6 +495,7 @@ public class PlayerMover : MonoBehaviour {
         rb.velocity = Vector2.zero;
         //DAMAGE
         health.takeDamage(damage);
+        //combo.incrementCombo(-1);
     }
 
 
