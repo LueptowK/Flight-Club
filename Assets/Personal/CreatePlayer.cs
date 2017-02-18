@@ -75,6 +75,19 @@ public class CreatePlayer : MonoBehaviour {
                 }
 
             }
+
+            if(!active[1] && inputs[0].Buttons.B == ButtonState.Pressed)
+            {
+                GameObject p = Instantiate(Keith);
+                GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
+                p.GetComponent<PlayerInput>().PlayerNumber = 1;
+                p.GetComponent<PlayerHealth>().img = h.transform.Find("BarFill").gameObject.GetComponent<Image>();
+                //h.SetActive(false);
+                active[1] = true;
+                players[1] = p;
+                changeColor(1, false);
+            }
+
             else if(inputs[i].Buttons.Y== ButtonState.Pressed&& inputCD[i]==0)
             {
                 changeColor(i, true);

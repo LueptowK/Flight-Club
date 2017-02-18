@@ -10,10 +10,13 @@ public class MapManager : MonoBehaviour {
     List<GameObject> removed;
     public GameObject GAME;
     private bool gameOver;
-    private int gameCounter;
+    private int gameEndCounter;
+    private int gameStartCounter;
+    private Canvas c;
     // Use this for initialization
     void Start () {
-        gameCounter = 300;
+        gameEndCounter = 300;
+        gameStartCounter = 90;
         gameOver = false;
         removed = new List<GameObject>();
         Spawns = GameObject.FindGameObjectsWithTag("Respawn");
@@ -29,12 +32,42 @@ public class MapManager : MonoBehaviour {
             player.GetComponent<PlayerHealth>().reset();
             player.GetComponent<ComboCounter>().reset();
             player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            player.GetComponent<PlayerMover>().mapStart();
         }
+
+        Canvas c = ((Canvas)FindObjectOfType(typeof(Canvas)));
+        c.transform.Find("3").gameObject.SetActive(true);
+
     }
     void FixedUpdate()
     {
+        if (gameStartCounter > -15)
+        {
+            c = ((Canvas)FindObjectOfType(typeof(Canvas)));
+            gameStartCounter--;
+            if (gameStartCounter == 61)
+            {
+                c.transform.Find("3").gameObject.SetActive(false);
+                c.transform.Find("2").gameObject.SetActive(true);
+            }
+            if (gameStartCounter == 31)
+            {
+                c.transform.Find("2").gameObject.SetActive(false);
+                c.transform.Find("1").gameObject.SetActive(true);
+            }
+            if (gameStartCounter == 1)
+            {
+                c.transform.Find("1").gameObject.SetActive(false);
+                c.transform.Find("GO").gameObject.SetActive(true);
+            }
+            if (gameStartCounter == -14)
+            {
+                c.transform.Find("GO").gameObject.SetActive(false);
+            }
 
-        foreach(GameObject player in Players)
+
+        }
+        foreach (GameObject player in Players)
         {
             if (!removed.Contains(player))
             {
@@ -49,19 +82,17 @@ public class MapManager : MonoBehaviour {
 
         if (removed.Count >= Players.Length - 1 && !gameOver)
         {
-            Canvas c = ((Canvas)FindObjectOfType(typeof(Canvas)));
             c.transform.Find("GAME").gameObject.SetActive(true);
             gameOver = true;
         }
 
         if (gameOver)
         {
-            gameCounter--;
+            gameEndCounter--;
         }
 
-        if (gameCounter == 0)
+        if (gameEndCounter == 0)
         {
-            Canvas c = ((Canvas)FindObjectOfType(typeof(Canvas)));
             Destroy(c.gameObject);
             foreach (GameObject player in Players)
             {

@@ -38,7 +38,8 @@ public class PlayerMover : MonoBehaviour {
         AttackAir,
         AttackGround,
         Death,
-        Destroy
+        Destroy,
+        mapStart
 
     }
 
@@ -329,6 +330,9 @@ public class PlayerMover : MonoBehaviour {
                         break;
                     case ExecState.hitLag:
                         rb.velocity = Vector2.zero;
+                        break;
+                    case ExecState.mapStart:
+                        rb.velocity = new Vector2(0, rb.velocity.y - 9.8f * Time.fixedDeltaTime);
                         break;
                 }
 
@@ -891,5 +895,10 @@ public class PlayerMover : MonoBehaviour {
         registerHit = false;
         states = new Queue<StatePair>();
         states.Enqueue( new StatePair(PState.Delay, 180, ExecState.Destroy));
+    }
+
+    public void mapStart()
+    {
+        current = new StatePair(PState.Delay, 90, ExecState.mapStart);
     }
 }
