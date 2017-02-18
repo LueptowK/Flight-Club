@@ -18,6 +18,11 @@ public class PlayerHealth : MonoBehaviour {
 	public void takeDamage(int damage)
     {
         currentHealth -= damage;
-        img.fillAmount = currentHealth / 200f;
+        img.fillAmount = (float)currentHealth / maxHealth;
+    }
+    public void reset()
+    {
+        currentHealth = maxHealth;
+        img.fillAmount = (float)currentHealth / maxHealth;
     }
 }

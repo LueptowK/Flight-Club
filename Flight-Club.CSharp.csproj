@@ -89,8 +89,10 @@
     <Compile Include="Assets\Personal\CameraController.cs" />
     <Compile Include="Assets\Personal\ComboCounter.cs" />
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
+    <Compile Include="Assets\Personal\CreatePlayer.cs" />
     <Compile Include="Assets\Personal\HitboxProperties.cs" />
     <Compile Include="Assets\Personal\LoadSceneOnClick.cs" />
+    <Compile Include="Assets\Personal\MapManager.cs" />
     <Compile Include="Assets\Personal\PlayerAnimator.cs" />
     <Compile Include="Assets\Personal\PlayerHealth.cs" />
     <Compile Include="Assets\Personal\PlayerInput.cs" />

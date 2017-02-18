@@ -37,6 +37,8 @@ public class PlayerMover : MonoBehaviour {
         hitLag,
         AttackAir,
         AttackGround,
+        Death,
+        Destroy
 
     }
 
@@ -472,6 +474,13 @@ public class PlayerMover : MonoBehaviour {
                     states.Enqueue(new StatePair(PState.GroundAttack, frames));
                     states.Enqueue(new StatePair(PState.Ground, 0));
                     break;
+                case ExecState.Death:
+                    pani.Die();
+                    break;
+                case ExecState.Destroy:
+                    gameObject.SetActive(false);
+                    //Debug.Break();
+                    break;
 
                     
             }
@@ -874,5 +883,13 @@ public class PlayerMover : MonoBehaviour {
             default:
                 return AttackManager.AtkType.NeutralGround;
         }
+    }
+
+    public void kill()
+    {
+        current = new StatePair(PState.Delay, 30, ExecState.Death);
+        registerHit = false;
+        states = new Queue<StatePair>();
+        states.Enqueue( new StatePair(PState.Delay, 180, ExecState.Destroy));
     }
 }

@@ -89,4 +89,9 @@ public class ComboCounter : MonoBehaviour {
             Orbitals[i].SetActive(false);
         }
     }
+    public void reset()
+    {
+        currentCombo = 0;
+        setOrbitals();
+    }
 }

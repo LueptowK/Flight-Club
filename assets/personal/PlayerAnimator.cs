@@ -104,7 +104,10 @@ public class PlayerAnimator : MonoBehaviour {
     {
         ani.SetTrigger("TauntD");
     }
-    
+    public void Die()
+    {
+        ani.SetTrigger("Die");
+    }
 
     public void StateChange(bool s)
     {
@@ -133,6 +136,10 @@ public class PlayerAnimator : MonoBehaviour {
                 ani.SetInteger("State", (int)AnimationState.JumpSquat);
             }
             else if (c.action == PlayerMover.ExecState.hitLag)
+            {
+                ani.SetInteger("State", (int)AnimationState.Hitlag);
+            }
+            else if (c.action == PlayerMover.ExecState.Death)
             {
                 ani.SetInteger("State", (int)AnimationState.Hitlag);
             }
