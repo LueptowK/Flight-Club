@@ -73,11 +73,11 @@ public class PlayerInput : MonoBehaviour {
             return state.DPad.Down==ButtonState.Pressed;
         }
     }
-    public bool AttackD
+    public bool FinisherSlash
     {
         get
         {
-            return state.Buttons.A == ButtonState.Pressed;
+            return state.Buttons.X == ButtonState.Pressed;
         }
     }
     public bool Attack

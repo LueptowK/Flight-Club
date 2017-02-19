@@ -13,6 +13,9 @@ public class Attack : MonoBehaviour {
     List<GameObject> activeBoxes;
     List<List<GameObject>> frameByFrame;
 
+    [HideInInspector]
+    public int comboStrength = 0;
+
     public GameObject windUpBox; //only used in basic
     GameObject animBox;
     Transform target;
@@ -76,7 +79,7 @@ public class Attack : MonoBehaviour {
                 openBoxes(frame);
             }
         }
-        else if (frameNum > windup + atkTime)
+        else if (frameNum > windup + atkTime && frameNum <=atkFrames)
         {
             
             if (frameNum == windup + atkTime + 1)
@@ -88,8 +91,7 @@ public class Attack : MonoBehaviour {
                     {
                         child.gameObject.SetActive(false);
                     }
-                    // THIS FUCKER
-                    //animBox.SetActive(true);
+                    animBox.SetActive(true);
                 }
                 else
                 {
@@ -99,16 +101,12 @@ public class Attack : MonoBehaviour {
 
             if (isBasic)
             {
-                //print((float)(frameNum - (windup + atkTime)) / (float)(endLag + 1));
-                //print(target.position + "  - --- " + transform.position);
-                // THIS SECTION DOESNT WORK - - TURN THAT ^^^^^^ BACK ON
-                animBox.transform.position = Vector3.Lerp( target.position, transform.position, (float)(frameNum-(windup+atkTime))/ (float)(endLag+1));
-                //print(animBox.transform.position);
+                animBox.transform.position = Vector3.Lerp(target.position, transform.position, (float)(frameNum - (windup + atkTime)) / (float)(endLag + 1));
                 animBox.transform.localScale = Vector3.Lerp( target.localScale, new Vector3(0.2f, 0.2f, 1), (float)(frameNum - (windup + atkTime)) / (float)(endLag+1));
             }
             
         }
-        if (frameNum > atkFrames)
+        else if (frameNum > atkFrames)
         {
             Destroy(gameObject);
         }
@@ -119,6 +117,13 @@ public class Attack : MonoBehaviour {
                 animBox.transform.position = Vector3.Lerp(transform.position, target.position, (float)frameNum / (float)windup);
                 animBox.transform.localScale = Vector3.Lerp(new Vector3(0.2f, 0.2f, 1), target.localScale, (float)frameNum / (float)windup);
                 
+            }
+            else
+            {
+                if(frameNum == windup)
+                {
+                    transform.parent.GetComponent<AttackManager>().currentAttackHitStart();
+                }
             }
         }
         

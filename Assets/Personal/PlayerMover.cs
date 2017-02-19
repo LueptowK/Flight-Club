@@ -13,6 +13,8 @@ public class PlayerMover : MonoBehaviour {
     PlayerHealth health;
     ComboCounter combo;
 
+    public PhysicsMaterial2D neutral;
+    public PhysicsMaterial2D bounce;
 
 
 
@@ -28,6 +30,7 @@ public class PlayerMover : MonoBehaviour {
         AirAttack,
         GroundAttack,
         Attack, 
+        FinisherSlash
     }
 
     public enum ExecState
@@ -74,6 +77,7 @@ public class PlayerMover : MonoBehaviour {
     int dashCounter;
     bool dashAvailable;
     bool ceilingAvaliable;
+    bool dead;
     float moveSpeed = 13f;
     float airSpeed = 0.8f;
     float maxAirSpeed = 8f;
@@ -106,7 +110,8 @@ public class PlayerMover : MonoBehaviour {
         combo = GetComponent<ComboCounter>();
         dashVel = Vector2.zero;
         restoreTools();
-
+        dead = false;
+        rb.sharedMaterial = neutral;
     }
     public void restoreTools()
     {
@@ -125,7 +130,7 @@ public class PlayerMover : MonoBehaviour {
         Vector2 desired = Vector2.zero;
         float tempGrav = gravity;
         stallCooldownCurrent--;
-
+        
 
         if (registerHit) // hit in the queue
         {
@@ -198,7 +203,10 @@ public class PlayerMover : MonoBehaviour {
                     {
                         tryStall();
                     }
-                    tryAttack();
+                    if (!tryAttack())
+                    {
+                        tryFinisherSlash();
+                    }
 
 
                     if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
@@ -367,6 +375,8 @@ public class PlayerMover : MonoBehaviour {
             #endregion
             #region Hitstun State
             case PState.Hitstun:
+                //rb.sharedMaterial = bounce;
+                
                 if (grounded && rb.velocity.y < 0)
                 {
                     hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
@@ -399,10 +409,11 @@ public class PlayerMover : MonoBehaviour {
                     calculateDI();
                     rb.velocity = hitVector;
                 }
-                if (rb.velocity.magnitude > 1.5 * moveSpeed)
+                if (rb.velocity.magnitude > 1.5 * moveSpeed&&current.delay<50)
                 {
                     rb.velocity = rb.velocity * hitstunFriction;
                 }
+                
                 rb.velocity += new Vector2(0, -gravity * 9.8f * Time.fixedDeltaTime);
                 break;
             #endregion
@@ -433,6 +444,11 @@ public class PlayerMover : MonoBehaviour {
             #region GroundAttack State
             case PState.GroundAttack:
                 rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x)*5, rb.velocity.y);
+                break;
+            #endregion
+            #region FinisherSlash State
+            case PState.FinisherSlash:
+                rb.velocity = Vector2.zero;
                 break;
                 #endregion
         }
@@ -506,24 +522,27 @@ public class PlayerMover : MonoBehaviour {
  
     public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage)
     {
-        //print(knockback + " ---- " + hitLag+" ---- " + hitStun);
-        hitVector = knockback;
-        if ((OnLeftWall && hitVector.x < 0) || (OnRightWall && hitVector.x > 0))
+        if (!dead)
         {
-            hitVector = new Vector2(-hitVector.x, hitVector.y);
+            //print(knockback + " ---- " + hitLag+" ---- " + hitStun);
+            hitVector = knockback;
+            if ((OnLeftWall && hitVector.x < 0) || (OnRightWall && hitVector.x > 0))
+            {
+                hitVector = new Vector2(-hitVector.x, hitVector.y);
+            }
+            if ((onCeiling && hitVector.y > 0) || (grounded && hitVector.y < 0))
+            {
+                hitVector = new Vector2(hitVector.x, -hitVector.y);
+            }
+            atk.stopAttack();
+            states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
+            registerHit = true;
+            states.Enqueue(new StatePair(PState.Hitstun, hitStun));
+            rb.velocity = Vector2.zero;
+            //DAMAGE
+            health.takeDamage(damage);
+            //combo.incrementCombo(-1);
         }
-        if ((onCeiling && hitVector.y > 0) || (grounded && hitVector.y < 0))
-        {
-            hitVector = new Vector2(hitVector.x, -hitVector.y);
-        }
-        atk.stopAttack();
-        states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
-        registerHit = true;
-        states.Enqueue(new StatePair(PState.Hitstun, hitStun));
-        rb.velocity = Vector2.zero;
-        //DAMAGE
-        health.takeDamage(damage);
-        //combo.incrementCombo(-1);
     }
 
 
@@ -644,6 +663,16 @@ public class PlayerMover : MonoBehaviour {
     }
 
     */
+
+    bool tryFinisherSlash()
+    {
+        if (ci.Slash && combo.currentCombo > 0)
+        {
+            states.Enqueue(new StatePair(PState.FinisherSlash, 0));
+            return true;
+        }
+        return false;
+    }
     bool tryAttack()
     {
         if (ci.Attack)
@@ -731,55 +760,64 @@ public class PlayerMover : MonoBehaviour {
     #endregion
     void nextState()
     {
-        
+        if(current.state == PState.Hitstun)
         {
-            if (states.Count == 0)
+            rb.sharedMaterial = neutral;
+        }
+        
+        if (states.Count == 0)
+        {
+
+
+            if ((current.state != PState.Ground) && (current.state != PState.Air))
             {
-                if ((current.state != PState.Ground) && (current.state != PState.Air))
-                {
-                    current = new StatePair(PState.Air, 0);
-                    pani.StateChange(true);
-                }
-                else
-                {
-                    pani.StateChange(false);
-                }
+                current = new StatePair(PState.Air, 0);
+                pani.StateChange(true);
             }
             else
             {
-                current = states.Dequeue();
-
-
-                switch (current.state)
-                {
-                    case PState.Attack:
-                        int frames;
-                        if (grounded)
-                        {
-                            frames = atk.makeAttack(QuadToTypeGround(attkQuad));
-                            current = new StatePair(PState.GroundAttack, frames);
-                            states.Enqueue(new StatePair(PState.Ground, 0));
-                        }
-                        else
-                        {
-                            frames = atk.makeAttack(QuadToTypeAir(attkQuad));
-                            current = new StatePair(PState.AirAttack, frames);
-                        }
-                        break;
-                    case PState.Dash:
-                        if (!calcDashVel())
-                        {
-                            current = new StatePair(PState.Air, 0);
-                        }
-                        break;
-                    case PState.CeilingHold:
-                        RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.up, 2.0f, 1<<10);
-                        transform.position = new Vector3(transform.position.x, r.point.y -col.bounds.extents.y, 0);
-                        break;
-                }
-                pani.StateChange(true);
+                pani.StateChange(false);
             }
         }
+        else
+        {
+            current = states.Dequeue();
+
+            int frames;
+            switch (current.state)
+            {
+
+                case PState.FinisherSlash:
+                    frames = atk.makeAttack(AttackManager.AtkType.SlashFinisher);
+                    current.delay = frames;
+                    break;
+                case PState.Attack:
+                    if (grounded)
+                    {
+                        frames = atk.makeAttack(QuadToTypeGround(attkQuad));
+                        current = new StatePair(PState.GroundAttack, frames);
+                        states.Enqueue(new StatePair(PState.Ground, 0));
+                    }
+                    else
+                    {
+                        frames = atk.makeAttack(QuadToTypeAir(attkQuad));
+                        current = new StatePair(PState.AirAttack, frames);
+                    }
+                    break;
+                case PState.Dash:
+                    if (!calcDashVel())
+                    {
+                        current = new StatePair(PState.Air, 0);
+                    }
+                    break;
+                case PState.CeilingHold:
+                    RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.up, 2.0f, 1<<10);
+                    transform.position = new Vector3(transform.position.x, r.point.y -col.bounds.extents.y, 0);
+                    break;
+            }
+            pani.StateChange(true);
+        }
+        
     }
     Vector2 AirControl(Vector2 move)
     {
@@ -893,12 +931,14 @@ public class PlayerMover : MonoBehaviour {
     {
         current = new StatePair(PState.Delay, 30, ExecState.Death);
         registerHit = false;
+        dead = true;
+        combo.reset();
         states = new Queue<StatePair>();
         states.Enqueue( new StatePair(PState.Delay, 180, ExecState.Destroy));
     }
 
     public void mapStart()
     {
-        current = new StatePair(PState.Delay, 90, ExecState.mapStart);
+        states.Enqueue(new StatePair(PState.Delay, 90, ExecState.mapStart));
     }
 }

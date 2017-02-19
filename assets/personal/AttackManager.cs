@@ -13,6 +13,8 @@ public class AttackManager : MonoBehaviour {
     public GameObject BackGround;
     public GameObject ForwardGround;
     public GameObject NeutralGround;
+    public GameObject SlashFinisher;
+    private ControlInterpret ci;
 
     GameObject currentAttack;
     public enum AtkType
@@ -26,11 +28,12 @@ public class AttackManager : MonoBehaviour {
         UpGround,
         ForwardGround,
         BackGround,
-        NeutralGround
+        NeutralGround,
+        SlashFinisher
     }
 	// Use this for initialization
 	void Start () {
-		
+        ci = GetComponent<ControlInterpret>();
 	}
 	
 	// Update is called once per frame
@@ -73,6 +76,12 @@ public class AttackManager : MonoBehaviour {
             case AtkType.NeutralGround:
                 currentAttack = Instantiate(NeutralGround, transform, false);
                 break;
+            case AtkType.SlashFinisher:
+                currentAttack = Instantiate(SlashFinisher, transform, false);
+                ComboCounter c = GetComponent<ComboCounter>();
+                currentAttack.GetComponent<Attack>().comboStrength = c.currentCombo;
+                c.reset();
+                break;
             default:
                 print("Not implemented");
                 currentAttack = Instantiate(NeutralAir, transform, false);
@@ -86,5 +95,21 @@ public class AttackManager : MonoBehaviour {
     {
         if (currentAttack) { Destroy(currentAttack); }
         
+    }
+
+    public void currentAttackHitStart()
+    {
+        if(currentAttack.tag == "FinisherSlash")
+        {
+            
+            float angleDiff = Vector2.Angle(ci.move, new Vector2(1, 0));
+            
+            if (Vector3.Cross(new Vector3(ci.move.x, ci.move.y, 0), new Vector3(1, 0, 0)).z > 0)
+            {
+                angleDiff = -angleDiff;
+            }
+
+            currentAttack.transform.rotation = Quaternion.Euler(0f, 0f, angleDiff);
+        }
     }
 }

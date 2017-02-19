@@ -14,6 +14,8 @@ public class CreatePlayer : MonoBehaviour {
     playerColor[] pColors;
     int[] inputCD;
     GameObject[] players;
+    int activeCount = 0;
+
     struct playerColor
     {
         public Color color;
@@ -93,31 +95,33 @@ public class CreatePlayer : MonoBehaviour {
                 changeColor(i, true);
                 inputCD[i] = 30;
             }
-            
+
+
+            if (inputs[i].Buttons.Start == ButtonState.Pressed && activeCount > 1)
+            {
+                DontDestroyOnLoad(Canvas);
+                for (int j = 0; j < players.Length; j++)
+                {
+                    if (active[j])
+                    {
+                        DontDestroyOnLoad(players[j]);
+                        players[j].GetComponent<SpriteRenderer>().enabled = false;
+                        //reset(players[i]);
+                    }
+                }
+                SceneManager.LoadScene(2); //UPDATE TO MAP SELECT SCREEN WHEN THAT EXISTS
+            }
 
         }
-        int activeCount = 0;
+        int a=0;
         for (int i = 0; i < active.Length; i++)
         {
             if (active[i])
             {
-                activeCount++;
+                a++;
             }
         }
-        if (inputs[0].Buttons.Start == ButtonState.Pressed && activeCount > 1)
-        {
-            DontDestroyOnLoad(Canvas);
-            for(int i = 0; i < players.Length; i++)
-            {
-                if (active[i])
-                {
-                    DontDestroyOnLoad(players[i]);
-                    players[i].GetComponent<SpriteRenderer>().enabled = false;
-                    //reset(players[i]);
-                }
-            }
-            SceneManager.LoadScene(2); //UPDATE TO MAP SELECT SCREEN WHEN THAT EXISTS
-        }
+        activeCount = a;
     }
     void changeColor(int player, bool inArray)
     {

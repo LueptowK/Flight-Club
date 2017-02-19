@@ -9,6 +9,7 @@ public class ControlInterpret : MonoBehaviour {
     private int JumpDown;
     private int DashDown;
     private int AttackDown;
+    private int SlashDown;
 
 
     private List<inputItem> inputHistory;
@@ -188,6 +189,14 @@ public class ControlInterpret : MonoBehaviour {
         {
             AttackDown = 0;
         }
+        if (control.FinisherSlash)
+        {
+            SlashDown += 1;
+        }
+        else
+        {
+            SlashDown = 0;
+        }
         Quads.RemoveAt(1);
         Quads.Insert(0, AttackQuad);
 
@@ -258,6 +267,17 @@ public class ControlInterpret : MonoBehaviour {
             return control.Stall;
         }
     }
+    public bool Slash
+    {
+        get
+        {
+            if (SlashDown == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
     public bool TauntDown
     {
         get
@@ -267,7 +287,7 @@ public class ControlInterpret : MonoBehaviour {
     }
 
     #region attack
-    Vector2 AttackStick
+    public Vector2 AttackStick
     {
         get
         {
