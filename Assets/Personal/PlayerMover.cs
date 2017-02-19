@@ -443,7 +443,7 @@ public class PlayerMover : MonoBehaviour {
             #endregion
             #region GroundAttack State
             case PState.GroundAttack:
-                rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x)*5, rb.velocity.y);
+                rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x,5f), rb.velocity.y);
                 break;
             #endregion
             #region FinisherSlash State
@@ -475,7 +475,8 @@ public class PlayerMover : MonoBehaviour {
                 case ExecState.None:
                     break;
                 case ExecState.Jump:
-                    rb.velocity = (rb.velocity * (Mathf.Pow(1f / 0.8f, jumpSquatFrames))) + new Vector2(ci.move.x * 0.7f * jumpVel, jumpVel);
+                    Vector2 ogVel = (rb.velocity * (Mathf.Pow(1f / 0.8f, jumpSquatFrames)));
+                    rb.velocity = new Vector2(ci.move.x * 0.5f * ogVel.x *Mathf.Sign(ogVel.x) + ogVel.x* 0.5f, jumpVel);
                     states.Enqueue(new StatePair(PState.Air, 0));
                     break;
                 case ExecState.hitLag:
@@ -864,9 +865,9 @@ public class PlayerMover : MonoBehaviour {
         angleDiff = angleDiff * maxDI / 90;
         hitVector = Quaternion.Euler(0, 0, angleDiff) * hitVector;
     }
-    float applyFriction(float vel)
+    float applyFriction(float vel, float mult = 1)
     {
-        float newVel = -Math.Sign(vel) * friction * Time.fixedDeltaTime;
+        float newVel = -Math.Sign(vel) * friction * mult * Time.fixedDeltaTime;
         if (Math.Sign(vel + newVel) != Math.Sign(vel))
         {
             newVel = -vel;
