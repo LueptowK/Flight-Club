@@ -105,6 +105,7 @@ public class CreatePlayer : MonoBehaviour {
                     if (active[j])
                     {
                         DontDestroyOnLoad(players[j]);
+                        players[j].GetComponent<ComboCounter>().reset();
                         players[j].GetComponent<SpriteRenderer>().enabled = false;
                         //reset(players[i]);
                     }

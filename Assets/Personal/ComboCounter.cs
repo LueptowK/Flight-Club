@@ -61,6 +61,20 @@ public class ComboCounter : MonoBehaviour {
                 comboCountdown = -1;
             }
         }
+        if (currentCombo == maxCombo)
+        {
+            for (int i = 0; i < maxCombo; i++)
+            {
+                Orbitals[i].GetComponent<SpriteRenderer>().color = new Color(255, 0, 0, 255);
+            }
+        }
+        if (currentCombo < maxCombo)
+        {
+            for (int i = 0; i < maxCombo; i++)
+            {
+                Orbitals[i].GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
+            }
+        }
     }
 
 
