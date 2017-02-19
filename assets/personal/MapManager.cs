@@ -25,6 +25,7 @@ public class MapManager : MonoBehaviour {
         spawnL.AddRange(Enumerable.Range(0,Spawns.Length-1));
         foreach(GameObject player in Players)
         {
+            player.GetComponent<SpriteRenderer>().enabled = true;
             int spnInd = spawnL[(int)Random.Range(0, spawnL.Count)];
             spawnL.Remove(spnInd);
             GameObject spawn = Spawns[spnInd];

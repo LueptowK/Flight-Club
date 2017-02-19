@@ -17,7 +17,6 @@ public class CameraController : MonoBehaviour
         players = GameObject.FindGameObjectsWithTag("Player");
         numPlayers = players.Length;
         Vector3 desiredCenter = FindCenter();
-
         transform.position = Vector3.Lerp(desiredCenter, transform.position, PanSmoothing);
 
     }

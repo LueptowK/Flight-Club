@@ -112,6 +112,7 @@ public class CreatePlayer : MonoBehaviour {
                 if (active[i])
                 {
                     DontDestroyOnLoad(players[i]);
+                    players[i].GetComponent<SpriteRenderer>().enabled = false;
                     //reset(players[i]);
                 }
             }
