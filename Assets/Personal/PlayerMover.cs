@@ -30,7 +30,8 @@ public class PlayerMover : MonoBehaviour {
         AirAttack,
         GroundAttack,
         Attack, 
-        FinisherSlash
+        FinisherSlash,
+        Burnout
     }
 
     public enum ExecState
@@ -166,7 +167,10 @@ public class PlayerMover : MonoBehaviour {
                     }
                     if (states.Count < 1)
                     {
-                        tryAttack();
+                       if(!tryAttack())
+                        {
+                            tryFinisherSlash();
+                        }
                     }
                     if (ci.TauntDown && desired.x == 0)
                     {
@@ -449,6 +453,11 @@ public class PlayerMover : MonoBehaviour {
             #region FinisherSlash State
             case PState.FinisherSlash:
                 rb.velocity = Vector2.zero;
+                break;
+            #endregion
+            #region Burnout State
+            case PState.Burnout:
+                rb.velocity += new Vector2(0, -gravity * 9.8f * Time.fixedDeltaTime);
                 break;
                 #endregion
         }
@@ -791,6 +800,8 @@ public class PlayerMover : MonoBehaviour {
                 case PState.FinisherSlash:
                     frames = atk.makeAttack(AttackManager.AtkType.SlashFinisher);
                     current.delay = frames;
+                    states.Enqueue(new StatePair(PState.Burnout, 110));
+                    states.Enqueue(new StatePair(PState.Ground,0));
                     break;
                 case PState.Attack:
                     if (grounded)
@@ -814,6 +825,9 @@ public class PlayerMover : MonoBehaviour {
                 case PState.CeilingHold:
                     RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.up, 2.0f, 1<<10);
                     transform.position = new Vector3(transform.position.x, r.point.y -col.bounds.extents.y, 0);
+                    break;
+                case PState.Burnout:
+                    rb.velocity = new Vector2(0, 8f);
                     break;
             }
             pani.StateChange(true);

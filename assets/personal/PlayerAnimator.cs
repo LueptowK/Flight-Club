@@ -53,6 +53,25 @@ public class PlayerAnimator : MonoBehaviour {
                     a += 200;
                 }
                 break;
+            case PlayerMover.PState.Burnout:
+
+                if (pm.grounded)
+                {
+                    a = 0;
+                }
+                else
+                {
+                    int direction = 1;
+                    if (pm.FacingLeft)
+                    {
+                        direction = -1;
+                    }
+                    float secPerRot = 0.6f;
+                    float t = Time.time % secPerRot;
+                    a = t * 360 *direction /secPerRot ;
+                }
+
+                break;
             default:
                 a = 0;
                 break;
@@ -81,7 +100,9 @@ public class PlayerAnimator : MonoBehaviour {
         Hitlag,
         Hitstun, //8
         AirAttack, 
-        GroundAttack
+        GroundAttack,
+        Finisher,
+        Burnout  //12
         
     }
     void LateUpdate()
@@ -186,6 +207,14 @@ public class PlayerAnimator : MonoBehaviour {
         else if (c.state == PlayerMover.PState.GroundAttack)
         {
             ani.SetInteger("State", (int)AnimationState.GroundAttack);
+        }
+        else if (c.state == PlayerMover.PState.FinisherSlash)
+        {
+            ani.SetInteger("State", (int)AnimationState.Finisher);
+        }
+        else if (c.state == PlayerMover.PState.Burnout)
+        {
+            ani.SetInteger("State", (int)AnimationState.Burnout);
         }
         else
         {
