@@ -133,7 +133,7 @@ public class Attack : MonoBehaviour {
     {
         alreadyHit.Add(h);
         alreadyHit[0].GetComponent<PlayerMover>().restoreTools();
-        if(endLag < 30)
+        if (tag != "FinisherSlash")
         {
             alreadyHit[0].GetComponent<ComboCounter>().incrementCombo(1);
         }
