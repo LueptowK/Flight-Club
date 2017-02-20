@@ -12,6 +12,7 @@ public class CameraController : MonoBehaviour
     public float screenShake;
     public float minScreenShake = 2f;
     public float shakeSlowRate = 0.95f;
+    public float damageToShakeRatio = 1 / 20f;
     Vector3 actualPosition;
     void Start()
     {
@@ -25,7 +26,7 @@ public class CameraController : MonoBehaviour
         numPlayers = players.Length;
         Vector3 desiredCenter = FindCenter();
         actualPosition = Vector3.Lerp(desiredCenter, actualPosition, PanSmoothing);
-        transform.position = actualPosition + new Vector3(Random.Range(0,screenShake/10), Random.Range(0,screenShake/10), 0);
+        transform.position = actualPosition + new Vector3(Random.Range(-screenShake*damageToShakeRatio, screenShake*damageToShakeRatio), Random.Range(-screenShake*damageToShakeRatio, screenShake*damageToShakeRatio), 0);
         if(screenShake < minScreenShake)
         {
             screenShake = 0;
