@@ -29,6 +29,7 @@ public class PlayerAnimator : MonoBehaviour {
 
     void FixedUpdate() {
         PlayerMover.StatePair c = pm.currentState;
+        SpriteRenderer spr = GetComponent<SpriteRenderer>();
         float a, b;
 
         switch (c.state)
@@ -85,7 +86,22 @@ public class PlayerAnimator : MonoBehaviour {
 
         transform.rotation = Quaternion.Euler(0, 0, a);
         transform.localScale = new Vector3(playerScale, b, playerScale);
-        
+
+        Color tmp = spr.color;
+        if (GetComponent<IFrames>().invincible())
+        {
+            float secPerCycle = 0.2f;
+            float t = Time.time % secPerCycle;
+            float per = Mathf.Abs(t - (secPerCycle / 2))/(secPerCycle/2);
+            print(per);
+            //spr.color = new Color(spr.color.r, spr.color.g, spr.color.b, 255 - (130 * per));
+            tmp.a = 0.5f - 0.3f * per;
+        }
+        else
+        {
+            tmp.a = 1f;
+        }
+        spr.color = tmp;
 
     }
     enum AnimationState

@@ -28,29 +28,31 @@ public class HitboxProperties : MonoBehaviour
         }
         else if (!atk.hit.Contains(playerCol.gameObject))
         {
-            Vector2 knockback;
-            if (transform.parent.parent.localScale.y < 0)
+            if (!(playerCol.GetComponent<IFrames>().invincible()))
             {
-                knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * -transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * -transform.up.y);
+                Vector2 knockback;
+                if (transform.parent.parent.localScale.y < 0)
+                {
+                    knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * -transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * -transform.up.y);
 
+                }
+                else
+                {
+                    knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * transform.up.y);
+                }
+                if (transform.parent.tag == "FinisherSlash")
+                {
+                    int str = transform.parent.GetComponent<Attack>().comboStrength;
+                    float strength = str / 5f * 4f;
+                    playerCol.GetComponent<PlayerMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength));
+                }
+                else
+                {
+                    playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
+                }
+                atk.addHit(playerCol.gameObject);
             }
-            else
-            {
-                knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * transform.up.y);
-            }
-            if(transform.parent.tag == "FinisherSlash")
-            {
-                int str = transform.parent.GetComponent<Attack>().comboStrength;
-                float strength = str / 5f * 4f;
-                playerCol.GetComponent<PlayerMover>().getHit(knockback * strength/2, hitlag, hitstun, (int)(damage*strength));
-            }
-            else
-            {
-                playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
-            }
-            atk.addHit(playerCol.gameObject);
+
         }
-        
-
     }
 }

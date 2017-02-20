@@ -91,6 +91,7 @@
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
     <Compile Include="Assets\Personal\CreatePlayer.cs" />
     <Compile Include="Assets\Personal\HitboxProperties.cs" />
+    <Compile Include="Assets\Personal\IFrames.cs" />
     <Compile Include="Assets\Personal\LoadSceneOnClick.cs" />
     <Compile Include="Assets\Personal\MapManager.cs" />
     <Compile Include="Assets\Personal\PlayerAnimator.cs" />

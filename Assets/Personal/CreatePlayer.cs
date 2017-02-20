@@ -78,7 +78,7 @@ public class CreatePlayer : MonoBehaviour {
 
             }
 
-            if(!active[1] && inputs[0].Buttons.B == ButtonState.Pressed)
+            if(!active[1] && inputs[0].DPad.Up == ButtonState.Pressed)
             {
                 GameObject p = Instantiate(Keith);
                 GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);

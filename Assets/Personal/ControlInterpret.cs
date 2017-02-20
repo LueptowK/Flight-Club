@@ -10,7 +10,7 @@ public class ControlInterpret : MonoBehaviour {
     private int DashDown;
     private int AttackDown;
     private int SlashDown;
-
+    private int DodgeDown;
 
     private List<inputItem> inputHistory;
     List<StickQuadrant> Quads;
@@ -197,6 +197,14 @@ public class ControlInterpret : MonoBehaviour {
         {
             SlashDown = 0;
         }
+        if (control.Dodge)
+        {
+            DodgeDown += 1;
+        }
+        else
+        {
+            DodgeDown = 0;
+        }
         Quads.RemoveAt(1);
         Quads.Insert(0, AttackQuad);
 
@@ -207,7 +215,14 @@ public class ControlInterpret : MonoBehaviour {
         {
             return inputHistory[0].dir;
         }
-       }
+    }
+    public StickQuadrant moveQuad
+    {
+        get
+        {
+            return getQuad(move);
+        }
+    }
     int idleFrames=4;
     public bool idle
     {
@@ -278,6 +293,17 @@ public class ControlInterpret : MonoBehaviour {
             return false;
         }
     }
+    public bool Dodge
+    {
+        get
+        {
+            if (DodgeDown == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
     public bool TauntDown
     {
         get
@@ -299,41 +325,8 @@ public class ControlInterpret : MonoBehaviour {
         get
         {
             //print("get");
-            Vector2 stick = AttackStick;
-            if (stick.magnitude<=0.5f)
-            {
-                return StickQuadrant.Neutral;
-            }
-            else
-            {
-
-                float angleDiff = Vector2.Angle(stick, new Vector2(1,1));
-
-
-                if (Vector3.Cross(new Vector3(stick.x, stick.y, 0), new Vector3(1, 1, 0)).z < 0)
-                {
-                    angleDiff = -angleDiff;
-                }
-
-                //print(angleDiff);
-
-                if (angleDiff < -90)
-                {
-                    return StickQuadrant.Left;
-                }
-                else if (angleDiff < 0)
-                {
-                    return StickQuadrant.Up;
-                }
-                else if (angleDiff < 90)
-                {
-                    return StickQuadrant.Right;
-                }
-                else
-                {
-                    return StickQuadrant.Down;
-                }
-            }
+            return getQuad( AttackStick);
+           
         }
     }
     public bool Attack{
@@ -351,6 +344,44 @@ public class ControlInterpret : MonoBehaviour {
         }
     }
     #endregion
+
+    StickQuadrant getQuad(Vector2 stick)
+    {
+        if (stick.magnitude <= 0.5f)
+        {
+            return StickQuadrant.Neutral;
+        }
+        else
+        {
+
+            float angleDiff = Vector2.Angle(stick, new Vector2(1, 1));
+
+
+            if (Vector3.Cross(new Vector3(stick.x, stick.y, 0), new Vector3(1, 1, 0)).z < 0)
+            {
+                angleDiff = -angleDiff;
+            }
+
+            //print(angleDiff);
+
+            if (angleDiff < -90)
+            {
+                return StickQuadrant.Left;
+            }
+            else if (angleDiff < 0)
+            {
+                return StickQuadrant.Up;
+            }
+            else if (angleDiff < 90)
+            {
+                return StickQuadrant.Right;
+            }
+            else
+            {
+                return StickQuadrant.Down;
+            }
+        }
+    }
     // for lookup
     private int timeIndex(float time)
     {

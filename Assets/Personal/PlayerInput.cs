@@ -4,7 +4,7 @@ using System;
 using XInputDotNetPure;
 
 public class PlayerInput : MonoBehaviour {
-    public int PlayerNumber = 1;
+    public int PlayerNumber = 0;
 
     private GamePadState state;
     
@@ -85,6 +85,13 @@ public class PlayerInput : MonoBehaviour {
         get
         {
             return state.Buttons.A == ButtonState.Pressed;
+        }
+    }
+    public bool Dodge
+    {
+        get
+        {
+            return state.Buttons.B == ButtonState.Pressed;
         }
     }
 }

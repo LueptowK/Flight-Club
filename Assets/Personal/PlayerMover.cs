@@ -13,6 +13,7 @@ public class PlayerMover : MonoBehaviour {
     PlayerHealth health;
     ComboCounter combo;
     CameraController cam;
+    IFrames iframes;
 
     public PhysicsMaterial2D neutral;
     public PhysicsMaterial2D bounce;
@@ -111,6 +112,7 @@ public class PlayerMover : MonoBehaviour {
         atk = GetComponent<AttackManager>();
         health = GetComponent<PlayerHealth>();
         combo = GetComponent<ComboCounter>();
+        iframes = GetComponent<IFrames>();
         dashVel = Vector2.zero;
         restoreTools();
         dead = false;
@@ -180,6 +182,7 @@ public class PlayerMover : MonoBehaviour {
 
                         states.Enqueue(new StatePair(PState.Delay, 45));
                     }
+                    tryDodge();
                     if (nearWall)
                     {
                         if ((desired.x > 0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
@@ -347,6 +350,9 @@ public class PlayerMover : MonoBehaviour {
                         break;
                     case ExecState.mapStart:
                         rb.velocity = new Vector2(0, rb.velocity.y - 9.8f * Time.fixedDeltaTime);
+                        break;
+                    case ExecState.None:
+                        rb.velocity = Vector2.zero;
                         break;
                 }
 
@@ -692,6 +698,17 @@ public class PlayerMover : MonoBehaviour {
         {
             states.Enqueue(new StatePair(PState.Attack, 0));
             attkQuad = ci.AttackQuad;
+            return true;
+        }
+        return false;
+    }
+    bool tryDodge()
+    {
+        if(ci.Dodge&&ci.moveQuad== ControlInterpret.StickQuadrant.Down&& states.Count<1)
+        {
+            states.Enqueue(new StatePair(PState.Delay, 20));
+            states.Enqueue(new StatePair(PState.Ground, 0));
+            iframes.SetFrames(20);
             return true;
         }
         return false;
