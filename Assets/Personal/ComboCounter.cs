@@ -40,8 +40,13 @@ public class ComboCounter : MonoBehaviour {
 
 	public void incrementCombo(int increment)
     {
-        if ((currentCombo == 0 && increment < 0) || (currentCombo == maxCombo && increment > 0))
+        if (currentCombo == 0 && increment < 0)
         {
+            return;
+        }
+        if  (currentCombo == maxCombo && increment > 0)
+        {
+            comboCountdown = comboDegradeDelay + comboDegradeTime;
             return;
         }
         currentCombo += increment;

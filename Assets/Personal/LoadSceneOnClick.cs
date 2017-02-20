@@ -9,4 +9,15 @@ public class LoadSceneOnClick : MonoBehaviour {
     {
         SceneManager.LoadScene(sceneIndex);
     }
+
+    public void ReturnToCharacterSelect()
+    {
+        Destroy(GameObject.Find("HealthUI").transform.parent.gameObject);
+        GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in Players)
+        {
+            Destroy(player);
+        }
+        SceneManager.LoadScene(1);
+    }
 }
