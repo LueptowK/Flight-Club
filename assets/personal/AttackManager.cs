@@ -17,8 +17,13 @@ public class AttackManager : MonoBehaviour {
     private ControlInterpret ci;
 
     GameObject currentAttack;
+    [HideInInspector]
+    public AtkType lastAttack;
+    [HideInInspector]
+    public List<GameObject> alreadyHitByType;
     public enum AtkType
     {
+        None,
         DownAir,
         UpAir,
         ForwardAir,
@@ -34,13 +39,30 @@ public class AttackManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         ci = GetComponent<ControlInterpret>();
+        lastAttack = AtkType.None;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
-
+    public void updateLastAttack(AtkType t)
+    {
+        if(t!= lastAttack)
+        {
+            lastAttack = t;
+            alreadyHitByType = new List<GameObject>();
+        }
+    }
+    public void addHit(GameObject player)
+    {
+        alreadyHitByType.Add(player);
+    }
+    public void resetHitList()
+    {
+        alreadyHitByType = new List<GameObject>();
+        lastAttack = AtkType.None;
+    }
     public int makeAttack(AtkType a)
     {
         
@@ -89,6 +111,7 @@ public class AttackManager : MonoBehaviour {
 
 
         }
+        currentAttack.GetComponent<Attack>().setType(a);
         return currentAttack.GetComponent<Attack>().atkFrames;
     }
     public void stopAttack()

@@ -45,7 +45,8 @@ public class PlayerMover : MonoBehaviour {
         AttackGround,
         Death,
         Destroy,
-        mapStart
+        mapStart,
+        Dodge
 
     }
 
@@ -280,7 +281,7 @@ public class PlayerMover : MonoBehaviour {
 
                     }
                     #endregion
-                    else if (onCeiling && ci.move.y >= -0.5f && ceilingAvaliable)
+                    else if (onCeiling && ci.move.y > 0 && ceilingAvaliable)
                     {
                         states.Enqueue(new StatePair(PState.CeilingHold, 30));
                         ceilingAvaliable = false;
@@ -519,6 +520,9 @@ public class PlayerMover : MonoBehaviour {
                     gameObject.SetActive(false);
                     //Debug.Break();
                     break;
+                case ExecState.Dodge:
+                    iframes.SetFrames(20);
+                    break;
 
                     
             }
@@ -553,6 +557,7 @@ public class PlayerMover : MonoBehaviour {
                 hitVector = new Vector2(hitVector.x, -hitVector.y);
             }
             atk.stopAttack();
+            states = new Queue<StatePair>();
             states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
             registerHit = true;
             cam.screenShake = (float)damage;
@@ -706,10 +711,10 @@ public class PlayerMover : MonoBehaviour {
     {
         if(ci.Dodge&&ci.moveQuad== ControlInterpret.StickQuadrant.Down&& states.Count<1)
         {
-            states.Enqueue(new StatePair(PState.Delay, 20));
+            states.Enqueue(new StatePair(PState.Delay, 4, ExecState.Dodge));
+            states.Enqueue(new StatePair(PState.Delay, 30));
             states.Enqueue(new StatePair(PState.Ground, 0));
-            iframes.SetFrames(20);
-            return true;
+            iframes.SetFrames(20);            return true;
         }
         return false;
     }

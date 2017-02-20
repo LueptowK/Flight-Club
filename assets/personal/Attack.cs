@@ -19,6 +19,7 @@ public class Attack : MonoBehaviour {
     public GameObject windUpBox; //only used in basic
     GameObject animBox;
     Transform target;
+    AttackManager.AtkType type;
 	void Start () {
         alreadyHit = new List<GameObject>();
         alreadyHit.Add(transform.parent.gameObject);
@@ -47,6 +48,10 @@ public class Attack : MonoBehaviour {
             animBox = Instantiate(windUpBox, transform);
             
         }
+    }
+    public void setType(AttackManager.AtkType t)
+    {
+        type = t;
     }
     public int atkFrames
     {
@@ -131,12 +136,19 @@ public class Attack : MonoBehaviour {
 	}
     public void addHit(GameObject h)
     {
+        AttackManager mngr = GetComponentInParent<AttackManager>();
         alreadyHit.Add(h);
+        mngr.updateLastAttack(type);
         alreadyHit[0].GetComponent<PlayerMover>().restoreTools();
-        if (tag != "FinisherSlash")
+        if (type != AttackManager.AtkType.SlashFinisher &&  !mngr.alreadyHitByType.Contains(h))
         {
             alreadyHit[0].GetComponent<ComboCounter>().incrementCombo(1);
         }
+        else
+        {
+            GetComponentInParent<ComboCounter>().resetComboTime();
+        }
+        mngr.addHit(h);
     }
     public List<GameObject> hit
     {

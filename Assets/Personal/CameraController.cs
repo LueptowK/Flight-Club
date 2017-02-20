@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     public float screenShake;
     public float minScreenShake = 2f;
     public float shakeSlowRate = 0.95f;
-    public float damageToShakeRatio = 1 / 20f;
+    public float damageToShakeRatio = 0.045f;
     Vector3 actualPosition;
     void Start()
     {

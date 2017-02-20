@@ -38,6 +38,7 @@ public class MapManager : MonoBehaviour {
 
         Canvas c = ((Canvas)FindObjectOfType(typeof(Canvas)));
         c.transform.Find("3").gameObject.SetActive(true);
+        c.transform.Find("HealthUI").gameObject.SetActive(true);
 
     }
     void FixedUpdate()

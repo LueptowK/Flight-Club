@@ -110,6 +110,7 @@ public class CreatePlayer : MonoBehaviour {
                         //reset(players[i]);
                     }
                 }
+                Destroy(Canvas.transform.FindChild("TutorialText").gameObject);
                 SceneManager.LoadScene(2); //UPDATE TO MAP SELECT SCREEN WHEN THAT EXISTS
             }
 

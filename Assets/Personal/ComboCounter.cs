@@ -9,6 +9,8 @@ public class ComboCounter : MonoBehaviour {
     public int comboDegradeTime = 60;
     public int comboDegradeDelay = 120;
     public GameObject OrbitalPrefab;
+
+    AttackManager mngr;
     GameObject[] Orbitals;
 	// Use this for initialization
 	void Awake () {
@@ -22,6 +24,7 @@ public class ComboCounter : MonoBehaviour {
             Orbitals[i].transform.SetParent(gameObject.transform);
         }
         InitializeOrbitals();
+        mngr = GetComponent<AttackManager>();
 	}
 	
 	// Update is called once per frame
@@ -35,9 +38,13 @@ public class ComboCounter : MonoBehaviour {
         else
         {
             incrementCombo(-1);
+            mngr.resetHitList();
         }
     }
-
+    public void resetComboTime()
+    {
+        comboCountdown = comboDegradeDelay + comboDegradeTime;
+    }
 	public void incrementCombo(int increment)
     {
         if (currentCombo == 0 && increment < 0)
