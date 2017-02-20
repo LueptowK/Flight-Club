@@ -12,6 +12,7 @@ public class PlayerMover : MonoBehaviour {
     AttackManager atk;
     PlayerHealth health;
     ComboCounter combo;
+    CameraController cam;
 
     public PhysicsMaterial2D neutral;
     public PhysicsMaterial2D bounce;
@@ -102,6 +103,7 @@ public class PlayerMover : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
         rb = GetComponent<Rigidbody2D>();
         ci = GetComponent<ControlInterpret>();
         pani = GetComponent<PlayerAnimator>();
@@ -547,6 +549,7 @@ public class PlayerMover : MonoBehaviour {
             atk.stopAttack();
             states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
             registerHit = true;
+            cam.screenShake = (float)damage;
             states.Enqueue(new StatePair(PState.Hitstun, hitStun));
             rb.velocity = Vector2.zero;
             //DAMAGE
@@ -949,11 +952,12 @@ public class PlayerMover : MonoBehaviour {
         dead = true;
         combo.reset();
         states = new Queue<StatePair>();
-        states.Enqueue( new StatePair(PState.Delay, 180, ExecState.Destroy));
+        states.Enqueue( new StatePair(PState.Delay, 60, ExecState.Destroy));
     }
 
     public void mapStart()
     {
         states.Enqueue(new StatePair(PState.Delay, 90, ExecState.mapStart));
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
     }
 }

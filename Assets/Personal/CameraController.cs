@@ -9,7 +9,14 @@ public class CameraController : MonoBehaviour
     private int numPlayers;
     public float PanSmoothing = .9f;
     public float Bottom = 5f;
-
+    public float screenShake;
+    public float minScreenShake = 2f;
+    public float shakeSlowRate = 0.95f;
+    Vector3 actualPosition;
+    void Start()
+    {
+        actualPosition = transform.position;
+    }
 
     // Update is called once per frame
     void FixedUpdate()
@@ -17,8 +24,16 @@ public class CameraController : MonoBehaviour
         players = GameObject.FindGameObjectsWithTag("Player");
         numPlayers = players.Length;
         Vector3 desiredCenter = FindCenter();
-        transform.position = Vector3.Lerp(desiredCenter, transform.position, PanSmoothing);
-
+        actualPosition = Vector3.Lerp(desiredCenter, actualPosition, PanSmoothing);
+        transform.position = actualPosition + new Vector3(Random.Range(0,screenShake/10), Random.Range(0,screenShake/10), 0);
+        if(screenShake < minScreenShake)
+        {
+            screenShake = 0;
+        }
+        else
+        {
+            screenShake = screenShake * shakeSlowRate;
+        }
     }
 
     Vector3 FindCenter()
