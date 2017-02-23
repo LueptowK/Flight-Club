@@ -213,9 +213,12 @@ public class PlayerMover : MonoBehaviour {
                     {
                         tryStall();
                     }
-                    if (!tryAttack())
+                    if (states.Count < 1)
                     {
-                        tryFinisherSlash();
+                        if (!tryAttack())
+                        {
+                            tryFinisherSlash();
+                        }
                     }
 
 
@@ -487,7 +490,6 @@ public class PlayerMover : MonoBehaviour {
         if (current.delay <= 0)
         {
             #region Exec States
-            int frames;
             switch (current.action)
             {
                 case ExecState.None:
@@ -503,15 +505,6 @@ public class PlayerMover : MonoBehaviour {
                         calculateDI();
                     }
                     rb.velocity = hitVector;
-                    break;
-                case ExecState.AttackAir:
-                    frames = atk.makeAttack(QuadToTypeAir(attkQuad));
-                    states.Enqueue(new StatePair(PState.AirAttack, frames));
-                    break;
-                case ExecState.AttackGround:
-                    frames = atk.makeAttack(QuadToTypeGround(attkQuad));
-                    states.Enqueue(new StatePair(PState.GroundAttack, frames));
-                    states.Enqueue(new StatePair(PState.Ground, 0));
                     break;
                 case ExecState.Death:
                     pani.Die();
@@ -663,30 +656,7 @@ public class PlayerMover : MonoBehaviour {
         }
         return false;
     }
-    /*
-    bool tryAerialAttack()
-    {
-        if (ci.Attack && states.Count<1)
-        {
 
-            current.action = ExecState.AttackAir;
-            attkQuad = ci.AttackQuad;
-            return true;
-        }
-        return false;
-    }
-    bool tryGroundedAttack()
-    {
-        if (ci.Attack && states.Count < 1)
-        {
-            current.action = ExecState.AttackGround;
-            attkQuad = ci.AttackQuad;
-            return true;
-        }
-        return false;
-    }
-
-    */
 
     bool tryFinisherSlash()
     {
