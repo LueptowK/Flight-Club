@@ -248,10 +248,15 @@ public class PlayerMover : MonoBehaviour {
                             if (OnRightWall)
                             {
                                 FacingLeft = false;
-
+                                RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.right, 2.0f, 1 << 8);
+                                transform.position = new Vector3( r.point.x - col.bounds.extents.x, transform.position.y, 0);
+                                rb.velocity = new Vector2(0, rb.velocity.y);
                             }
                             else
                             {
+                                RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.left, 2.0f, 1 << 8);
+                                transform.position = new Vector3(r.point.x + col.bounds.extents.x, transform.position.y, 0);
+                                rb.velocity = new Vector2(0, rb.velocity.y);
                                 FacingLeft = true;
                             }
 
@@ -683,7 +688,7 @@ public class PlayerMover : MonoBehaviour {
         {
             states.Enqueue(new StatePair(PState.Delay, 4, ExecState.Dodge));
             states.Enqueue(new StatePair(PState.Delay, 30));
-            states.Enqueue(new StatePair(PState.Ground, 0));
+            //states.Enqueue(new StatePair(PState.Ground, 0));
             iframes.SetFrames(20);            return true;
         }
         return false;
@@ -769,14 +774,25 @@ public class PlayerMover : MonoBehaviour {
         {
             rb.sharedMaterial = neutral;
         }
-        
+
         if (states.Count == 0)
         {
 
 
             if ((current.state != PState.Ground) && (current.state != PState.Air))
             {
-                current = new StatePair(PState.Air, 0);
+                if (grounded)
+                {
+                    current = new StatePair(PState.Ground, 0);
+                    RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.down, 2.0f, 1 << 10);
+                    transform.position = new Vector3(transform.position.x, r.point.y + col.bounds.extents.y, 0);
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+
+                }
+                else
+                {
+                    current = new StatePair(PState.Air, 0);
+                }
                 pani.StateChange(true);
             }
             else
@@ -796,14 +812,14 @@ public class PlayerMover : MonoBehaviour {
                     frames = atk.makeAttack(AttackManager.AtkType.SlashFinisher);
                     current.delay = frames;
                     states.Enqueue(new StatePair(PState.Burnout, 110));
-                    states.Enqueue(new StatePair(PState.Ground,0));
+                    //states.Enqueue(new StatePair(PState.Ground,0));
                     break;
                 case PState.Attack:
                     if (grounded)
                     {
                         frames = atk.makeAttack(QuadToTypeGround(attkQuad));
                         current = new StatePair(PState.GroundAttack, frames);
-                        states.Enqueue(new StatePair(PState.Ground, 0));
+                        //states.Enqueue(new StatePair(PState.Ground, 0));
                     }
                     else
                     {
@@ -827,6 +843,8 @@ public class PlayerMover : MonoBehaviour {
             }
             pani.StateChange(true);
         }
+
+
         
     }
     Vector2 AirControl(Vector2 move)
@@ -949,6 +967,7 @@ public class PlayerMover : MonoBehaviour {
 
     public void mapStart()
     {
+        states = new Queue<StatePair>();
         states.Enqueue(new StatePair(PState.Delay, 90, ExecState.mapStart));
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
     }
