@@ -33,7 +33,8 @@ public class PlayerMover : MonoBehaviour {
         GroundAttack,
         Attack, 
         FinisherSlash,
-        Burnout
+        Burnout,
+        Flip
     }
 
     public enum ExecState
@@ -46,7 +47,8 @@ public class PlayerMover : MonoBehaviour {
         Death,
         Destroy,
         mapStart,
-        Dodge
+        Dodge,
+        Flip
 
     }
 
@@ -102,6 +104,9 @@ public class PlayerMover : MonoBehaviour {
     float ceilingBooster = 0f;
 
     [HideInInspector]public bool FacingLeft = false;
+
+    [HideInInspector]
+    public bool FlipBack = false;
 
     // Use this for initialization
     void Start() {
@@ -360,6 +365,9 @@ public class PlayerMover : MonoBehaviour {
                     case ExecState.mapStart:
                         rb.velocity = new Vector2(0, rb.velocity.y - 9.8f * Time.fixedDeltaTime);
                         break;
+                    case ExecState.Flip:
+                        rb.velocity = Vector2.zero;
+                        break;
                     case ExecState.None:
                         rb.velocity = Vector2.zero;
                         break;
@@ -476,7 +484,22 @@ public class PlayerMover : MonoBehaviour {
             case PState.Burnout:
                 rb.velocity += new Vector2(0, -gravity * 9.8f * Time.fixedDeltaTime);
                 break;
-                #endregion
+            #endregion
+            #region Flip State
+            case PState.Flip:
+                tempGrav *= 2f;
+                float velx = rb.velocity.x;
+                if (grounded)
+                {
+                    velx = 0;
+                    if (states.Count < 1)
+                    {
+                        tryAttack();
+                    }
+                }
+                rb.velocity =new Vector2(velx ,rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime) ;
+                break;
+            #endregion
         }
 
 
@@ -520,6 +543,36 @@ public class PlayerMover : MonoBehaviour {
                     break;
                 case ExecState.Dodge:
                     iframes.SetFrames(20);
+                    break;
+                case ExecState.Flip:
+                    Vector2 vel = new Vector2();
+                    vel += Vector2.up * 8f;
+                    float velx = 20f;
+                    if (FlipBack)
+                    {
+                        if (FacingLeft)
+                        {
+                            vel += Vector2.right * velx;
+                        }
+                        else
+                        {
+                            vel += Vector2.left * velx;
+                        }
+                        
+                    }
+                    else
+                    {
+                        if (FacingLeft)
+                        {
+                            vel += Vector2.left * velx;
+                        }
+                        else
+                        {
+                            vel += Vector2.right * velx;
+                        }
+                    }
+                    rb.velocity = vel;
+                    iframes.SetFrames(30);
                     break;
 
                     
@@ -684,13 +737,38 @@ public class PlayerMover : MonoBehaviour {
     }
     bool tryDodge()
     {
-        if(ci.Dodge&&ci.moveQuad== ControlInterpret.StickQuadrant.Down&& states.Count<1)
+        if(ci.Dodge&& states.Count<1)
         {
-            states.Enqueue(new StatePair(PState.Delay, 4, ExecState.Dodge));
-            states.Enqueue(new StatePair(PState.Delay, 30));
-            //states.Enqueue(new StatePair(PState.Ground, 0));
-            iframes.SetFrames(20);            return true;
+            if(ci.moveQuad == ControlInterpret.StickQuadrant.Down)
+            {
+                states.Enqueue(new StatePair(PState.Delay, 4, ExecState.Dodge));
+                states.Enqueue(new StatePair(PState.Delay, 30));
+                //states.Enqueue(new StatePair(PState.Ground, 0));
+                return true;
+            }
+            else if(ci.moveQuad == ControlInterpret.StickQuadrant.Right||ci.moveQuad == ControlInterpret.StickQuadrant.Left)
+            {
+                if((ci.moveQuad == ControlInterpret.StickQuadrant.Left&& !FacingLeft)||(ci.moveQuad == ControlInterpret.StickQuadrant.Right) && FacingLeft)
+                {
+                    FlipBack = true;
+                }
+                else
+                {
+                    FlipBack = false;
+                }
+                states.Enqueue(new StatePair(PState.Delay, 4, ExecState.Flip));
+                states.Enqueue(new StatePair(PState.Flip, 30));
+                states.Enqueue(new StatePair(PState.Delay, 10));
+                //states.Enqueue(new StatePair(PState.Ground, 0));
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
+
         return false;
     }
     #endregion
@@ -770,9 +848,9 @@ public class PlayerMover : MonoBehaviour {
     #endregion
     void nextState()
     {
-        if(current.state == PState.Hitstun)
+        if(current.state == PState.Flip)
         {
-            rb.sharedMaterial = neutral;
+            alignGround();
         }
 
         if (states.Count == 0)
@@ -784,8 +862,7 @@ public class PlayerMover : MonoBehaviour {
                 if (grounded)
                 {
                     current = new StatePair(PState.Ground, 0);
-                    RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.down, 2.0f, 1 << 10);
-                    transform.position = new Vector3(transform.position.x, r.point.y + col.bounds.extents.y, 0);
+                    alignGround();
                     rb.velocity = new Vector2(rb.velocity.x, 0);
 
                 }
@@ -846,6 +923,11 @@ public class PlayerMover : MonoBehaviour {
 
 
         
+    }
+    void alignGround()
+    {
+        RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.down, 2.0f, 1 << 10);
+        transform.position = new Vector3(transform.position.x, r.point.y + col.bounds.extents.y, 0);
     }
     Vector2 AirControl(Vector2 move)
     {

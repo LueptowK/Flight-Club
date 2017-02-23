@@ -118,7 +118,8 @@ public class PlayerAnimator : MonoBehaviour {
         AirAttack, 
         GroundAttack,
         Finisher,
-        Burnout  //12
+        Burnout,  //12
+        Flip
         
     }
     void LateUpdate()
@@ -231,6 +232,10 @@ public class PlayerAnimator : MonoBehaviour {
         else if (c.state == PlayerMover.PState.Burnout)
         {
             ani.SetInteger("State", (int)AnimationState.Burnout);
+        }
+        else if (c.state == PlayerMover.PState.Flip)
+        {
+            ani.SetInteger("State", (int)AnimationState.Flip);
         }
         else
         {
