@@ -825,7 +825,7 @@ public class PlayerMover : MonoBehaviour {
     {
         get
         {
-            return (OnRightWall && ci.move.x > 0f) || (OnLeftWall && ci.move.x < 0f);
+            return (OnRightWall && ci.move.x > 0f && rb.velocity.x>=0 ) || (OnLeftWall && ci.move.x < 0f && rb.velocity.x <= 0);
         }
     }
 
