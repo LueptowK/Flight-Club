@@ -98,6 +98,10 @@
     <Compile Include="Assets\Personal\PlayerHealth.cs" />
     <Compile Include="Assets\Personal\PlayerInput.cs" />
     <Compile Include="Assets\Personal\PlayerMover.cs" />
+    <Compile Include="Assets\Personal\StickFixer.cs" />
+    <Compile Include="Assets\Personal\UI Prefabs\MapItem.cs" />
+    <Compile Include="Assets\Personal\UI Prefabs\MenuItemAbst.cs" />
+    <Compile Include="Assets\Personal\UI Prefabs\PuckController.cs" />
     <Compile Include="Assets\Personal\anim\Orbital.cs" />
     <Compile Include="Assets\Xinputdotnet\Examples\XInputTestCS.cs" />
   </ItemGroup>

@@ -181,6 +181,10 @@ public class PlayerAnimator : MonoBehaviour {
             {
                 ani.SetInteger("State", (int)AnimationState.Hitlag);
             }
+            else if (c.action == PlayerMover.ExecState.mapStart)
+            {
+                ani.SetInteger("State", (int)AnimationState.Ground);
+            }
             else
             {
                 ani.SetInteger("State", (int)AnimationState.Unknown);

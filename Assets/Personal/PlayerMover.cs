@@ -48,7 +48,8 @@ public class PlayerMover : MonoBehaviour {
         Destroy,
         mapStart,
         Dodge,
-        Flip
+        Flip,
+        Normal
 
     }
 
@@ -324,7 +325,10 @@ public class PlayerMover : MonoBehaviour {
                 {
                     if (!tryStall())
                     {
-                        tryAttack();
+                        if (!tryAttack())
+                        {
+                            tryFinisherSlash();
+                        }
                     }
                 }
 
@@ -370,6 +374,13 @@ public class PlayerMover : MonoBehaviour {
                         break;
                     case ExecState.None:
                         rb.velocity = Vector2.zero;
+                        break;
+                    case ExecState.Normal:
+                        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 9.8f * Time.fixedDeltaTime);
+                        if (grounded)
+                        {
+                            alignGround();
+                        }
                         break;
                 }
 
@@ -492,6 +503,7 @@ public class PlayerMover : MonoBehaviour {
                 if (grounded)
                 {
                     velx = 0;
+                    alignGround();
                     if (states.Count < 1)
                     {
                         tryAttack();
@@ -758,7 +770,7 @@ public class PlayerMover : MonoBehaviour {
                 }
                 states.Enqueue(new StatePair(PState.Delay, 4, ExecState.Flip));
                 states.Enqueue(new StatePair(PState.Flip, 30));
-                states.Enqueue(new StatePair(PState.Delay, 10));
+                states.Enqueue(new StatePair(PState.Delay, 10, ExecState.Normal));
                 //states.Enqueue(new StatePair(PState.Ground, 0));
                 return true;
             }
@@ -848,10 +860,6 @@ public class PlayerMover : MonoBehaviour {
     #endregion
     void nextState()
     {
-        if(current.state == PState.Flip)
-        {
-            alignGround();
-        }
 
         if (states.Count == 0)
         {

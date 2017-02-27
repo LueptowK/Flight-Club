@@ -13,6 +13,7 @@ public class LoadSceneOnClick : MonoBehaviour {
     public void ReturnToCharacterSelect()
     {
         Destroy(GameObject.Find("HealthUI").transform.parent.gameObject);
+        Debug.Break();
         GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player in Players)
         {

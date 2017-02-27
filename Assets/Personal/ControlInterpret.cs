@@ -120,40 +120,14 @@ public class ControlInterpret : MonoBehaviour {
     }
     #endregion
 
-    private float adjustAxis(float axis)
-    {
-        float perAdj = axis / (1 - AxisAdjust);
-        axis += perAdj * AxisAdjust;
-        return axis;
-    }
-    private Vector2 fixStick(Vector2 stick)
-    {
-        if (stick.magnitude > 1)
-        {
-            if (stick.x == 1)
-            {
-                stick.x = Mathf.Sqrt(1 - Mathf.Pow(stick.y, 2));
-            }
-            else if (stick.y == 1)
-            {
-                stick.y = Mathf.Sqrt(1 - Mathf.Pow(stick.x, 2));
-            }
-        }
-        stick.x = adjustAxis(stick.x);
-        stick.y = adjustAxis(stick.y);
-        if (stick.magnitude > 1)
-        {
-            stick.Normalize();
-        }
-        return stick;
-    }
+    
     // Update is called once per frame
     void FixedUpdate () {
 
         #region history
         inputItem i = new inputItem();
         i.dir = new Vector2(control.MoveHor, control.MoveVer);
-        i.dir = fixStick(i.dir);
+        i.dir = StickFixer.fixStick(i.dir, AxisAdjust);
         i.time = Time.time;
         if (inputHistory.Count == historyMax)
         {
@@ -317,7 +291,7 @@ public class ControlInterpret : MonoBehaviour {
     {
         get
         {
-            return fixStick(new Vector2(control.AtkHor, control.AtkVer));
+            return StickFixer.fixStick(new Vector2(control.AtkHor, control.AtkVer), AxisAdjust);
         }
     }
     public StickQuadrant AttackQuad
