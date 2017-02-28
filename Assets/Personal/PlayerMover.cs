@@ -934,7 +934,7 @@ public class PlayerMover : MonoBehaviour {
     }
     void alignGround()
     {
-        RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.down, 2.0f, 1 << 10);
+        RaycastHit2D r = Physics2D.BoxCast(transform.position - new Vector3(0, col.bounds.extents.y, 0), new Vector2(col.bounds.extents.x * 1.9f, col.bounds.extents.y * 1f), 0, -Vector2.up, 0.08f, 1 << 10);
         transform.position = new Vector3(transform.position.x, r.point.y + col.bounds.extents.y, 0);
     }
     Vector2 AirControl(Vector2 move)

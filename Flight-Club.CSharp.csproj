@@ -84,6 +84,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Personal\Attack Prefabs\Projectile.cs" />
     <Compile Include="Assets\Personal\Attack.cs" />
     <Compile Include="Assets\Personal\AttackManager.cs" />
     <Compile Include="Assets\Personal\CameraController.cs" />
