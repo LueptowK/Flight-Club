@@ -139,7 +139,7 @@ public class CreatePlayer : MonoBehaviour
                 }
             }
             //Destroy(Canvas.transform.FindChild("TutorialText").gameObject);
-            SceneManager.LoadScene(6); //UPDATE TO MAP SELECT SCREEN WHEN THAT EXISTS
+            SceneManager.LoadScene(2); //UPDATE TO MAP SELECT SCREEN WHEN THAT EXISTS
         }
 
     }

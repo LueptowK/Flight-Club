@@ -100,7 +100,7 @@ public class MapManager : MonoBehaviour {
             {
                 Destroy(player);
             }
-            SceneManager.LoadScene(7);
+            SceneManager.LoadScene(1);
         }
     }
 	
