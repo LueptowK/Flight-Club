@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Checkpointer : MonoBehaviour {
+public class CheckpointerTutorial : MonoBehaviour {
 
     public int checkNum;
 
