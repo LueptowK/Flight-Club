@@ -64,11 +64,11 @@ public class AdvTutorialManager : MonoBehaviour {
         if(checkNum == 4)
         {
             finished = true;
+            GameObject.Find("Canvas").transform.Find("Complete").gameObject.SetActive(true);
         }
         else
         {
         lastSpawn = spawns[checkNum];
-        GameObject.Find("Canvas").transform.Find("Complete").gameObject.SetActive(true);
         }
     }
 }
