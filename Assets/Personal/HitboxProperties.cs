@@ -29,6 +29,7 @@ public class HitboxProperties : MonoBehaviour
         else if (playerCol.gameObject.CompareTag("Target"))
         {
             Destroy(playerCol.gameObject);
+            atk.addHit(playerCol.gameObject);
         }
         else if (!atk.hit.Contains(playerCol.gameObject))
         {

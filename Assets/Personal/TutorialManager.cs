@@ -36,7 +36,7 @@ public class TutorialManager : MonoBehaviour {
             endCounter--;
             if (endCounter <= 0)
             {
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene(7);
             }
         }
         if (dead)
