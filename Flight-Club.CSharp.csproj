@@ -88,6 +88,7 @@
     <Compile Include="Assets\Personal\Attack.cs" />
     <Compile Include="Assets\Personal\AttackManager.cs" />
     <Compile Include="Assets\Personal\CameraController.cs" />
+    <Compile Include="Assets\Personal\Checkpointer.cs" />
     <Compile Include="Assets\Personal\ComboCounter.cs" />
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
     <Compile Include="Assets\Personal\CreatePlayer.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Assets\Personal\PlayerInput.cs" />
     <Compile Include="Assets\Personal\PlayerMover.cs" />
     <Compile Include="Assets\Personal\StickFixer.cs" />
+    <Compile Include="Assets\Personal\TutorialManager.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\CharacterItem.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\DetectPlayer.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\MapItem.cs" />

@@ -531,6 +531,9 @@ public class PlayerMover : MonoBehaviour {
                 }
                 vel.y += -gravity * 9.8f * Time.fixedDeltaTime;
                 rb.velocity = vel;
+
+                if (ci.move.x < 0) { FacingLeft = true; }
+                else if (ci.move.x > 0) { FacingLeft = false; }
                 break;
                 #endregion
         }
@@ -605,7 +608,7 @@ public class PlayerMover : MonoBehaviour {
                         }
                     }
                     rb.velocity = vel;
-                    iframes.SetFrames(30);
+                    iframes.SetFrames(24);
                     break;
 
                     

@@ -134,6 +134,13 @@ public class PlayerAnimator : MonoBehaviour {
 
         
     }
+    public void updateFacing()
+    {
+        float b= playerScale;
+        if (pm.FacingLeft) { b = -b;}
+        transform.localScale = new Vector3(playerScale, b, playerScale);
+
+    }
     public void jump()
     {
         ani.SetTrigger("Jump");

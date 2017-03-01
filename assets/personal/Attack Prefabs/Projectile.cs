@@ -28,6 +28,7 @@ public class Projectile : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D playerCol)
     {
+        print("col");
         if (playerCol.tag == "Player")
         {
             if (!hitPlayers.Contains(playerCol.gameObject))
