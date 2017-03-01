@@ -44,7 +44,7 @@ public class Projectile : MonoBehaviour {
 
 
                     playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
-                    //atk.updateLastAttack(AttackManager.AtkType.None);
+                    atk.updateLastAttack(AttackManager.AtkType.None);
                     Destroy(gameObject);
                 }
             }
