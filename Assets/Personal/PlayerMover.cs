@@ -50,7 +50,8 @@ public class PlayerMover : MonoBehaviour {
         mapStart,
         Dodge,
         Flip,
-        Normal
+        Normal,
+        Shoot
 
     }
 
@@ -347,7 +348,8 @@ public class PlayerMover : MonoBehaviour {
             case PState.Stall:
                 rb.velocity = Vector2.zero;
                 falling = false;
-
+                if (ci.move.x < 0) { FacingLeft = true; }
+                else if (ci.move.x > 0) { FacingLeft = false; }
                 if (current.delay == stallTime) { stallCooldownCurrent = stallCooldown; }
                 if (current.delay < stallTime && states.Count < 1)
                 {
@@ -532,8 +534,11 @@ public class PlayerMover : MonoBehaviour {
                 vel.y += -gravity * 9.8f * Time.fixedDeltaTime;
                 rb.velocity = vel;
 
-                if (ci.move.x < 0) { FacingLeft = true; }
-                else if (ci.move.x > 0) { FacingLeft = false; }
+                if (current.action == ExecState.Shoot)
+                {
+                    if (ci.move.x < 0) { FacingLeft = true; }
+                    else if (ci.move.x > 0) { FacingLeft = false; }
+                }
                 break;
                 #endregion
         }
@@ -610,7 +615,9 @@ public class PlayerMover : MonoBehaviour {
                     rb.velocity = vel;
                     iframes.SetFrames(24);
                     break;
-
+                case ExecState.Shoot:
+                    atk.shoot();
+                    break;
                     
             }
             #endregion
@@ -811,7 +818,8 @@ public class PlayerMover : MonoBehaviour {
     {
         if (ci.Shoot&&combo.currentCombo>0&&shootCooldownCurrent<0)
         {
-            states.Enqueue(new StatePair(PState.Shoot, 4));
+            states.Enqueue(new StatePair(PState.Shoot, 2, ExecState.Shoot));
+            states.Enqueue(new StatePair(PState.Shoot, 5));
             shootCooldownCurrent = shootCooldown;
             return true;
         }
@@ -960,7 +968,7 @@ public class PlayerMover : MonoBehaviour {
                     rb.velocity = new Vector2(0, 8f);
                     break;
                 case PState.Shoot:
-                    atk.shoot();
+                    //atk.shoot();
                     break;
             }
             pani.StateChange(true);
