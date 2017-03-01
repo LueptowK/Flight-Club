@@ -34,7 +34,8 @@ public class PlayerMover : MonoBehaviour {
         Attack, 
         FinisherSlash,
         Burnout,
-        Flip
+        Flip,
+        Shoot,
     }
 
     public enum ExecState
@@ -102,6 +103,8 @@ public class PlayerMover : MonoBehaviour {
     int jumpSquatFrames = 4; // needs to be set before entering ANY DELAY STATE
     int stallCooldown = 40;
     int stallCooldownCurrent = 0;
+    int shootCooldown = 30;
+    int shootCooldownCurrent = 0;
     float ceilingBooster = 0f;
 
     [HideInInspector]public bool FacingLeft = false;
@@ -142,6 +145,7 @@ public class PlayerMover : MonoBehaviour {
         Vector2 desired = Vector2.zero;
         float tempGrav = gravity;
         stallCooldownCurrent--;
+        shootCooldownCurrent--;
         
 
         if (registerHit) // hit in the queue
@@ -180,7 +184,9 @@ public class PlayerMover : MonoBehaviour {
                     {
                        if(!tryAttack())
                         {
-                            tryFinisherSlash();
+                            if (!tryFinisherSlash()){
+                                tryShoot();
+                            }
                         }
                     }
                     if (ci.TauntDown && desired.x == 0)
@@ -223,7 +229,10 @@ public class PlayerMover : MonoBehaviour {
                     {
                         if (!tryAttack())
                         {
-                            tryFinisherSlash();
+                            if (!tryFinisherSlash())
+                            {
+                                tryShoot();
+                            }
                         }
                     }
 
@@ -512,6 +521,18 @@ public class PlayerMover : MonoBehaviour {
                 rb.velocity =new Vector2(velx ,rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime) ;
                 break;
             #endregion
+            #region Shoot State
+            case PState.Shoot:
+                Vector2 vel = rb.velocity;
+                if (grounded)
+                {
+                    alignGround();
+                    vel.x += applyFriction(vel.x, 2);
+                }
+                vel.y += -gravity * 9.8f * Time.fixedDeltaTime;
+                rb.velocity = vel;
+                break;
+                #endregion
         }
 
 
@@ -783,6 +804,16 @@ public class PlayerMover : MonoBehaviour {
 
         return false;
     }
+    bool tryShoot()
+    {
+        if (ci.Shoot&&combo.currentCombo>0&&shootCooldownCurrent<0)
+        {
+            states.Enqueue(new StatePair(PState.Shoot, 4));
+            shootCooldownCurrent = shootCooldown;
+            return true;
+        }
+        return false;
+    }
     #endregion
     public void changeFace()
     {
@@ -924,6 +955,9 @@ public class PlayerMover : MonoBehaviour {
                     break;
                 case PState.Burnout:
                     rb.velocity = new Vector2(0, 8f);
+                    break;
+                case PState.Shoot:
+                    atk.shoot();
                     break;
             }
             pani.StateChange(true);

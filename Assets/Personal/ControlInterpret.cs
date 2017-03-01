@@ -11,6 +11,7 @@ public class ControlInterpret : MonoBehaviour {
     private int AttackDown;
     private int SlashDown;
     private int DodgeDown;
+    int ShootDown;
 
     private List<inputItem> inputHistory;
     List<StickQuadrant> Quads;
@@ -179,6 +180,14 @@ public class ControlInterpret : MonoBehaviour {
         {
             DodgeDown = 0;
         }
+        if (control.Shoot)
+        {
+            ShootDown += 1;
+        }
+        else
+        {
+            ShootDown = 0;
+        }
         Quads.RemoveAt(1);
         Quads.Insert(0, AttackQuad);
 
@@ -272,6 +281,17 @@ public class ControlInterpret : MonoBehaviour {
         get
         {
             if (DodgeDown == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+    public bool Shoot
+    {
+        get
+        {
+            if (ShootDown == 1)
             {
                 return true;
             }

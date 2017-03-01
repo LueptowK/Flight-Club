@@ -94,4 +94,11 @@ public class PlayerInput : MonoBehaviour {
             return state.Buttons.B == ButtonState.Pressed;
         }
     }
+    public bool Shoot
+    {
+        get
+        {
+            return state.Buttons.RightShoulder == ButtonState.Pressed;
+        }
+    }
 }

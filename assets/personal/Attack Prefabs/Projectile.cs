@@ -11,12 +11,16 @@ public class Projectile : MonoBehaviour {
     [HideInInspector]
     public List<GameObject> hitPlayers;
 
+    AttackManager atk;
 
     // Use this for initialization
     void Start () {
 		
 	}
-	
+	public void setMngr(AttackManager a)
+    {
+        atk = a;
+    }
 	// Update is called once per frame
 	void FixedUpdate () {
         transform.position += transform.right * velocity * Time.fixedDeltaTime;
@@ -36,6 +40,7 @@ public class Projectile : MonoBehaviour {
 
 
                     playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
+                    //atk.updateLastAttack(AttackManager.AtkType.None);
                     Destroy(gameObject);
                 }
             }

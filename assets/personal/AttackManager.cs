@@ -14,7 +14,9 @@ public class AttackManager : MonoBehaviour {
     public GameObject ForwardGround;
     public GameObject NeutralGround;
     public GameObject SlashFinisher;
+    public GameObject RangedAttack;
     private ControlInterpret ci;
+    ComboCounter combo;
 
     GameObject currentAttack;
     [HideInInspector]
@@ -39,6 +41,7 @@ public class AttackManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         ci = GetComponent<ControlInterpret>();
+        combo = GetComponent<ComboCounter>();
         lastAttack = AtkType.None;
 	}
 	
@@ -46,6 +49,15 @@ public class AttackManager : MonoBehaviour {
 	void Update () {
 		
 	}
+    public void shoot()
+    {
+        GameObject m = Instantiate(RangedAttack,transform.position, transform.rotation);
+        Projectile p = m.GetComponent<Projectile>();
+        p.hitPlayers.Add(gameObject);
+        p.setMngr(this);
+        combo.incrementCombo(-1);
+        combo.resetComboTime();
+    }
     public void updateLastAttack(AtkType t)
     {
         if(t!= lastAttack)

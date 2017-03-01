@@ -91,6 +91,7 @@
     <Compile Include="Assets\Personal\ComboCounter.cs" />
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
     <Compile Include="Assets\Personal\CreatePlayer.cs" />
+    <Compile Include="Assets\Personal\CreatePlayerOld.cs" />
     <Compile Include="Assets\Personal\HitboxProperties.cs" />
     <Compile Include="Assets\Personal\IFrames.cs" />
     <Compile Include="Assets\Personal\LoadSceneOnClick.cs" />
@@ -100,8 +101,11 @@
     <Compile Include="Assets\Personal\PlayerInput.cs" />
     <Compile Include="Assets\Personal\PlayerMover.cs" />
     <Compile Include="Assets\Personal\StickFixer.cs" />
+    <Compile Include="Assets\Personal\UI Prefabs\CharacterItem.cs" />
+    <Compile Include="Assets\Personal\UI Prefabs\DetectPlayer.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\MapItem.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\MenuItemAbst.cs" />
+    <Compile Include="Assets\Personal\UI Prefabs\PerPlayerPuckController.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\PuckController.cs" />
     <Compile Include="Assets\Personal\anim\Orbital.cs" />
     <Compile Include="Assets\Xinputdotnet\Examples\XInputTestCS.cs" />
