@@ -868,7 +868,7 @@ public class PlayerMover : MonoBehaviour {
     {
         get
         {
-            return (OnRightWall && ci.move.x > 0f && rb.velocity.x>=0 ) || (OnLeftWall && ci.move.x < 0f && rb.velocity.x <= 0);
+            return (OnRightWall && ci.move.x > 0f && rb.velocity.x>=0 ) || (OnLeftWall && ci.move.x < 0f && rb.velocity.x < 0.001f);
         }
     }
 
@@ -1094,5 +1094,14 @@ public class PlayerMover : MonoBehaviour {
         states = new Queue<StatePair>();
         states.Enqueue(new StatePair(PState.Delay, 90, ExecState.mapStart));
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+    } 
+
+    public void reset()
+    {
+        states = new Queue<StatePair>();
+        states.Enqueue(new StatePair(PState.Air, 1));
+        health.currentHealth = health.maxHealth;
+        dead = false;
+        current = new StatePair(PState.Air, 1);
     }
 }

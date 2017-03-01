@@ -26,6 +26,10 @@ public class HitboxProperties : MonoBehaviour
             Vector2 knockback = new Vector2(hitboxVector.x * transform.right.x, hitboxVector.y);
             playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
         }
+        else if (playerCol.gameObject.CompareTag("Target"))
+        {
+            Destroy(playerCol.gameObject);
+        }
         else if (!atk.hit.Contains(playerCol.gameObject))
         {
             if (!(playerCol.GetComponent<IFrames>().invincible()))
@@ -54,5 +58,6 @@ public class HitboxProperties : MonoBehaviour
             }
 
         }
+        
     }
 }
