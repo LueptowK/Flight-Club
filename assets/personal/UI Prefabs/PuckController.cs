@@ -26,7 +26,7 @@ public class PuckController : MonoBehaviour {
                 selected.click();
             }
         }
-        rb.velocity += move*10f;
+        rb.velocity += move*15f;
 
 	}
 

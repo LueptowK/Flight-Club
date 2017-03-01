@@ -1102,7 +1102,6 @@ public class PlayerMover : MonoBehaviour {
     public void reset()
     {
         states = new Queue<StatePair>();
-        states.Enqueue(new StatePair(PState.Air, 1));
         health.currentHealth = health.maxHealth;
         dead = false;
         current = new StatePair(PState.Air, 1);

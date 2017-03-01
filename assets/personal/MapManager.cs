@@ -8,7 +8,6 @@ public class MapManager : MonoBehaviour {
     GameObject[] Spawns;
     GameObject[] Players;
     List<GameObject> removed;
-    public GameObject GAME;
     private bool gameOver;
     private int gameEndCounter;
     private int gameStartCounter;
@@ -36,7 +35,7 @@ public class MapManager : MonoBehaviour {
             player.GetComponent<PlayerMover>().mapStart();
         }
 
-        Canvas c = ((Canvas)FindObjectOfType(typeof(Canvas)));
+        c = ((Canvas)FindObjectOfType(typeof(Canvas)));
         c.transform.Find("3").gameObject.SetActive(true);
         c.transform.Find("HealthUI").gameObject.SetActive(true);
 
@@ -45,7 +44,6 @@ public class MapManager : MonoBehaviour {
     {
         if (gameStartCounter > -15)
         {
-            c = ((Canvas)FindObjectOfType(typeof(Canvas)));
             gameStartCounter--;
             if (gameStartCounter == 61)
             {
