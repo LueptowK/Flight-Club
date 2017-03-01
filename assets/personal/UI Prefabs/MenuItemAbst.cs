@@ -13,10 +13,10 @@ public abstract  class MenuItemAbst : MonoBehaviour {
     }
     public void select()
     {
-        sp.color = new Color(0.3f, 0.3f, 0.3f);
+        sp.color = new Color(1f, 1f, 1f);
     }
     public void deselect()
     {
-        sp.color = new Color(1f, 1f, 1f);
+        sp.color = new Color(0.7f, 0.7f, 0.7f);
     }
 }

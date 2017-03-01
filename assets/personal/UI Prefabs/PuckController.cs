@@ -29,6 +29,7 @@ public class PuckController : MonoBehaviour {
         rb.velocity += move*10f;
 
 	}
+
     void OnTriggerEnter2D(Collider2D col)
     {
         if (selected)
@@ -37,5 +38,13 @@ public class PuckController : MonoBehaviour {
         }
         selected = col.GetComponent<MenuItemAbst>();
         selected.select();
+    }
+
+    void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.transform.GetComponent<MenuItemAbst>() == selected)
+        {
+            selected.deselect();
+        }
     }
 }
