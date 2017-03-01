@@ -84,11 +84,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Personal\AdvTutorialManager.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Projectile.cs" />
     <Compile Include="Assets\Personal\Attack.cs" />
     <Compile Include="Assets\Personal\AttackManager.cs" />
     <Compile Include="Assets\Personal\CameraController.cs" />
-    <Compile Include="Assets\Personal\Checkpointer.cs" />
+    <Compile Include="Assets\Personal\CheckpointerAdvTutorial.cs" />
+    <Compile Include="Assets\Personal\CheckpointerTutorial.cs" />
     <Compile Include="Assets\Personal\ComboCounter.cs" />
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
     <Compile Include="Assets\Personal\CreatePlayer.cs" />

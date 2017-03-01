@@ -22,7 +22,21 @@ public class PlayerAnimator : MonoBehaviour {
 
         
     }
-
+    public Vector3 ShootPos
+    {
+        get
+        {
+            if (pm.FacingLeft)
+            {
+                return transform.position + transform.right * playerScale * 0.5f + -transform.up * playerScale * 0.5f;
+            }
+            else
+            {
+                return transform.position + transform.right * playerScale * 0.5f + transform.up * playerScale * 0.5f;
+            }
+            
+        }
+    }
     // Update is called once per frame
     float animSpd = 0.2f;
     private AnimatorStateInfo currentBaseState;
@@ -93,7 +107,7 @@ public class PlayerAnimator : MonoBehaviour {
             float secPerCycle = 0.2f;
             float t = Time.time % secPerCycle;
             float per = Mathf.Abs(t - (secPerCycle / 2))/(secPerCycle/2);
-            print(per);
+            //print(per);
             //spr.color = new Color(spr.color.r, spr.color.g, spr.color.b, 255 - (130 * per));
             tmp.a = 0.5f - 0.3f * per;
         }
@@ -119,7 +133,8 @@ public class PlayerAnimator : MonoBehaviour {
         GroundAttack,
         Finisher,
         Burnout,  //12
-        Flip
+        Flip,
+        Shoot
         
     }
     void LateUpdate()
@@ -247,6 +262,10 @@ public class PlayerAnimator : MonoBehaviour {
         else if (c.state == PlayerMover.PState.Flip)
         {
             ani.SetInteger("State", (int)AnimationState.Flip);
+        }
+        else if (c.state == PlayerMover.PState.Shoot)
+        {
+            ani.SetInteger("State", (int)AnimationState.Shoot);
         }
         else
         {

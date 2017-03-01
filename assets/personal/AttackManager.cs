@@ -51,7 +51,7 @@ public class AttackManager : MonoBehaviour {
 	}
     public void shoot()
     {
-        GameObject m = Instantiate(RangedAttack,transform.position, transform.rotation);
+        GameObject m = Instantiate(RangedAttack, GetComponent<PlayerAnimator>().ShootPos, transform.rotation);
         Projectile p = m.GetComponent<Projectile>();
         p.hitPlayers.Add(gameObject);
         p.setMngr(this);

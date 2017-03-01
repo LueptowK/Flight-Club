@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour {
     public int hitlag;
     public int damage;
     public float velocity;
+    Rigidbody2D rb;
     [HideInInspector]
     public List<GameObject> hitPlayers;
 
@@ -15,20 +16,22 @@ public class Projectile : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
-	}
+        rb = GetComponent<Rigidbody2D>();
+        rb.velocity = (Vector2)(transform.right * velocity);
+
+    }
 	public void setMngr(AttackManager a)
     {
         atk = a;
     }
 	// Update is called once per frame
 	void FixedUpdate () {
-        transform.position += transform.right * velocity * Time.fixedDeltaTime;
-	}
+
+    }
 
     void OnTriggerEnter2D(Collider2D playerCol)
     {
-        print("col");
+        //print("col");
         if (playerCol.tag == "Player")
         {
             if (!hitPlayers.Contains(playerCol.gameObject))
@@ -48,6 +51,7 @@ public class Projectile : MonoBehaviour {
         }
         else
         {
+            //print(playerCol.gameObject);
             Destroy(gameObject);
         }
     }
