@@ -16,6 +16,7 @@ public class AttackManager : MonoBehaviour {
     public GameObject SlashFinisher;
     public GameObject RangedAttack;
     private ControlInterpret ci;
+    PlayerMover pm;
     ComboCounter combo;
 
     GameObject currentAttack;
@@ -42,6 +43,7 @@ public class AttackManager : MonoBehaviour {
 	void Start () {
         ci = GetComponent<ControlInterpret>();
         combo = GetComponent<ComboCounter>();
+        pm = GetComponent<PlayerMover>();
         lastAttack = AtkType.None;
 	}
 	
@@ -49,9 +51,20 @@ public class AttackManager : MonoBehaviour {
 	void Update () {
 		
 	}
-    public void shoot()
+    public void shoot(bool backwards)
     {
-        GameObject m = Instantiate(RangedAttack, GetComponent<PlayerAnimator>().ShootPos, transform.rotation);
+        Quaternion rot;
+        float a = 0;
+        if (pm.FacingLeft)
+        {
+            a += 180;
+        }
+        if (backwards)
+        {
+            a += 180;
+        }
+        rot = Quaternion.Euler(0, 0, a);
+        GameObject m = Instantiate(RangedAttack, GetComponent<PlayerAnimator>().ShootPos(backwards), rot);
         Projectile p = m.GetComponent<Projectile>();
         p.hitPlayers.Add(gameObject);
         p.setMngr(this);

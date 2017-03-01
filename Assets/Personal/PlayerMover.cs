@@ -36,6 +36,7 @@ public class PlayerMover : MonoBehaviour {
         Burnout,
         Flip,
         Shoot,
+        ShootWall
     }
 
     public enum ExecState
@@ -158,7 +159,7 @@ public class PlayerMover : MonoBehaviour {
                 safety--;
             }
         }
-
+        Vector2 vel;
         switch (current.state)
         {
             #region Ground State
@@ -525,7 +526,7 @@ public class PlayerMover : MonoBehaviour {
             #endregion
             #region Shoot State
             case PState.Shoot:
-                Vector2 vel = rb.velocity;
+                vel = rb.velocity;
                 if (grounded)
                 {
                     alignGround();
@@ -539,6 +540,19 @@ public class PlayerMover : MonoBehaviour {
                     if (ci.move.x < 0) { FacingLeft = true; }
                     else if (ci.move.x > 0) { FacingLeft = false; }
                 }
+                break;
+            #endregion
+            #region Shoot Wall State
+            case PState.ShootWall:
+                vel = rb.velocity;
+                vel.y += applyFriction(rb.velocity.y);
+
+                vel.y += -gravity * 9.8f * Time.fixedDeltaTime;
+                if (vel.y < -3)
+                {
+                    vel = new Vector2(0, -3);
+                }
+                rb.velocity = vel;
                 break;
                 #endregion
         }
@@ -586,7 +600,7 @@ public class PlayerMover : MonoBehaviour {
                     iframes.SetFrames(20);
                     break;
                 case ExecState.Flip:
-                    Vector2 vel = new Vector2();
+                    vel = new Vector2();
                     vel += Vector2.up * 8f;
                     float velx = 20f;
                     if (FlipBack)
@@ -616,7 +630,15 @@ public class PlayerMover : MonoBehaviour {
                     iframes.SetFrames(24);
                     break;
                 case ExecState.Shoot:
-                    atk.shoot();
+                    if(current.state == PState.Shoot)
+                    {
+                        atk.shoot(false);
+                    }
+                    else
+                    {
+                        atk.shoot(true);
+                    }
+                    
                     break;
                     
             }
@@ -818,9 +840,22 @@ public class PlayerMover : MonoBehaviour {
     {
         if (ci.Shoot&&combo.currentCombo>0&&shootCooldownCurrent<0)
         {
-            states.Enqueue(new StatePair(PState.Shoot, 2, ExecState.Shoot));
-            states.Enqueue(new StatePair(PState.Shoot, 5));
+
+            if (onWall && !grounded)
+            {
+                states.Enqueue(new StatePair(PState.ShootWall, 2, ExecState.Shoot));
+                states.Enqueue(new StatePair(PState.ShootWall, 5));
+            }
+            else
+            {
+                states.Enqueue(new StatePair(PState.Shoot, 2, ExecState.Shoot));
+                states.Enqueue(new StatePair(PState.Shoot, 5));
+            }
+
             shootCooldownCurrent = shootCooldown;
+
+
+
             return true;
         }
         return false;

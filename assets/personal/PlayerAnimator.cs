@@ -22,20 +22,22 @@ public class PlayerAnimator : MonoBehaviour {
 
         
     }
-    public Vector3 ShootPos
+    public Vector3 ShootPos(bool backwards)
     {
-        get
+        Vector3 xComp = transform.right * playerScale * 0.5f;
+        if (backwards)
         {
-            if (pm.FacingLeft)
-            {
-                return transform.position + transform.right * playerScale * 0.5f + -transform.up * playerScale * 0.5f;
-            }
-            else
-            {
-                return transform.position + transform.right * playerScale * 0.5f + transform.up * playerScale * 0.5f;
-            }
-            
+            xComp *= -1;
         }
+        if (pm.FacingLeft)
+        {
+            return transform.position + xComp + -transform.up * playerScale * 0.5f;
+        }
+        else
+        {
+            return transform.position + xComp + transform.up * playerScale * 0.5f;
+        }
+            
     }
     // Update is called once per frame
     float animSpd = 0.2f;
@@ -264,6 +266,10 @@ public class PlayerAnimator : MonoBehaviour {
             ani.SetInteger("State", (int)AnimationState.Flip);
         }
         else if (c.state == PlayerMover.PState.Shoot)
+        {
+            ani.SetInteger("State", (int)AnimationState.Shoot);
+        }
+        else if (c.state == PlayerMover.PState.ShootWall)
         {
             ani.SetInteger("State", (int)AnimationState.Shoot);
         }

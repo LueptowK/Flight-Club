@@ -84,11 +84,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Personal\AdvTutorialManager.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Projectile.cs" />
     <Compile Include="Assets\Personal\Attack.cs" />
     <Compile Include="Assets\Personal\AttackManager.cs" />
     <Compile Include="Assets\Personal\CameraController.cs" />
-    <Compile Include="Assets\Personal\Checkpointer.cs" />
+    <Compile Include="Assets\Personal\CheckpointerAdvTutorial.cs" />
+    <Compile Include="Assets\Personal\CheckpointerTutorial.cs" />
     <Compile Include="Assets\Personal\ComboCounter.cs" />
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
     <Compile Include="Assets\Personal\CreatePlayer.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="Assets\Personal\PlayerInput.cs" />
     <Compile Include="Assets\Personal\PlayerMover.cs" />
     <Compile Include="Assets\Personal\StickFixer.cs" />
+    <Compile Include="Assets\Personal\TimeTrialManager.cs" />
     <Compile Include="Assets\Personal\TutorialManager.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\CharacterItem.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\DetectPlayer.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="Assets\Personal\UI Prefabs\PerPlayerPuckController.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\PuckController.cs" />
     <Compile Include="Assets\Personal\anim\Orbital.cs" />
+    <Compile Include="Assets\TimeTrialFinishLine.cs" />
     <Compile Include="Assets\Xinputdotnet\Examples\XInputTestCS.cs" />
   </ItemGroup>
   <ItemGroup>
