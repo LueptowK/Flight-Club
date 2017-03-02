@@ -70,8 +70,11 @@ public class TimeTrialManager : MonoBehaviour {
             if (deathCounter == 0)
             {
                 Player.GetComponent<PlayerMover>().reset();
+                Player.GetComponent<PlayerMover>().mapStart();
                 Player.transform.position = spawn.transform.position;
                 Player.GetComponent<PlayerHealth>().currentHealth = 5;
+                c.transform.Find("3").gameObject.SetActive(true);
+                gameStartCounter = 90;
                 dead = false;
                 time = 0;
             }
