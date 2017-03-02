@@ -62,7 +62,7 @@ public class PlayerInput : MonoBehaviour {
     {
         get
         {
-            bool stall = state.Buttons.LeftStick == ButtonState.Pressed;
+            bool stall = state.Buttons.RightStick == ButtonState.Pressed;
             return stall;
         }
     }
