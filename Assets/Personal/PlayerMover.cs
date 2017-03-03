@@ -1140,7 +1140,14 @@ public class PlayerMover : MonoBehaviour {
         states = new Queue<StatePair>();
         states.Enqueue(new StatePair(PState.Delay, 90, ExecState.mapStart));
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-    } 
+    }
+
+    public void SinglePlayerStart()
+    {
+        states = new Queue<StatePair>();
+        states.Enqueue(new StatePair(PState.Delay, 60, ExecState.mapStart));
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+    }
 
     public void reset()
     {

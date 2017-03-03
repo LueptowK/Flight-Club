@@ -8,7 +8,7 @@ public class TimeTrialManager : MonoBehaviour {
     public GameObject spawn;
     private int endCounter;
     private int time = 0;
-    private int gameStartCounter = 90;
+    private int gameStartCounter = 60;
     GameObject[] spawns;
     bool dead;
     bool finished;
@@ -20,7 +20,7 @@ public class TimeTrialManager : MonoBehaviour {
         endCounter = 120;
         Canvas c = ((Canvas)FindObjectOfType(typeof(Canvas)));
         timer = c.transform.Find("Timer").gameObject;
-        Player.GetComponent<PlayerMover>().mapStart();
+        Player.GetComponent<PlayerMover>().SinglePlayerStart();
     }
 
     // Update is called once per frame
@@ -31,19 +31,9 @@ public class TimeTrialManager : MonoBehaviour {
         {
             c = ((Canvas)FindObjectOfType(typeof(Canvas)));
             gameStartCounter--;
-            if (gameStartCounter == 61)
-            {
-                c.transform.Find("3").gameObject.SetActive(false);
-                c.transform.Find("2").gameObject.SetActive(true);
-            }
-            if (gameStartCounter == 31)
-            {
-                c.transform.Find("2").gameObject.SetActive(false);
-                c.transform.Find("1").gameObject.SetActive(true);
-            }
             if (gameStartCounter == 1)
             {
-                c.transform.Find("1").gameObject.SetActive(false);
+                c.transform.Find("READY").gameObject.SetActive(false);
                 c.transform.Find("GO").gameObject.SetActive(true);
             }
             if (gameStartCounter == -14)
@@ -51,7 +41,7 @@ public class TimeTrialManager : MonoBehaviour {
                 c.transform.Find("GO").gameObject.SetActive(false);
             }
         }
-        if(!finished && gameStartCounter <= 0)
+        if(!finished && !dead && gameStartCounter <= 0)
         {
             time++;
         }
@@ -70,11 +60,11 @@ public class TimeTrialManager : MonoBehaviour {
             if (deathCounter == 0)
             {
                 Player.GetComponent<PlayerMover>().reset();
-                Player.GetComponent<PlayerMover>().mapStart();
+                Player.GetComponent<PlayerMover>().SinglePlayerStart();
                 Player.transform.position = spawn.transform.position;
                 Player.GetComponent<PlayerHealth>().currentHealth = 5;
-                c.transform.Find("3").gameObject.SetActive(true);
-                gameStartCounter = 90;
+                c.transform.Find("READY").gameObject.SetActive(true);
+                gameStartCounter = 60;
                 dead = false;
                 time = 0;
             }
