@@ -11,6 +11,7 @@ public class ControlInterpret : MonoBehaviour {
     private int AttackDown;
     private int SlashDown;
     private int DodgeDown;
+    private int PauseDown;
     int ShootDown;
 
     private List<inputItem> inputHistory;
@@ -180,6 +181,14 @@ public class ControlInterpret : MonoBehaviour {
         {
             DodgeDown = 0;
         }
+        if (control.Pause)
+        {
+            PauseDown += 1;
+        }
+        else
+        {
+            PauseDown = 0;
+        }
         if (control.Shoot)
         {
             ShootDown += 1;
@@ -276,6 +285,17 @@ public class ControlInterpret : MonoBehaviour {
             return false;
         }
     }
+    public bool Pause
+    {
+        get
+        {
+            if(PauseDown == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
     public bool Dodge
     {
         get
@@ -303,6 +323,13 @@ public class ControlInterpret : MonoBehaviour {
         get
         {
             return control.TauntD;
+        }
+    }
+    public bool PauseExit
+    {
+        get
+        {
+            return control.PauseExit;
         }
     }
 

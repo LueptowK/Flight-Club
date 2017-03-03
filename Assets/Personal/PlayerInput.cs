@@ -73,6 +73,13 @@ public class PlayerInput : MonoBehaviour {
             return state.DPad.Down==ButtonState.Pressed;
         }
     }
+    public bool Pause
+    {
+        get
+        {
+            return state.Buttons.Start == ButtonState.Pressed;
+        }
+    }
     public bool FinisherSlash
     {
         get
@@ -99,6 +106,13 @@ public class PlayerInput : MonoBehaviour {
         get
         {
             return state.Buttons.RightShoulder == ButtonState.Pressed;
+        }
+    }
+    public bool PauseExit
+    {
+        get
+        {
+            return (state.Buttons.A == ButtonState.Pressed && state.Buttons.X == ButtonState.Pressed && (state.Triggers.Left > 0.55f) && (state.Triggers.Right > 0.55f));
         }
     }
 }

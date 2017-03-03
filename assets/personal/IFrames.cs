@@ -11,7 +11,7 @@ public class IFrames : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        if (iFrames > 0)
+        if (iFrames > 0 && !gameObject.GetComponent<PlayerMover>().paused)
         {
             iFrames--;
         }

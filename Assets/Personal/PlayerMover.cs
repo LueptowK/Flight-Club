@@ -14,6 +14,7 @@ public class PlayerMover : MonoBehaviour {
     ComboCounter combo;
     CameraController cam;
     IFrames iframes;
+    Manager man;
 
     public PhysicsMaterial2D neutral;
     public PhysicsMaterial2D bounce;
@@ -109,6 +110,10 @@ public class PlayerMover : MonoBehaviour {
     int shootCooldownCurrent = 0;
     float ceilingBooster = 0f;
 
+    Vector2 resumeVelocity;
+
+    public bool paused;
+
     [HideInInspector]public bool FacingLeft = false;
 
     [HideInInspector]
@@ -128,6 +133,7 @@ public class PlayerMover : MonoBehaviour {
         dashVel = Vector2.zero;
         restoreTools();
         dead = false;
+        paused = false;
         rb.sharedMaterial = neutral;
     }
     public void restoreTools()
@@ -137,525 +143,544 @@ public class PlayerMover : MonoBehaviour {
     }
     // Update is called once per frame
     void FixedUpdate() {
-        Vector2 move = ci.move;
-        move.y = 0;
-        move.x += 0.15f * Math.Sign(move.x);
-        if (move.magnitude > 1f)
+        if (!paused)
         {
-            move.Normalize();
-        }
-        Vector2 desired = Vector2.zero;
-        float tempGrav = gravity;
-        stallCooldownCurrent--;
-        shootCooldownCurrent--;
-        
 
-        if (registerHit) // hit in the queue
-        {
-            int safety = states.Count;
-            while ((current.state != PState.Delay || current.action != ExecState.hitLag) && safety > 0)
+            Vector2 move = ci.move;
+            move.y = 0;
+            move.x += 0.15f * Math.Sign(move.x);
+            if (move.magnitude > 1f)
             {
-                nextState();
-                safety--;
+                move.Normalize();
             }
-        }
-        Vector2 vel;
-        switch (current.state)
-        {
-            #region Ground State
-            case PState.Ground:
-                {
-                    desired.x = move.x * moveSpeed;
-                    desired.y = rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime;
-                    //flip sprite direction to movement direction on ground
-                    if (desired.x < 0) { FacingLeft = true; }
-                    else if (desired.x > 0) { FacingLeft = false; }
-                    falling = false;
+            Vector2 desired = Vector2.zero;
+            float tempGrav = gravity;
+            stallCooldownCurrent--;
+            shootCooldownCurrent--;
 
-                    restoreTools();
-                    
-                    if (ci.Jump)
+
+            if (registerHit) // hit in the queue
+            {
+                int safety = states.Count;
+                while ((current.state != PState.Delay || current.action != ExecState.hitLag) && safety > 0)
+                {
+                    nextState();
+                    safety--;
+                }
+            }
+            Vector2 vel;
+            switch (current.state)
+            {
+                #region Ground State
+                case PState.Ground:
                     {
-                        states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
+                        desired.x = move.x * moveSpeed;
+                        desired.y = rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime;
+                        //flip sprite direction to movement direction on ground
+                        if (desired.x < 0) { FacingLeft = true; }
+                        else if (desired.x > 0) { FacingLeft = false; }
+                        falling = false;
+
+                        restoreTools();
+
+                        if (ci.Jump)
+                        {
+                            states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
+                        }
+                        if (ci.move.y >= 0)
+                        {
+                            tryDash();
+                        }
+                        if (states.Count < 1)
+                        {
+                            if (!tryAttack())
+                            {
+                                if (!tryFinisherSlash())
+                                {
+                                    tryShoot();
+                                }
+                            }
+                        }
+                        if (ci.TauntDown && desired.x == 0)
+                        {
+                            pani.TauntD();
+
+                            states.Enqueue(new StatePair(PState.Delay, 45));
+                        }
+                        tryDodge();
+                        if (nearWall)
+                        {
+                            if ((desired.x > 0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
+                            {
+                                desired.x = 0;
+                            }
+                        }
+                        if (!grounded)
+                        {
+                            states.Enqueue(new StatePair(PState.Air, 0));
+                            break;
+                        }
+
+                        rb.velocity = desired;
+                        break;
                     }
-                    if (ci.move.y >= 0)
+                #endregion
+                #region Air State
+                case PState.Air:
                     {
-                        tryDash();
+                        if (grounded)
+                        {
+                            states.Enqueue(new StatePair(PState.Ground, 0));
+                        }
+                        desired = AirControl(move);
+                        if (!tryDash())
+                        {
+                            tryStall();
+                        }
+                        if (states.Count < 1)
+                        {
+                            if (!tryAttack())
+                            {
+                                if (!tryFinisherSlash())
+                                {
+                                    tryShoot();
+                                }
+                            }
+                        }
+
+
+                        if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
+                        {
+                            falling = true;
+                        }
+                        #region wall
+                        if (nearWall) //WALL - NEAR
+                        {
+
+                            restoreTools();
+
+                            if (onWall) //WALL - HANG
+                            {
+                                falling = false;
+                                desired.y += applyFriction(rb.velocity.y);
+
+
+                                if (rb.velocity.y < -3)
+                                {
+                                    rb.velocity = new Vector2(0, -3);
+                                }
+
+
+
+                                if (OnRightWall)
+                                {
+                                    FacingLeft = false;
+                                    RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.right, 2.0f, 1 << 8);
+                                    transform.position = new Vector3(r.point.x - col.bounds.extents.x, transform.position.y, 0);
+                                    rb.velocity = new Vector2(0, rb.velocity.y);
+                                }
+                                else
+                                {
+                                    RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.left, 2.0f, 1 << 8);
+                                    transform.position = new Vector3(r.point.x + col.bounds.extents.x, transform.position.y, 0);
+                                    rb.velocity = new Vector2(0, rb.velocity.y);
+                                    FacingLeft = true;
+                                }
+
+
+                                //tempGrav = 0.3f;
+                            }
+
+
+
+                            if (ci.Jump) // WALLJUMP
+                            {
+                                falling = false;
+                                rb.velocity = Vector2.zero;
+
+                                pani.jump();
+
+
+
+                                if (OnRightWall)
+                                {
+                                    desired = new Vector2(-wallJumpXVel, wallJumpYVel);
+                                    FacingLeft = true;
+                                }
+                                else
+                                {
+                                    desired = new Vector2(wallJumpXVel, wallJumpYVel);
+                                    FacingLeft = false;
+                                }
+                            }
+
+                        }
+                        #endregion
+                        else if (onCeiling && ci.move.y > 0 && ceilingAvaliable)
+                        {
+                            states.Enqueue(new StatePair(PState.CeilingHold, 30));
+                            ceilingAvaliable = false;
+                            dashAvailable = true;
+                        }
+
+
                     }
+                    if (falling)
+                    {
+                        tempGrav *= 5;
+                    }
+                    rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+                    if (rb.velocity.y < -maxFallSpeed)
+                    {
+                        rb.velocity = desired + new Vector2(0, -maxFallSpeed);
+                    }
+                    break;
+                #endregion
+                #region Dash State
+                case PState.Dash:
+                    rb.velocity = dashVel;
+                    falling = false;
+                    if (current.delay == 2) { dashVel *= dashEndMomentum; }
+                    if (grounded) { dashVel.y = 0; }
                     if (states.Count < 1)
                     {
-                       if(!tryAttack())
+                        if (!tryStall())
                         {
-                            if (!tryFinisherSlash()){
-                                tryShoot();
+                            if (!tryAttack())
+                            {
+                                tryFinisherSlash();
                             }
                         }
                     }
-                    if (ci.TauntDown && desired.x == 0)
-                    {
-                        pani.TauntD();
 
-                        states.Enqueue(new StatePair(PState.Delay, 45));
-                    }
-                    tryDodge();
-                    if (nearWall)
+                    break;
+                #endregion
+                #region Stall State
+                case PState.Stall:
+                    rb.velocity = Vector2.zero;
+                    falling = false;
+                    if (ci.move.x < 0) { FacingLeft = true; }
+                    else if (ci.move.x > 0) { FacingLeft = false; }
+                    if (current.delay == stallTime) { stallCooldownCurrent = stallCooldown; }
+                    if (current.delay < stallTime && states.Count < 1)
                     {
-                        if ((desired.x > 0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
+                        if (!tryDash())
                         {
-                            desired.x = 0;
+                            tryAttack();
                         }
                     }
-                    if (!grounded)
+                    break;
+                #endregion
+                #region Delay State
+                case PState.Delay:
+                    switch (current.action)
                     {
-                        states.Enqueue(new StatePair(PState.Air, 0));
-                        break;
+                        case ExecState.Jump:
+                            rb.velocity *= 0.80f;
+                            if (states.Count < 1)
+                            {
+                                if (!tryDash())
+                                {
+                                    tryAttack();
+                                }
+                            }
+                            break;
+                        case ExecState.hitLag:
+                            rb.velocity = Vector2.zero;
+                            break;
+                        case ExecState.mapStart:
+                            rb.velocity = new Vector2(0, rb.velocity.y - 9.8f * Time.fixedDeltaTime);
+                            break;
+                        case ExecState.Flip:
+                            rb.velocity = Vector2.zero;
+                            break;
+                        case ExecState.None:
+                            rb.velocity = Vector2.zero;
+                            break;
+                        case ExecState.Normal:
+                            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 9.8f * Time.fixedDeltaTime);
+                            if (grounded)
+                            {
+                                alignGround();
+                            }
+                            break;
                     }
 
-                    rb.velocity = desired;
                     break;
-                }
-            #endregion
-            #region Air State
-            case PState.Air:
-                {
+                #endregion
+                #region CeilingHold State
+                case PState.CeilingHold:
+                    rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x), 0f);
+
+                    if (ci.Jump)
+                    {
+                        rb.velocity += new Vector2(0, -maxFallSpeed);
+                        states.Enqueue(new StatePair(PState.Air, 0));
+                    }
+                    if (states.Count < 1)
+                    {
+                        if (!tryDash())
+                        {
+                            tryStall();
+                        }
+                    }
+                    if ((states.Count < 1 && ci.move.y < 0) || !onCeiling)
+                    {
+                        states.Enqueue(new StatePair(PState.Air, 0));
+                    }
+
+                    if (states.Count > 0)
+                    {
+                        current.delay = 1;
+                    }
+                    break;
+                #endregion
+                #region Hitstun State
+                case PState.Hitstun:
+                    //rb.sharedMaterial = bounce;
+
+                    if (grounded && rb.velocity.y < 0)
+                    {
+                        hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
+                        calculateDI();
+                        rb.velocity = hitVector;
+                    }
+                    if (nearWall) //WALL - NEAR
+                    {
+                        restoreTools();
+
+                        if (OnRightWall && rb.velocity.x > 0)
+                        {
+                            hitVector = new Vector2(-rb.velocity.x, rb.velocity.y);
+                            calculateDI();
+                            rb.velocity = hitVector;
+
+                        }
+                        else if (OnLeftWall && rb.velocity.x < 0)
+                        {
+                            hitVector = new Vector2(-rb.velocity.x, rb.velocity.y);
+                            calculateDI();
+                            rb.velocity = hitVector;
+                        }
+
+                    }
+                    if (onCeiling && rb.velocity.y > 0)
+                    {
+                        dashAvailable = true;
+                        hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
+                        calculateDI();
+                        rb.velocity = hitVector;
+                    }
+                    if (rb.velocity.magnitude > 1.5 * moveSpeed && current.delay < 50)
+                    {
+                        rb.velocity = rb.velocity * hitstunFriction;
+                    }
+
+                    rb.velocity += new Vector2(0, -gravity * 9.8f * Time.fixedDeltaTime);
+                    break;
+                #endregion
+                #region AirAttack State
+                case PState.AirAttack:
                     if (grounded)
                     {
                         states.Enqueue(new StatePair(PState.Ground, 0));
+                        current.delay = 0;
+                        atk.stopAttack();
                     }
                     desired = AirControl(move);
-                    if (!tryDash())
-                    {
-                        tryStall();
-                    }
-                    if (states.Count < 1)
-                    {
-                        if (!tryAttack())
-                        {
-                            if (!tryFinisherSlash())
-                            {
-                                tryShoot();
-                            }
-                        }
-                    }
-
-
                     if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
                     {
                         falling = true;
                     }
-                    #region wall
-                    if (nearWall) //WALL - NEAR
+                    if (falling)
                     {
-
-                        restoreTools();
-
-                        if (onWall) //WALL - HANG
-                        {
-                            falling = false;
-                            desired.y += applyFriction(rb.velocity.y);
-
-
-                            if (rb.velocity.y < -3)
-                            {
-                                rb.velocity = new Vector2(0, -3);
-                            }
-
-
-
-                            if (OnRightWall)
-                            {
-                                FacingLeft = false;
-                                RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.right, 2.0f, 1 << 8);
-                                transform.position = new Vector3( r.point.x - col.bounds.extents.x, transform.position.y, 0);
-                                rb.velocity = new Vector2(0, rb.velocity.y);
-                            }
-                            else
-                            {
-                                RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.left, 2.0f, 1 << 8);
-                                transform.position = new Vector3(r.point.x + col.bounds.extents.x, transform.position.y, 0);
-                                rb.velocity = new Vector2(0, rb.velocity.y);
-                                FacingLeft = true;
-                            }
-
-
-                            //tempGrav = 0.3f;
-                        }
-
-
-
-                        if (ci.Jump) // WALLJUMP
-                        {
-                            falling = false;
-                            rb.velocity = Vector2.zero;
-
-                            pani.jump();
-
-
-
-                            if (OnRightWall)
-                            {
-                                desired = new Vector2(-wallJumpXVel, wallJumpYVel);
-                                FacingLeft = true;
-                            }
-                            else
-                            {
-                                desired = new Vector2(wallJumpXVel, wallJumpYVel);
-                                FacingLeft = false;
-                            }
-                        }
-
+                        tempGrav *= 5;
                     }
-                    #endregion
-                    else if (onCeiling && ci.move.y > 0 && ceilingAvaliable)
+                    rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+                    if (rb.velocity.y < -maxFallSpeed)
                     {
-                        states.Enqueue(new StatePair(PState.CeilingHold, 30));
-                        ceilingAvaliable = false;
-                        dashAvailable = true;
+                        rb.velocity = desired + new Vector2(0, -maxFallSpeed);
                     }
-
-
-                }
-                if (falling)
-                {
-                    tempGrav *= 5;
-                }
-                rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
-                if (rb.velocity.y < -maxFallSpeed)
-                {
-                    rb.velocity = desired + new Vector2(0, -maxFallSpeed);
-                }
-                break;
-            #endregion
-            #region Dash State
-            case PState.Dash:
-                rb.velocity = dashVel;
-                falling = false;
-                if (current.delay == 2) { dashVel *= dashEndMomentum; }
-                if (grounded) { dashVel.y = 0; }
-                if (states.Count < 1)
-                {
-                    if (!tryStall())
+                    break;
+                #endregion
+                #region GroundAttack State
+                case PState.GroundAttack:
+                    rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x, 5f), rb.velocity.y);
+                    break;
+                #endregion
+                #region FinisherSlash State
+                case PState.FinisherSlash:
+                    rb.velocity = Vector2.zero;
+                    break;
+                #endregion
+                #region Burnout State
+                case PState.Burnout:
+                    rb.velocity += new Vector2(0, -gravity * 9.8f * Time.fixedDeltaTime);
+                    break;
+                #endregion
+                #region Flip State
+                case PState.Flip:
+                    tempGrav *= 2f;
+                    float velx = rb.velocity.x;
+                    if (grounded)
                     {
-                        if (!tryAttack())
-                        {
-                            tryFinisherSlash();
-                        }
-                    }
-                }
-
-                break;
-            #endregion
-            #region Stall State
-            case PState.Stall:
-                rb.velocity = Vector2.zero;
-                falling = false;
-                if (ci.move.x < 0) { FacingLeft = true; }
-                else if (ci.move.x > 0) { FacingLeft = false; }
-                if (current.delay == stallTime) { stallCooldownCurrent = stallCooldown; }
-                if (current.delay < stallTime && states.Count < 1)
-                {
-                    if (!tryDash())
-                    {
-                        tryAttack();
-                    }
-                }
-                break;
-            #endregion
-            #region Delay State
-            case PState.Delay:
-                switch (current.action)
-                {
-                    case ExecState.Jump:
-                        rb.velocity *= 0.80f;
+                        velx = 0;
+                        alignGround();
                         if (states.Count < 1)
                         {
-                            if (!tryDash())
-                            {
-                                tryAttack();
-                            }
+                            tryAttack();
                         }
-                        break;
-                    case ExecState.hitLag:
-                        rb.velocity = Vector2.zero;
-                        break;
-                    case ExecState.mapStart:
-                        rb.velocity = new Vector2(0, rb.velocity.y - 9.8f * Time.fixedDeltaTime);
-                        break;
-                    case ExecState.Flip:
-                        rb.velocity = Vector2.zero;
-                        break;
-                    case ExecState.None:
-                        rb.velocity = Vector2.zero;
-                        break;
-                    case ExecState.Normal:
-                        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 9.8f * Time.fixedDeltaTime);
-                        if (grounded)
-                        {
-                            alignGround();
-                        }
-                        break;
-                }
-
-                break;
-            #endregion
-            #region CeilingHold State
-            case PState.CeilingHold:
-                rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x), 0f);
-
-                if (ci.Jump)
-                {
-                    rb.velocity += new Vector2(0, -maxFallSpeed);
-                    states.Enqueue(new StatePair(PState.Air, 0));
-                }
-                if (states.Count < 1)
-                {
-                    if (!tryDash())
-                    {
-                        tryStall();
                     }
-                }
-                if ((states.Count < 1 && ci.move.y < 0) || !onCeiling)
-                {
-                    states.Enqueue(new StatePair(PState.Air, 0));
-                }
-
-                if (states.Count > 0)
-                {
-                    current.delay = 1;
-                }
-                break;
-            #endregion
-            #region Hitstun State
-            case PState.Hitstun:
-                //rb.sharedMaterial = bounce;
-                
-                if (grounded && rb.velocity.y < 0)
-                {
-                    hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
-                    calculateDI();
-                    rb.velocity = hitVector;
-                }
-                if (nearWall) //WALL - NEAR
-                {
-                    restoreTools();
-
-                    if (OnRightWall && rb.velocity.x > 0)
-                    {
-                        hitVector = new Vector2(-rb.velocity.x, rb.velocity.y);
-                        calculateDI();
-                        rb.velocity = hitVector;
-
-                    }
-                    else if (OnLeftWall && rb.velocity.x < 0)
-                    {
-                        hitVector = new Vector2(-rb.velocity.x, rb.velocity.y);
-                        calculateDI();
-                        rb.velocity = hitVector;
-                    }
-
-                }
-                if (onCeiling && rb.velocity.y > 0)
-                {
-                    dashAvailable = true;
-                    hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
-                    calculateDI();
-                    rb.velocity = hitVector;
-                }
-                if (rb.velocity.magnitude > 1.5 * moveSpeed&&current.delay<50)
-                {
-                    rb.velocity = rb.velocity * hitstunFriction;
-                }
-                
-                rb.velocity += new Vector2(0, -gravity * 9.8f * Time.fixedDeltaTime);
-                break;
-            #endregion
-            #region AirAttack State
-            case PState.AirAttack:
-                if (grounded)
-                {
-                    states.Enqueue(new StatePair(PState.Ground, 0));
-                    current.delay = 0;
-                    atk.stopAttack();
-                }
-                desired = AirControl(move);
-                if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
-                {
-                    falling = true;
-                }
-                if (falling)
-                {
-                    tempGrav *= 5;
-                }
-                rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
-                if (rb.velocity.y < -maxFallSpeed)
-                {
-                    rb.velocity = desired + new Vector2(0, -maxFallSpeed);
-                }
-                break;
-            #endregion
-            #region GroundAttack State
-            case PState.GroundAttack:
-                rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x,5f), rb.velocity.y);
-                break;
-            #endregion
-            #region FinisherSlash State
-            case PState.FinisherSlash:
-                rb.velocity = Vector2.zero;
-                break;
-            #endregion
-            #region Burnout State
-            case PState.Burnout:
-                rb.velocity += new Vector2(0, -gravity * 9.8f * Time.fixedDeltaTime);
-                break;
-            #endregion
-            #region Flip State
-            case PState.Flip:
-                tempGrav *= 2f;
-                float velx = rb.velocity.x;
-                if (grounded)
-                {
-                    velx = 0;
-                    alignGround();
-                    if (states.Count < 1)
-                    {
-                        tryAttack();
-                    }
-                }
-                rb.velocity =new Vector2(velx ,rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime) ;
-                break;
-            #endregion
-            #region Shoot State
-            case PState.Shoot:
-                vel = rb.velocity;
-                if (grounded)
-                {
-                    alignGround();
-                    vel.x += applyFriction(vel.x, 2);
-                }
-                vel.y += -gravity * 9.8f * Time.fixedDeltaTime;
-                rb.velocity = vel;
-
-                if (current.action == ExecState.Shoot)
-                {
-                    if (ci.move.x < 0) { FacingLeft = true; }
-                    else if (ci.move.x > 0) { FacingLeft = false; }
-                }
-                break;
-            #endregion
-            #region Shoot Wall State
-            case PState.ShootWall:
-                vel = rb.velocity;
-                vel.y += applyFriction(rb.velocity.y);
-
-                vel.y += -gravity * 9.8f * Time.fixedDeltaTime;
-                if (vel.y < -3)
-                {
-                    vel = new Vector2(0, -3);
-                }
-                rb.velocity = vel;
-                break;
+                    rb.velocity = new Vector2(velx, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+                    break;
                 #endregion
-        }
-
-
-        #region ceiling booster
-        if (current.state == PState.Dash)// Used to find the ceiling after a dash
-        {
-            ceilingBooster = 0.2f;
-        }
-        else
-        {
-            ceilingBooster = 0f;
-        }
-        #endregion
-
-        current.delay -= 1;
-        if (current.delay <= 0)
-        {
-            #region Exec States
-            switch (current.action)
-            {
-                case ExecState.None:
-                    break;
-                case ExecState.Jump:
-                    Vector2 ogVel = (rb.velocity * (Mathf.Pow(1f / 0.8f, jumpSquatFrames)));
-                    rb.velocity = new Vector2(ci.move.x * 0.5f * ogVel.x *Mathf.Sign(ogVel.x) + ogVel.x* 0.5f, jumpVel);
-                    states.Enqueue(new StatePair(PState.Air, 0));
-                    break;
-                case ExecState.hitLag:
-                    if (ci.move != Vector2.zero)
+                #region Shoot State
+                case PState.Shoot:
+                    vel = rb.velocity;
+                    if (grounded)
                     {
-                        calculateDI();
+                        alignGround();
+                        vel.x += applyFriction(vel.x, 2);
                     }
-                    rb.velocity = hitVector;
-                    break;
-                case ExecState.Death:
-                    pani.Die();
-                    break;
-                case ExecState.Destroy:
-                    gameObject.SetActive(false);
-                    //Debug.Break();
-                    break;
-                case ExecState.Dodge:
-                    iframes.SetFrames(20);
-                    break;
-                case ExecState.Flip:
-                    vel = new Vector2();
-                    vel += Vector2.up * 8f;
-                    float velx = 20f;
-                    if (FlipBack)
+                    vel.y += -gravity * 9.8f * Time.fixedDeltaTime;
+                    rb.velocity = vel;
+
+                    if (current.action == ExecState.Shoot)
                     {
-                        if (FacingLeft)
-                        {
-                            vel += Vector2.right * velx;
-                        }
-                        else
-                        {
-                            vel += Vector2.left * velx;
-                        }
-                        
+                        if (ci.move.x < 0) { FacingLeft = true; }
+                        else if (ci.move.x > 0) { FacingLeft = false; }
                     }
-                    else
+                    break;
+                #endregion
+                #region Shoot Wall State
+                case PState.ShootWall:
+                    vel = rb.velocity;
+                    vel.y += applyFriction(rb.velocity.y);
+
+                    vel.y += -gravity * 9.8f * Time.fixedDeltaTime;
+                    if (vel.y < -3)
                     {
-                        if (FacingLeft)
-                        {
-                            vel += Vector2.left * velx;
-                        }
-                        else
-                        {
-                            vel += Vector2.right * velx;
-                        }
+                        vel = new Vector2(0, -3);
                     }
                     rb.velocity = vel;
-                    iframes.SetFrames(24);
                     break;
-                case ExecState.Shoot:
-                    if(current.state == PState.Shoot)
-                    {
-                        atk.shoot(false);
-                    }
-                    else
-                    {
-                        atk.shoot(true);
-                    }
-                    
-                    break;
-                    
+                    #endregion
+            }
+
+
+            #region ceiling booster
+            if (current.state == PState.Dash)// Used to find the ceiling after a dash
+            {
+                ceilingBooster = 0.2f;
+            }
+            else
+            {
+                ceilingBooster = 0f;
             }
             #endregion
-            nextState();
-        }
-        else if (!registerHit)
-        {
-            pani.StateChange(false);
-        }
-        else
-        {
-            registerHit = false;
-        }
 
-        
+            current.delay -= 1;
+            if (current.delay <= 0)
+            {
+                #region Exec States
+                switch (current.action)
+                {
+                    case ExecState.None:
+                        break;
+                    case ExecState.Jump:
+                        Vector2 ogVel = (rb.velocity * (Mathf.Pow(1f / 0.8f, jumpSquatFrames)));
+                        rb.velocity = new Vector2(ci.move.x * 0.5f * ogVel.x * Mathf.Sign(ogVel.x) + ogVel.x * 0.5f, jumpVel);
+                        states.Enqueue(new StatePair(PState.Air, 0));
+                        break;
+                    case ExecState.hitLag:
+                        if (ci.move != Vector2.zero)
+                        {
+                            calculateDI();
+                        }
+                        rb.velocity = hitVector;
+                        break;
+                    case ExecState.Death:
+                        pani.Die();
+                        break;
+                    case ExecState.Destroy:
+                        gameObject.SetActive(false);
+                        //Debug.Break();
+                        break;
+                    case ExecState.Dodge:
+                        iframes.SetFrames(20);
+                        break;
+                    case ExecState.Flip:
+                        vel = new Vector2();
+                        vel += Vector2.up * 8f;
+                        float velx = 20f;
+                        if (FlipBack)
+                        {
+                            if (FacingLeft)
+                            {
+                                vel += Vector2.right * velx;
+                            }
+                            else
+                            {
+                                vel += Vector2.left * velx;
+                            }
 
+                        }
+                        else
+                        {
+                            if (FacingLeft)
+                            {
+                                vel += Vector2.left * velx;
+                            }
+                            else
+                            {
+                                vel += Vector2.right * velx;
+                            }
+                        }
+                        rb.velocity = vel;
+                        iframes.SetFrames(24);
+                        break;
+                    case ExecState.Shoot:
+                        if (current.state == PState.Shoot)
+                        {
+                            atk.shoot(false);
+                        }
+                        else
+                        {
+                            atk.shoot(true);
+                        }
+
+                        break;
+
+                }
+                #endregion
+                nextState();
+            }
+            else if (!registerHit)
+            {
+                pani.StateChange(false);
+            }
+            else
+            {
+                registerHit = false;
+            }
+
+            
+        }
+        if (man != null)
+        {
+
+            if (ci.Pause)
+            {
+                man.Pause();
+            }
+            if (paused)
+            {
+                if (ci.PauseExit)
+                {
+                    man.Quit();
+                }
+            }
+        }
     }
  
     public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage)
@@ -1140,6 +1165,7 @@ public class PlayerMover : MonoBehaviour {
         states = new Queue<StatePair>();
         states.Enqueue(new StatePair(PState.Delay, 90, ExecState.mapStart));
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+        man = GameObject.Find("Main Camera").GetComponent<Manager>();
     }
 
     public void SinglePlayerStart()
@@ -1147,6 +1173,14 @@ public class PlayerMover : MonoBehaviour {
         states = new Queue<StatePair>();
         states.Enqueue(new StatePair(PState.Delay, 60, ExecState.mapStart));
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+        man = GameObject.Find("Main Camera").GetComponent<Manager>();
+    }
+
+    public void TutorialStart()
+    {
+        states = new Queue<StatePair>();
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+        man = GameObject.Find("Main Camera").GetComponent<Manager>();
     }
 
     public void reset()
@@ -1155,5 +1189,20 @@ public class PlayerMover : MonoBehaviour {
         health.currentHealth = health.maxHealth;
         dead = false;
         current = new StatePair(PState.Air, 1);
+    }
+
+    public void pause(bool pausing)
+    {
+        if (paused && !pausing)
+        {
+            rb.velocity = resumeVelocity;
+            paused = false;
+        }
+        if (!paused && pausing)
+        {
+            resumeVelocity = rb.velocity;
+            rb.velocity = Vector2.zero;
+            paused = true;
+        }
     }
 }

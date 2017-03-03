@@ -1,17 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MapManager : MonoBehaviour {
+public class MapManager : Manager {
     GameObject[] Spawns;
     GameObject[] Players;
     List<GameObject> removed;
+    public GameObject pauseScreen;
     private bool gameOver;
     private int gameEndCounter;
     private int gameStartCounter;
     private Canvas c;
+    private bool paused;
     // Use this for initialization
     void Start () {
         gameEndCounter = 300;
@@ -25,7 +28,7 @@ public class MapManager : MonoBehaviour {
         foreach(GameObject player in Players)
         {
             player.GetComponent<SpriteRenderer>().enabled = true;
-            int spnInd = spawnL[(int)Random.Range(0, spawnL.Count)];
+            int spnInd = spawnL[(int)UnityEngine.Random.Range(0, spawnL.Count)];
             spawnL.Remove(spnInd);
             GameObject spawn = Spawns[spnInd];
             player.transform.position = spawn.transform.position;
@@ -93,15 +96,40 @@ public class MapManager : MonoBehaviour {
 
         if (gameEndCounter == 0)
         {
-            Destroy(c.gameObject);
-            foreach (GameObject player in Players)
-            {
-                Destroy(player);
-            }
-            SceneManager.LoadScene(1);
+            Quit();
         }
     }
-	
 
+    public override void Pause()
+    {
+        if (!paused && !gameOver && (gameStartCounter <= 0))
+        {
+            foreach (GameObject player in Players)
+            {
+                player.GetComponent<PlayerMover>().pause(true);
+            }
+            paused = true;
+            pauseScreen.SetActive(true);
+        }
+        else if (paused)
+        {
+            foreach (GameObject player in Players)
+            {
+                player.GetComponent<PlayerMover>().pause(false);
+            }
+            paused = false;
+            pauseScreen.SetActive(false);
+        }
+    }
+
+    public override void Quit()
+    {
+        Destroy(c.gameObject);
+        foreach (GameObject player in Players)
+        {
+            Destroy(player);
+        }
+        SceneManager.LoadScene(1);
+    }
 
 }

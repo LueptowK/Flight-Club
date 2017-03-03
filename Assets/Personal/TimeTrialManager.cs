@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-public class TimeTrialManager : MonoBehaviour {
+public class TimeTrialManager : Manager {
     public GameObject Player;
     public GameObject spawn;
     private int endCounter;
@@ -15,10 +16,12 @@ public class TimeTrialManager : MonoBehaviour {
     private Canvas c;
     private GameObject timer;
     int deathCounter;
+    bool paused;
+    public GameObject pauseScreen;
 	// Use this for initialization
 	void Start () {
         endCounter = 120;
-        Canvas c = ((Canvas)FindObjectOfType(typeof(Canvas)));
+        c = GameObject.Find("Canvas").transform.GetComponent<Canvas>();
         timer = c.transform.Find("Timer").gameObject;
         Player.GetComponent<PlayerMover>().SinglePlayerStart();
     }
@@ -26,54 +29,56 @@ public class TimeTrialManager : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate()
     {
-        updateTimer();
-        if (gameStartCounter > -15)
+        if (!paused)
         {
-            c = ((Canvas)FindObjectOfType(typeof(Canvas)));
-            gameStartCounter--;
-            if (gameStartCounter == 1)
+            updateTimer();
+            if (gameStartCounter > -15)
             {
-                c.transform.Find("READY").gameObject.SetActive(false);
-                c.transform.Find("GO").gameObject.SetActive(true);
+                gameStartCounter--;
+                if (gameStartCounter == 1)
+                {
+                    c.transform.Find("READY").gameObject.SetActive(false);
+                    c.transform.Find("GO").gameObject.SetActive(true);
+                }
+                if (gameStartCounter == -14)
+                {
+                    c.transform.Find("GO").gameObject.SetActive(false);
+                }
             }
-            if (gameStartCounter == -14)
+            if (!finished && !dead && gameStartCounter <= 0)
             {
-                c.transform.Find("GO").gameObject.SetActive(false);
+                time++;
             }
-        }
-        if(!finished && !dead && gameStartCounter <= 0)
-        {
-            time++;
-        }
 
-        if (finished)
-        {
-            endCounter--;
-            if (endCounter <= 0)
+            if (finished)
             {
-                SceneManager.LoadScene(9);
+                endCounter--;
+                if (endCounter <= 0)
+                {
+                    Quit();
+                }
             }
-        }
-        if (dead)
-        {
-            deathCounter--;
-            if (deathCounter == 0)
+            if (dead)
             {
-                Player.GetComponent<PlayerMover>().reset();
-                Player.GetComponent<PlayerMover>().SinglePlayerStart();
-                Player.transform.position = spawn.transform.position;
-                Player.GetComponent<PlayerHealth>().currentHealth = 5;
-                c.transform.Find("READY").gameObject.SetActive(true);
-                gameStartCounter = 60;
-                dead = false;
-                time = 0;
+                deathCounter--;
+                if (deathCounter == 0)
+                {
+                    Player.GetComponent<PlayerMover>().reset();
+                    Player.GetComponent<PlayerMover>().SinglePlayerStart();
+                    Player.transform.position = spawn.transform.position;
+                    Player.GetComponent<PlayerHealth>().currentHealth = 5;
+                    c.transform.Find("READY").gameObject.SetActive(true);
+                    gameStartCounter = 60;
+                    dead = false;
+                    time = 0;
+                }
             }
-        }
-        if (Player.GetComponent<PlayerHealth>().currentHealth <= 0 && !dead)
-        {
-            Player.GetComponent<PlayerMover>().kill();
-            deathCounter = 89;
-            dead = true;
+            if (Player.GetComponent<PlayerHealth>().currentHealth <= 0 && !dead)
+            {
+                Player.GetComponent<PlayerMover>().kill();
+                deathCounter = 89;
+                dead = true;
+            }
         }
         
     }
@@ -91,5 +96,26 @@ public class TimeTrialManager : MonoBehaviour {
         float seconds = Mathf.Floor(realTime % 60);
         float fraction = (realTime * 100) % 100;
         timer.GetComponent<Text>().text = string.Format("{0:00} : {1:00} : {2:00}", minutes, seconds, fraction);
+    }
+
+    public override void Pause()
+    {
+        if(gameStartCounter <= 0 && !paused && !finished)
+        {
+            Player.GetComponent<PlayerMover>().pause(true);
+            paused = true;
+            pauseScreen.SetActive(true);
+        }
+        else if (gameStartCounter <= 0 && paused)
+        {
+            paused = false;
+            Player.GetComponent<PlayerMover>().pause(false);
+            pauseScreen.SetActive(false);
+        }
+    }
+
+    public override void Quit()
+    {
+        SceneManager.LoadScene(9);
     }
 }
