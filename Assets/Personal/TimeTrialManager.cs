@@ -18,6 +18,7 @@ public class TimeTrialManager : Manager {
     int deathCounter;
     bool paused;
     public GameObject pauseScreen;
+    public bool isTarget = false;
 	// Use this for initialization
 	void Start () {
         endCounter = 120;
@@ -79,6 +80,10 @@ public class TimeTrialManager : Manager {
                 deathCounter = 89;
                 dead = true;
             }
+            if (isTarget) { if (GameObject.FindGameObjectsWithTag("Target").Length == 0)
+                {
+                    finish();
+                } }
         }
         
     }

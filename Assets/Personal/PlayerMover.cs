@@ -727,7 +727,8 @@ public class PlayerMover : MonoBehaviour {
     bool calcDashVel()
     {
         Vector2 input = ci.move.normalized;
-        float marigin = 0.2f;
+        float marigin = 0.70f;
+        float minimum = 0.2f;
         #region forward dash (no input)
         if (input == Vector2.zero)
         {
@@ -761,11 +762,11 @@ public class PlayerMover : MonoBehaviour {
         #endregion
         if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8))
         {
-            if (input.x < marigin)
+            if (input.x < minimum)
             {
                 if (input.x >= -marigin && input.y != 0)
                 {
-                    input.x = 0.2f;
+                    input.x = minimum;
                 }
                 else
                 {
@@ -777,11 +778,11 @@ public class PlayerMover : MonoBehaviour {
         }
         else if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8))
         {
-            if (input.x > -marigin)
+            if (input.x > -minimum)
             {
                 if (input.x <= marigin && input.y != 0)
                 {
-                    input.x = -0.2f;
+                    input.x = -minimum;
                 }
                 else
                 {
