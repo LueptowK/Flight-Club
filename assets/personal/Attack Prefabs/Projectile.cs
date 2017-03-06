@@ -51,6 +51,10 @@ public class Projectile : MonoBehaviour {
         }
         else
         {
+            if(playerCol.tag == "Target")
+            {
+                Destroy(playerCol.gameObject);
+            }
             //print(playerCol.gameObject);
             Destroy(gameObject);
         }

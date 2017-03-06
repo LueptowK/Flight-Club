@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/PlayerSelect.unity
+- path: Assets/PlayerSelectRough.unity
   isLoaded: 1
   isActive: 1
