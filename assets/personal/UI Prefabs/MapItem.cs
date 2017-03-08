@@ -8,6 +8,10 @@ public class MapItem : MenuItemAbst {
 	// Use this for initialization
 	public override void click()
     {
+        if (nextScene == -1)
+        {
+            Application.Quit();
+        }
         SceneManager.LoadScene(nextScene);
     }
 }
