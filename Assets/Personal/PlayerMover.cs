@@ -53,7 +53,8 @@ public class PlayerMover : MonoBehaviour {
         Dodge,
         Flip,
         Normal,
-        Shoot
+        Shoot,
+        LandLag
 
     }
 
@@ -161,6 +162,7 @@ public class PlayerMover : MonoBehaviour {
 
             if (registerHit) // hit in the queue
             {
+                atk.stopAttack();
                 int safety = states.Count;
                 while ((current.state != PState.Delay || current.action != ExecState.hitLag) && safety > 0)
                 {
@@ -481,11 +483,14 @@ public class PlayerMover : MonoBehaviour {
                 #endregion
                 #region AirAttack State
                 case PState.AirAttack:
+                    atk.NestedUpdate();
                     if (grounded)
                     {
-                        states.Enqueue(new StatePair(PState.Ground, 0));
-                        current.delay = 0;
-                        atk.stopAttack();
+                        int lag =atk.stopAttack();
+                        states.Enqueue(new StatePair(PState.Delay, lag, ExecState.LandLag));
+                        // vv was used for old attack states
+                        // current.delay = 0;
+                        
                     }
                     desired = AirControl(move);
                     if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
@@ -505,6 +510,7 @@ public class PlayerMover : MonoBehaviour {
                 #endregion
                 #region GroundAttack State
                 case PState.GroundAttack:
+                    atk.NestedUpdate();
                     rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x, 5f), rb.velocity.y);
                     break;
                 #endregion
@@ -654,6 +660,7 @@ public class PlayerMover : MonoBehaviour {
                 }
                 #endregion
                 nextState();
+
             }
             else if (!registerHit)
             {
@@ -697,7 +704,6 @@ public class PlayerMover : MonoBehaviour {
             {
                 hitVector = new Vector2(hitVector.x, -hitVector.y);
             }
-            atk.stopAttack();
             states = new Queue<StatePair>();
             states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
             registerHit = true;
@@ -967,8 +973,11 @@ public class PlayerMover : MonoBehaviour {
         if (states.Count == 0)
         {
 
-
-            if ((current.state != PState.Ground) && (current.state != PState.Air))
+            if (current.state == PState.GroundAttack || current.state == PState.AirAttack)
+            {
+                pani.StateChange(false);
+            }
+            else if ((current.state != PState.Ground) && (current.state != PState.Air))
             {
                 if (grounded)
                 {
@@ -1006,13 +1015,13 @@ public class PlayerMover : MonoBehaviour {
                     if (grounded)
                     {
                         frames = atk.makeAttack(QuadToTypeGround(attkQuad));
-                        current = new StatePair(PState.GroundAttack, frames);
+                        current = new StatePair(PState.GroundAttack, -1);
                         //states.Enqueue(new StatePair(PState.Ground, 0));
                     }
                     else
                     {
                         frames = atk.makeAttack(QuadToTypeAir(attkQuad));
-                        current = new StatePair(PState.AirAttack, frames);
+                        current = new StatePair(PState.AirAttack, -1);
                     }
                     break;
                 case PState.Dash:
@@ -1037,6 +1046,17 @@ public class PlayerMover : MonoBehaviour {
 
 
         
+    }
+    public void atkFinished()
+    {
+        if (grounded)
+        {
+            states.Enqueue(new StatePair(PState.Ground, 0));
+        }
+        else
+        {
+            states.Enqueue(new StatePair(PState.Air, 0));
+        }
     }
     void alignGround()
     {

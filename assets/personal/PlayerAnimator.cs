@@ -136,7 +136,8 @@ public class PlayerAnimator : MonoBehaviour {
         Finisher,
         Burnout,  //12
         Flip,
-        Shoot
+        Shoot,
+        LandLag
         
     }
     void LateUpdate()
@@ -208,6 +209,10 @@ public class PlayerAnimator : MonoBehaviour {
             else if (c.action == PlayerMover.ExecState.mapStart)
             {
                 ani.SetInteger("State", (int)AnimationState.Ground);
+            }
+            else if (c.action == PlayerMover.ExecState.LandLag)
+            {
+                ani.SetInteger("State", (int)AnimationState.LandLag);
             }
             else
             {

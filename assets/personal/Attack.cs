@@ -6,8 +6,12 @@ using UnityEngine;
 public class Attack : MonoBehaviour {
     public bool isBasic;
     public int windup, atkTime, endLag;
+    public int attackReduction, landLag=6;
+    public int[] autoCanFrames;
+    public int autoCanLag;
     // Use this for initialization
 
+    AttackManager mngr;
     List<GameObject> alreadyHit;
     int frameNum=0;
     List<GameObject> activeBoxes;
@@ -21,6 +25,7 @@ public class Attack : MonoBehaviour {
     Transform target;
     AttackManager.AtkType type;
 	void Start () {
+        mngr= GetComponentInParent<AttackManager>();
         alreadyHit = new List<GameObject>();
         alreadyHit.Add(transform.parent.gameObject);
         if (!isBasic) {
@@ -62,7 +67,7 @@ public class Attack : MonoBehaviour {
     }
 
 	// Update is called once per frame
-	void Update () {
+	public void NestedUpdate () {
         if (frameNum > windup && frameNum <= windup + atkTime)
         {
             if (isBasic)
@@ -113,6 +118,7 @@ public class Attack : MonoBehaviour {
         }
         else if (frameNum > atkFrames)
         {
+            mngr.atkFinished();
             Destroy(gameObject);
         }
         else
@@ -136,7 +142,7 @@ public class Attack : MonoBehaviour {
 	}
     public void addHit(GameObject h)
     {
-        AttackManager mngr = GetComponentInParent<AttackManager>();
+        
         alreadyHit.Add(h);
         mngr.updateLastAttack(type);
         alreadyHit[0].GetComponent<PlayerMover>().restoreTools();
@@ -173,5 +179,23 @@ public class Attack : MonoBehaviour {
             box.SetActive(true);
             activeBoxes.Add(box);
         }
+    }
+    public int ending()
+    {
+        int guess = landLag;
+        if (alreadyHit.Count > 1)
+        {
+            guess -= attackReduction;
+        }
+        if (Array.IndexOf(autoCanFrames, frameNum) != -1)
+        {
+            guess = autoCanLag;
+        }
+        int remain = atkFrames - frameNum;
+        if (remain < guess)
+        {
+            guess = remain;
+        }
+        return guess;
     }
 }
