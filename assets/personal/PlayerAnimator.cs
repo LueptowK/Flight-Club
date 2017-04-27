@@ -12,6 +12,7 @@ public class PlayerAnimator : MonoBehaviour {
 
     public float playerScale = 1.4f;
 
+    float currentSpeed = 1f;
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -149,7 +150,7 @@ public class PlayerAnimator : MonoBehaviour {
         ani.SetBool("OnWall", pm.onWall);
         ani.SetFloat("WalkSpeed", animSpd * Mathf.Pow(Mathf.Abs(rb.velocity.x), 1.1f));
 
-
+        ani.speed = currentSpeed;
         
     }
     public void updateFacing()
@@ -171,7 +172,17 @@ public class PlayerAnimator : MonoBehaviour {
     {
         ani.SetTrigger("Die");
     }
-
+    public void pause(bool paused)
+    {
+        if (paused)
+        {
+            currentSpeed = 0;
+        }
+        else
+        {
+            currentSpeed = 1;
+        }
+    }
     public void StateChange(bool s)
     {
 

@@ -16,6 +16,7 @@ public class HitboxProperties : MonoBehaviour
     void Start()
     {
         atk = GetComponentInParent<Attack>();
+        //print(atk);
     }
 
     void OnTriggerEnter2D(Collider2D playerCol)
@@ -31,8 +32,9 @@ public class HitboxProperties : MonoBehaviour
         }
         else if (playerCol.gameObject.CompareTag("Target"))
         {
-            Destroy(playerCol.gameObject);
             atk.addHit(playerCol.gameObject);
+            Destroy(playerCol.gameObject);
+            
         }
         else if (!atk.hit.Contains(playerCol.gameObject))
         {

@@ -1217,12 +1217,14 @@ public class PlayerMover : MonoBehaviour {
         if (paused && !pausing)
         {
             rb.velocity = resumeVelocity;
+            pani.pause(false);
             paused = false;
         }
         if (!paused && pausing)
         {
             resumeVelocity = rb.velocity;
             rb.velocity = Vector2.zero;
+            pani.pause(true);
             paused = true;
         }
     }
