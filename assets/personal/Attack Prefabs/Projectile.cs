@@ -14,6 +14,7 @@ public class Projectile : MonoBehaviour {
 
     AttackManager atk;
 
+    int lifetime = 0;
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -26,7 +27,7 @@ public class Projectile : MonoBehaviour {
     }
 	// Update is called once per frame
 	void FixedUpdate () {
-
+        lifetime++;
     }
 
     void OnTriggerEnter2D(Collider2D playerCol)
@@ -55,8 +56,8 @@ public class Projectile : MonoBehaviour {
             {
                 Destroy(playerCol.gameObject);
             }
-            //print(playerCol.gameObject);
-            Destroy(gameObject);
+            if (lifetime != 0) { Destroy(gameObject); }
+            
         }
     }
 }
