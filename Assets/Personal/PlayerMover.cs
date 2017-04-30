@@ -15,6 +15,7 @@ public class PlayerMover : MonoBehaviour {
     CameraController cam;
     IFrames iframes;
     Manager man;
+    StatCard card;
 
     public PhysicsMaterial2D neutral;
     public PhysicsMaterial2D bounce;
@@ -83,31 +84,32 @@ public class PlayerMover : MonoBehaviour {
     Vector2 dashVel = Vector2.zero;
     Vector2 hitVector;
     ControlInterpret.StickQuadrant attkQuad;
-    float maxDI = 18; //Max DI affect on knockback, in degrees
+    float maxDI; //Max DI affect on knockback, in degrees
     bool registerHit = false;
-    float hitstunFriction = 0.98f;
+    float hitstunFriction;
     int dashCounter;
-    bool dashAvailable;
+    int maxDashes;
+    int dashesAvailable;
     bool ceilingAvaliable;
     bool dead;
-    float moveSpeed = 13f;
-    float airSpeed = 0.8f;
-    float maxAirSpeed = 8f;
-    float dashMagnitude = 20f;
-    float gravity = 2f;
-    float jumpVel = 10f;
-    float wallJumpXVel = 15f;
-    float wallJumpYVel = 8f;
-    float dashEndMomentum = 0.65f;
-    int dashTime = 10;
-    int stallTime = 10;
+    float moveSpeed;
+    float airSpeed;
+    float maxAirSpeed;
+    float dashMagnitude;
+    float gravity;
+    float jumpVel;
+    float wallJumpXVel;
+    float wallJumpYVel;
+    float dashEndMomentum;
+    int dashTime;
+    int stallTime;
     bool falling = false;
-    float maxFallSpeed = 22f;
-    float friction = 7f;
-    int jumpSquatFrames = 4; // needs to be set before entering ANY DELAY STATE
-    int stallCooldown = 40;
+    float maxFallSpeed;
+    float friction;
+    int jumpSquatFrames; // needs to be set before entering ANY DELAY STATE
+    int stallCooldown;
     int stallCooldownCurrent = 0;
-    int shootCooldown = 30;
+    int shootCooldown;
     int shootCooldownCurrent = 0;
     float ceilingBooster = 0f;
 
@@ -131,15 +133,36 @@ public class PlayerMover : MonoBehaviour {
         health = GetComponent<PlayerHealth>();
         combo = GetComponent<ComboCounter>();
         iframes = GetComponent<IFrames>();
+        card = GetComponent<StatCard>();
         dashVel = Vector2.zero;
         restoreTools();
         dead = false;
         paused = false;
         rb.sharedMaterial = neutral;
+
+        maxDI = card.maxDI;
+        hitstunFriction = card.hitstunFriction;
+        maxDashes = card.maxDashes;
+        moveSpeed = card.moveSpeed;
+        airSpeed = card.airSpeed;
+        maxAirSpeed = card.maxAirSpeed;
+        dashMagnitude = card.dashMagnitude;
+        gravity = card.gravity;
+        jumpVel = card.jumpVel;
+        wallJumpXVel = card.wallJumpXVel;
+        wallJumpYVel = card.wallJumpYVel;
+        dashEndMomentum = card.dashEndMomentum;
+        dashTime = card.dashTime;
+        stallTime = card.stallTime;
+        maxFallSpeed = card.maxFallSpeed;
+        friction = card.friction;
+        jumpSquatFrames = card.jumpSquatFrames;
+        stallCooldown = card.stallCooldown;
+        shootCooldown = card.shootCooldown;
     }
     public void restoreTools()
     {
-        dashAvailable = true;
+        dashesAvailable = maxDashes;
         ceilingAvaliable = true;
     }
     // Update is called once per frame
@@ -322,7 +345,7 @@ public class PlayerMover : MonoBehaviour {
                         {
                             states.Enqueue(new StatePair(PState.CeilingHold, 30));
                             ceilingAvaliable = false;
-                            dashAvailable = true;
+                            dashesAvailable = maxDashes;
                         }
 
 
@@ -468,7 +491,7 @@ public class PlayerMover : MonoBehaviour {
                     }
                     if (onCeiling && rb.velocity.y > 0)
                     {
-                        dashAvailable = true;
+                        dashesAvailable = maxDashes;
                         hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
                         calculateDI();
                         rb.velocity = hitVector;
@@ -721,10 +744,10 @@ public class PlayerMover : MonoBehaviour {
     #region try moves
     bool tryDash()
     {
-        if (ci.Dash && dashAvailable) // DASH
+        if (ci.Dash && (dashesAvailable > 0)) // DASH
         {
             //calcDashVel();
-            dashAvailable = false;
+            dashesAvailable--;
             states.Enqueue(new StatePair(PState.Dash, dashTime));
             return true;
         }
