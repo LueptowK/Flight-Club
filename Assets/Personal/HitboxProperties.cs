@@ -13,12 +13,11 @@ public class HitboxProperties : MonoBehaviour
 
     Attack atk;
     // Use this for initialization
-    void Start()
+    public void setAtk()
     {
         atk = GetComponentInParent<Attack>();
         //print(atk);
     }
-
     void OnTriggerEnter2D(Collider2D playerCol)
     {
         //print("collided");

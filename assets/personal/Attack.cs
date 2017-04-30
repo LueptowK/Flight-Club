@@ -13,7 +13,7 @@ public class Attack : MonoBehaviour {
 
     AttackManager mngr;
     List<GameObject> alreadyHit;
-    int frameNum=0;
+    int frameNum=1;
     List<GameObject> activeBoxes;
     List<List<GameObject>> frameByFrame;
 
@@ -37,6 +37,7 @@ public class Attack : MonoBehaviour {
             }
             foreach (Transform child in transform)
             {
+                child.GetComponent<HitboxProperties>().setAtk();
                 string name = child.name;
                 int index = Int32.Parse(name.Remove(name.Length - 1)) - 1;
                 //print(index);
@@ -48,6 +49,7 @@ public class Attack : MonoBehaviour {
         {
             foreach (Transform child in transform)
             {
+                child.GetComponent<HitboxProperties>().setAtk();
                 target = child.transform;
             }
             animBox = Instantiate(windUpBox, transform);
@@ -70,6 +72,7 @@ public class Attack : MonoBehaviour {
 	public void NestedUpdate () {
         if (frameNum > windup && frameNum <= windup + atkTime)
         {
+
             if (isBasic)
             {
                 if (frameNum == windup + 1)
@@ -106,6 +109,10 @@ public class Attack : MonoBehaviour {
                 else
                 {
                     closeBoxes();
+                }
+                if (alreadyHit.Count > 1)
+                {
+                    endLag -= attackReduction;
                 }
             }
 
@@ -183,10 +190,6 @@ public class Attack : MonoBehaviour {
     public int ending()
     {
         int guess = landLag;
-        if (alreadyHit.Count > 1)
-        {
-            guess -= attackReduction;
-        }
         if (Array.IndexOf(autoCanFrames, frameNum) != -1)
         {
             guess = autoCanLag;

@@ -539,6 +539,7 @@ public class PlayerMover : MonoBehaviour {
                 #endregion
                 #region FinisherSlash State
                 case PState.FinisherSlash:
+                    atk.NestedUpdate();
                     rb.velocity = Vector2.zero;
                     break;
                 #endregion

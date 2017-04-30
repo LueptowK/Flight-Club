@@ -107,6 +107,7 @@
     <Compile Include="Assets\Personal\PlayerHealth.cs" />
     <Compile Include="Assets\Personal\PlayerInput.cs" />
     <Compile Include="Assets\Personal\PlayerMover.cs" />
+    <Compile Include="Assets\Personal\StatCard.cs" />
     <Compile Include="Assets\Personal\StickFixer.cs" />
     <Compile Include="Assets\Personal\TimeTrialFinishLine.cs" />
     <Compile Include="Assets\Personal\TimeTrialManager.cs" />
