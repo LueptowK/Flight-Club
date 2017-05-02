@@ -15,12 +15,12 @@ public class PlayerMover : MonoBehaviour {
     CameraController cam;
     IFrames iframes;
     Manager man;
-    StatCard card;
-
-    public PhysicsMaterial2D neutral;
-    public PhysicsMaterial2D bounce;
 
 
+    public PhysicsMaterial2D neutral;//unused
+    public PhysicsMaterial2D bounce; //unused
+
+    public StatCard card;
 
     public enum PState
     {
@@ -133,13 +133,16 @@ public class PlayerMover : MonoBehaviour {
         health = GetComponent<PlayerHealth>();
         combo = GetComponent<ComboCounter>();
         iframes = GetComponent<IFrames>();
-        card = GetComponent<StatCard>();
         dashVel = Vector2.zero;
         restoreTools();
         dead = false;
         paused = false;
         rb.sharedMaterial = neutral;
 
+        loadCard();
+    }
+    void loadCard()
+    {
         maxDI = card.maxDI;
         hitstunFriction = card.hitstunFriction;
         maxDashes = card.maxDashes;

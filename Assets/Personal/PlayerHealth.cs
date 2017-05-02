@@ -7,11 +7,16 @@ public class PlayerHealth : MonoBehaviour {
     public int maxHealth = 100;
     public int currentHealth;
     public Image img;
+
+    public int maxShield = 0;
+    public int currentShield;
+
     
 
 	// Use this for initialization
 	void Awake () {
         currentHealth = maxHealth;
+        currentShield = maxShield;
 	}
 	
 	// Update is called once per frame
