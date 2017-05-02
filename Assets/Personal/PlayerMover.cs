@@ -16,10 +16,11 @@ public class PlayerMover : MonoBehaviour {
     IFrames iframes;
     Manager man;
 
-    public PhysicsMaterial2D neutral;
-    public PhysicsMaterial2D bounce;
 
+    public PhysicsMaterial2D neutral;//unused
+    public PhysicsMaterial2D bounce; //unused
 
+    public StatCard card;
 
     public enum PState
     {
@@ -53,7 +54,8 @@ public class PlayerMover : MonoBehaviour {
         Dodge,
         Flip,
         Normal,
-        Shoot
+        Shoot,
+        LandLag
 
     }
 
@@ -82,31 +84,32 @@ public class PlayerMover : MonoBehaviour {
     Vector2 dashVel = Vector2.zero;
     Vector2 hitVector;
     ControlInterpret.StickQuadrant attkQuad;
-    float maxDI = 18; //Max DI affect on knockback, in degrees
+    float maxDI; //Max DI affect on knockback, in degrees
     bool registerHit = false;
-    float hitstunFriction = 0.98f;
+    float hitstunFriction;
     int dashCounter;
-    bool dashAvailable;
+    int maxDashes;
+    int dashesAvailable;
     bool ceilingAvaliable;
     bool dead;
-    float moveSpeed = 13f;
-    float airSpeed = 0.8f;
-    float maxAirSpeed = 8f;
-    float dashMagnitude = 20f;
-    float gravity = 2f;
-    float jumpVel = 10f;
-    float wallJumpXVel = 15f;
-    float wallJumpYVel = 8f;
-    float dashEndMomentum = 0.65f;
-    int dashTime = 10;
-    int stallTime = 10;
+    float moveSpeed;
+    float airSpeed;
+    float maxAirSpeed;
+    float dashMagnitude;
+    float gravity;
+    float jumpVel;
+    float wallJumpXVel;
+    float wallJumpYVel;
+    float dashEndMomentum;
+    int dashTime;
+    int stallTime;
     bool falling = false;
-    float maxFallSpeed = 22f;
-    float friction = 7f;
-    int jumpSquatFrames = 4; // needs to be set before entering ANY DELAY STATE
-    int stallCooldown = 40;
+    float maxFallSpeed;
+    float friction;
+    int jumpSquatFrames; // needs to be set before entering ANY DELAY STATE
+    int stallCooldown;
     int stallCooldownCurrent = 0;
-    int shootCooldown = 30;
+    int shootCooldown;
     int shootCooldownCurrent = 0;
     float ceilingBooster = 0f;
 
@@ -135,10 +138,34 @@ public class PlayerMover : MonoBehaviour {
         dead = false;
         paused = false;
         rb.sharedMaterial = neutral;
+
+        loadCard();
+    }
+    void loadCard()
+    {
+        maxDI = card.maxDI;
+        hitstunFriction = card.hitstunFriction;
+        maxDashes = card.maxDashes;
+        moveSpeed = card.moveSpeed;
+        airSpeed = card.airSpeed;
+        maxAirSpeed = card.maxAirSpeed;
+        dashMagnitude = card.dashMagnitude;
+        gravity = card.gravity;
+        jumpVel = card.jumpVel;
+        wallJumpXVel = card.wallJumpXVel;
+        wallJumpYVel = card.wallJumpYVel;
+        dashEndMomentum = card.dashEndMomentum;
+        dashTime = card.dashTime;
+        stallTime = card.stallTime;
+        maxFallSpeed = card.maxFallSpeed;
+        friction = card.friction;
+        jumpSquatFrames = card.jumpSquatFrames;
+        stallCooldown = card.stallCooldown;
+        shootCooldown = card.shootCooldown;
     }
     public void restoreTools()
     {
-        dashAvailable = true;
+        dashesAvailable = maxDashes;
         ceilingAvaliable = true;
     }
     // Update is called once per frame
@@ -161,6 +188,7 @@ public class PlayerMover : MonoBehaviour {
 
             if (registerHit) // hit in the queue
             {
+                atk.stopAttack();
                 int safety = states.Count;
                 while ((current.state != PState.Delay || current.action != ExecState.hitLag) && safety > 0)
                 {
@@ -320,7 +348,7 @@ public class PlayerMover : MonoBehaviour {
                         {
                             states.Enqueue(new StatePair(PState.CeilingHold, 30));
                             ceilingAvaliable = false;
-                            dashAvailable = true;
+                            dashesAvailable = maxDashes;
                         }
 
 
@@ -466,7 +494,7 @@ public class PlayerMover : MonoBehaviour {
                     }
                     if (onCeiling && rb.velocity.y > 0)
                     {
-                        dashAvailable = true;
+                        dashesAvailable = maxDashes;
                         hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
                         calculateDI();
                         rb.velocity = hitVector;
@@ -481,11 +509,14 @@ public class PlayerMover : MonoBehaviour {
                 #endregion
                 #region AirAttack State
                 case PState.AirAttack:
+                    atk.NestedUpdate();
                     if (grounded)
                     {
-                        states.Enqueue(new StatePair(PState.Ground, 0));
-                        current.delay = 0;
-                        atk.stopAttack();
+                        int lag =atk.stopAttack();
+                        states.Enqueue(new StatePair(PState.Delay, lag, ExecState.LandLag));
+                        // vv was used for old attack states
+                        // current.delay = 0;
+                        
                     }
                     desired = AirControl(move);
                     if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
@@ -505,11 +536,13 @@ public class PlayerMover : MonoBehaviour {
                 #endregion
                 #region GroundAttack State
                 case PState.GroundAttack:
+                    atk.NestedUpdate();
                     rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x, 5f), rb.velocity.y);
                     break;
                 #endregion
                 #region FinisherSlash State
                 case PState.FinisherSlash:
+                    atk.NestedUpdate();
                     rb.velocity = Vector2.zero;
                     break;
                 #endregion
@@ -654,6 +687,7 @@ public class PlayerMover : MonoBehaviour {
                 }
                 #endregion
                 nextState();
+
             }
             else if (!registerHit)
             {
@@ -697,7 +731,6 @@ public class PlayerMover : MonoBehaviour {
             {
                 hitVector = new Vector2(hitVector.x, -hitVector.y);
             }
-            atk.stopAttack();
             states = new Queue<StatePair>();
             states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
             registerHit = true;
@@ -715,10 +748,10 @@ public class PlayerMover : MonoBehaviour {
     #region try moves
     bool tryDash()
     {
-        if (ci.Dash && dashAvailable) // DASH
+        if (ci.Dash && (dashesAvailable > 0)) // DASH
         {
             //calcDashVel();
-            dashAvailable = false;
+            dashesAvailable--;
             states.Enqueue(new StatePair(PState.Dash, dashTime));
             return true;
         }
@@ -967,8 +1000,11 @@ public class PlayerMover : MonoBehaviour {
         if (states.Count == 0)
         {
 
-
-            if ((current.state != PState.Ground) && (current.state != PState.Air))
+            if (current.state == PState.GroundAttack || current.state == PState.AirAttack)
+            {
+                pani.StateChange(false);
+            }
+            else if ((current.state != PState.Ground) && (current.state != PState.Air))
             {
                 if (grounded)
                 {
@@ -1006,13 +1042,13 @@ public class PlayerMover : MonoBehaviour {
                     if (grounded)
                     {
                         frames = atk.makeAttack(QuadToTypeGround(attkQuad));
-                        current = new StatePair(PState.GroundAttack, frames);
+                        current = new StatePair(PState.GroundAttack, -1);
                         //states.Enqueue(new StatePair(PState.Ground, 0));
                     }
                     else
                     {
                         frames = atk.makeAttack(QuadToTypeAir(attkQuad));
-                        current = new StatePair(PState.AirAttack, frames);
+                        current = new StatePair(PState.AirAttack, -1);
                     }
                     break;
                 case PState.Dash:
@@ -1037,6 +1073,17 @@ public class PlayerMover : MonoBehaviour {
 
 
         
+    }
+    public void atkFinished()
+    {
+        if (grounded)
+        {
+            states.Enqueue(new StatePair(PState.Ground, 0));
+        }
+        else
+        {
+            states.Enqueue(new StatePair(PState.Air, 0));
+        }
     }
     void alignGround()
     {
@@ -1197,12 +1244,14 @@ public class PlayerMover : MonoBehaviour {
         if (paused && !pausing)
         {
             rb.velocity = resumeVelocity;
+            pani.pause(false);
             paused = false;
         }
         if (!paused && pausing)
         {
             resumeVelocity = rb.velocity;
             rb.velocity = Vector2.zero;
+            pani.pause(true);
             paused = true;
         }
     }

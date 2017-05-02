@@ -51,6 +51,13 @@ public class AttackManager : MonoBehaviour {
 	void Update () {
 		
 	}
+    public void NestedUpdate()
+    {
+        if (currentAttack)
+        {
+            currentAttack.GetComponent<Attack>().NestedUpdate();
+        }
+    }
     public void shoot(bool backwards)
     {
         Quaternion rot;
@@ -139,12 +146,19 @@ public class AttackManager : MonoBehaviour {
         currentAttack.GetComponent<Attack>().setType(a);
         return currentAttack.GetComponent<Attack>().atkFrames;
     }
-    public void stopAttack()
+    public int stopAttack()
     {
-        if (currentAttack) { Destroy(currentAttack); }
-        
+        if (currentAttack) {
+            int frames = currentAttack.GetComponent<Attack>().ending();
+            Destroy(currentAttack);
+            return frames;
+        }
+        return 0;
     }
-
+    public void atkFinished()
+    {
+        pm.atkFinished();
+    }
     public void currentAttackHitStart()
     {
         if(currentAttack.tag == "FinisherSlash")
