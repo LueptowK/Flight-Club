@@ -84,6 +84,7 @@ public class PlayerMover : MonoBehaviour {
     Vector2 dashVel = Vector2.zero;
     Vector2 hitVector;
     ControlInterpret.StickQuadrant attkQuad;
+    public int character;
     float maxDI; //Max DI affect on knockback, in degrees
     bool registerHit = false;
     float hitstunFriction;
@@ -143,6 +144,7 @@ public class PlayerMover : MonoBehaviour {
     }
     void loadCard()
     {
+        character = card.character;
         maxDI = card.maxDI;
         hitstunFriction = card.hitstunFriction;
         maxDashes = card.maxDashes;

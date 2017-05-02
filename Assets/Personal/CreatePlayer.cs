@@ -15,6 +15,8 @@ public class CreatePlayer : MonoBehaviour
     public GameObject portraitSlot2;
     public GameObject portraitSlot3;
     public GameObject portraitSlot4;
+    Color KeithBase = Color.white;
+    Color WaltBase = new Color(.6f,.6f,.6f, 0);
     private bool[] active;
     playerColor[] pColors;
     GameObject[] players;
@@ -93,9 +95,15 @@ public class CreatePlayer : MonoBehaviour
     public void setColor(int i, int player)
     {
         pColors[i].owner = player;
-        players[player].GetComponent<SpriteRenderer>().color = pColors[i].color;
-        players[player].GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = pColors[i].color;
-        CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().color = pColors[i].color;
+        Color finalColor = pColors[i].color;
+        if (players[player].GetComponent<PlayerMover>().card.character == 1)
+        {
+            finalColor -= WaltBase;
+        }
+        print(finalColor);
+        players[player].GetComponent<SpriteRenderer>().color = finalColor;
+        players[player].GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
+        CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().color = finalColor;
     }
 
     public void activatePlayer(int playerNum, int character)

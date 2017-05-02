@@ -4,6 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu(menuName = "Stat Card")]
 public class StatCard : ScriptableObject {
+    public int character;
     public float maxDI = 18 ;
     public float hitstunFriction =0.98f;
     public int maxDashes =1 ;
