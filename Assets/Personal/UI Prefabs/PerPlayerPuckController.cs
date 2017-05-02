@@ -50,7 +50,12 @@ public class PerPlayerPuckController : MonoBehaviour
                 aPressCooldown = 30;
                 if(selected.name == "CharSelectSquareKeith")
                 {
-                    creator.activatePlayer(playerNum);
+                    creator.activatePlayer(playerNum, 0);
+                    characterSelected = true;
+                }
+                if(selected.name == "CharSelectSquareWalt")
+                {
+                    creator.activatePlayer(playerNum, 1);
                     characterSelected = true;
                 }
             }

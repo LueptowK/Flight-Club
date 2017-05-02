@@ -9,6 +9,7 @@ public class CreatePlayer : MonoBehaviour
 {
     public GameObject Canvas;
     public GameObject Keith;
+    public GameObject Walt;
     public GameObject HealthBar;
     public GameObject portraitSlot1;
     public GameObject portraitSlot2;
@@ -97,11 +98,24 @@ public class CreatePlayer : MonoBehaviour
         CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().color = pColors[i].color;
     }
 
-    public void activatePlayer(int playerNum)
+    public void activatePlayer(int playerNum, int character)
     {
         if (!active[playerNum])
         {
-            GameObject p = Instantiate(Keith);
+            GameObject p;
+            if (character == 0)
+            {
+                p = Instantiate(Keith);
+            }
+            else if (character == 1)
+            {
+                p = Instantiate(Walt);
+            }
+            else
+            {
+                p = null;
+                print("fuck");
+            }
             GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
             p.GetComponent<PlayerInput>().PlayerNumber = playerNum;
             p.GetComponent<PlayerHealth>().img = h.transform.Find("BarFill").gameObject.GetComponent<Image>();
@@ -112,8 +126,6 @@ public class CreatePlayer : MonoBehaviour
             CharSelectPortraits[playerNum].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
             changeColor(playerNum, false);
             activeCount++;
-
-            
         }
     }
 
@@ -148,7 +160,7 @@ public class CreatePlayer : MonoBehaviour
     {
         if (!active[1])
         {
-            activatePlayer(1);
+            activatePlayer(1, 0);
         }
     }
 }
