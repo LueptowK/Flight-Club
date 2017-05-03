@@ -377,9 +377,12 @@ public class PlayerMover : MonoBehaviour {
                     {
                         if (!tryStall())
                         {
-                            if (!tryAttack())
+                            if (!tryDash())
                             {
-                                tryFinisherSlash();
+                                if (!tryAttack())
+                                {
+                                    tryFinisherSlash();
+                                }
                             }
                         }
                     }
@@ -429,11 +432,19 @@ public class PlayerMover : MonoBehaviour {
                             rb.velocity = Vector2.zero;
                             break;
                         case ExecState.Normal:
-                            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 9.8f * Time.fixedDeltaTime);
+                            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 9.8f *tempGrav * Time.fixedDeltaTime);
                             if (grounded)
                             {
                                 alignGround();
                             }
+                            break;
+                        case ExecState.LandLag:
+                            float tempX = rb.velocity.x;
+                            if (grounded)
+                            {
+                                tempX += applyFriction(tempX, 2.0f);
+                            }
+                            rb.velocity = new Vector2(tempX, rb.velocity.y - 9.8f * tempGrav * Time.fixedDeltaTime);
                             break;
                     }
 
@@ -541,6 +552,11 @@ public class PlayerMover : MonoBehaviour {
                 case PState.GroundAttack:
                     atk.NestedUpdate();
                     rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x, 5f), rb.velocity.y);
+                    if (!grounded)
+                    {
+                        int lag = atk.stopAttack();
+                        states.Enqueue(new StatePair(PState.Delay, lag, ExecState.LandLag));
+                    }
                     break;
                 #endregion
                 #region FinisherSlash State
