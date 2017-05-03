@@ -90,6 +90,10 @@ public class AttackManager : MonoBehaviour {
     {
         alreadyHitByType.Add(player);
     }
+    public void lag(bool hitLagState)
+    {
+        pm.hitting(hitLagState);
+    }
     public void resetHitList()
     {
         alreadyHitByType = new List<GameObject>();

@@ -114,6 +114,9 @@ public class PlayerMover : MonoBehaviour {
     int shootCooldown;
     int shootCooldownCurrent = 0;
     float ceilingBooster = 0f;
+    bool hittingLag = false;
+    Vector2 hittingLagVel;
+
 
     Vector2 resumeVelocity;
 
@@ -532,26 +535,32 @@ public class PlayerMover : MonoBehaviour {
                         // current.delay = 0;
                         
                     }
-                    desired = AirControl(move);
-                    if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
+                    if (!hittingLag)
                     {
-                        falling = true;
-                    }
-                    if (falling)
-                    {
-                        tempGrav *= 5;
-                    }
-                    rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
-                    if (rb.velocity.y < -maxFallSpeed)
-                    {
-                        rb.velocity = desired + new Vector2(0, -maxFallSpeed);
+                        desired = AirControl(move);
+                        if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
+                        {
+                            falling = true;
+                        }
+                        if (falling)
+                        {
+                            tempGrav *= 5;
+                        }
+                        rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+                        if (rb.velocity.y < -maxFallSpeed)
+                        {
+                            rb.velocity = desired + new Vector2(0, -maxFallSpeed);
+                        }
                     }
                     break;
                 #endregion
                 #region GroundAttack State
                 case PState.GroundAttack:
                     atk.NestedUpdate();
-                    rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x, 5f), rb.velocity.y);
+                    if (!hittingLag)
+                    {
+                        rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x, 5f), rb.velocity.y);
+                    }   
                     if (!grounded)
                     {
                         int lag = atk.stopAttack();
@@ -1274,4 +1283,21 @@ public class PlayerMover : MonoBehaviour {
             paused = true;
         }
     }
+    
+    public void hitting(bool isHitting)
+    {
+        if (isHitting)
+        {
+            hittingLagVel = rb.velocity;
+            rb.velocity = Vector2.zero;
+            hittingLag = true;
+        }
+        else
+        {
+            rb.velocity = hittingLagVel;
+            hittingLag = false;
+        }
+        
+    }
+
 }

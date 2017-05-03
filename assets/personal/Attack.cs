@@ -17,6 +17,8 @@ public class Attack : MonoBehaviour {
     List<GameObject> activeBoxes;
     List<List<GameObject>> frameByFrame;
 
+    int currentHitlag=0;
+
     [HideInInspector]
     public int comboStrength = 0;
 
@@ -70,84 +72,94 @@ public class Attack : MonoBehaviour {
 
 	// Update is called once per frame
 	public void NestedUpdate () {
-        if (frameNum > windup && frameNum <= windup + atkTime)
+        if (currentHitlag > 0)
         {
-
-            if (isBasic)
+            currentHitlag--;
+            if (currentHitlag == 0)
             {
-                if (frameNum == windup + 1)
-                {
-                    
-                    foreach(Transform child in transform)
-                    {
-                        child.gameObject.SetActive(true);
-                    }
-                    animBox.SetActive(false);
-                }
-            }
-            else
-            {
-                closeBoxes();
-                int frame = frameNum - windup - 1;
-                openBoxes(frame);
+                mngr.lag(false);
             }
         }
-        else if (frameNum > windup + atkTime && frameNum <=atkFrames)
-        {
-            
-            if (frameNum == windup + atkTime + 1)
+        else {
+            if (frameNum > windup && frameNum <= windup + atkTime)
             {
+
                 if (isBasic)
                 {
-                    
-                    foreach (Transform child in transform)
+                    if (frameNum == windup + 1)
                     {
-                        child.gameObject.SetActive(false);
+
+                        foreach (Transform child in transform)
+                        {
+                            child.gameObject.SetActive(true);
+                        }
+                        animBox.SetActive(false);
                     }
-                    animBox.SetActive(true);
                 }
                 else
                 {
                     closeBoxes();
-                }
-                if (alreadyHit.Count > 1)
-                {
-                    endLag -= attackReduction;
+                    int frame = frameNum - windup - 1;
+                    openBoxes(frame);
                 }
             }
+            else if (frameNum > windup + atkTime && frameNum <= atkFrames)
+            {
 
-            if (isBasic)
-            {
-                animBox.transform.position = Vector3.Lerp(target.position, transform.position, (float)(frameNum - (windup + atkTime)) / (float)(endLag + 1));
-                animBox.transform.localScale = Vector3.Lerp( target.localScale, new Vector3(0.2f, 0.2f, 1), (float)(frameNum - (windup + atkTime)) / (float)(endLag+1));
+                if (frameNum == windup + atkTime + 1)
+                {
+                    if (isBasic)
+                    {
+
+                        foreach (Transform child in transform)
+                        {
+                            child.gameObject.SetActive(false);
+                        }
+                        animBox.SetActive(true);
+                    }
+                    else
+                    {
+                        closeBoxes();
+                    }
+                    if (alreadyHit.Count > 1)
+                    {
+                        endLag -= attackReduction;
+                    }
+                }
+
+                if (isBasic)
+                {
+                    animBox.transform.position = Vector3.Lerp(target.position, transform.position, (float)(frameNum - (windup + atkTime)) / (float)(endLag + 1));
+                    animBox.transform.localScale = Vector3.Lerp(target.localScale, new Vector3(0.2f, 0.2f, 1), (float)(frameNum - (windup + atkTime)) / (float)(endLag + 1));
+                }
+
             }
-            
-        }
-        else if (frameNum > atkFrames)
-        {
-            mngr.atkFinished();
-            Destroy(gameObject);
-        }
-        else
-        {
-            if (isBasic)
+            else if (frameNum > atkFrames)
             {
-                animBox.transform.position = Vector3.Lerp(transform.position, target.position, (float)frameNum / (float)windup);
-                animBox.transform.localScale = Vector3.Lerp(new Vector3(0.2f, 0.2f, 1), target.localScale, (float)frameNum / (float)windup);
-                
+                mngr.atkFinished();
+                Destroy(gameObject);
             }
             else
             {
-                if(frameNum == windup)
+                if (isBasic)
                 {
-                    transform.parent.GetComponent<AttackManager>().currentAttackHitStart();
+                    animBox.transform.position = Vector3.Lerp(transform.position, target.position, (float)frameNum / (float)windup);
+                    animBox.transform.localScale = Vector3.Lerp(new Vector3(0.2f, 0.2f, 1), target.localScale, (float)frameNum / (float)windup);
+
+                }
+                else
+                {
+                    if (frameNum == windup)
+                    {
+                        transform.parent.GetComponent<AttackManager>().currentAttackHitStart();
+                    }
                 }
             }
+
+            frameNum++;
         }
-        
-        frameNum++;
 	}
-    public void addHit(GameObject h)
+    public void addHit(GameObject h, int hitLag)
     {
         
         alreadyHit.Add(h);
@@ -162,6 +174,12 @@ public class Attack : MonoBehaviour {
             GetComponentInParent<ComboCounter>().resetComboTime();
         }
         mngr.addHit(h);
+        if(type!= AttackManager.AtkType.SlashFinisher)
+        {
+            currentHitlag = hitLag;
+            mngr.lag(true);
+        }
+
     }
     public List<GameObject> hit
     {

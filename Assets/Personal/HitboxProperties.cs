@@ -31,7 +31,7 @@ public class HitboxProperties : MonoBehaviour
         }
         else if (playerCol.gameObject.CompareTag("Target"))
         {
-            atk.addHit(playerCol.gameObject);
+            atk.addHit(playerCol.gameObject, hitlag);
             Destroy(playerCol.gameObject);
             
         }
@@ -59,7 +59,7 @@ public class HitboxProperties : MonoBehaviour
                 {
                     playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
                 }
-                atk.addHit(playerCol.gameObject);
+                atk.addHit(playerCol.gameObject, hitlag);
             }
 
         }
