@@ -10,7 +10,7 @@ public class PlayerAnimator : MonoBehaviour {
     PlayerMover pm;
     bool backDash =false;
 
-    public float playerScale = 1.4f;
+    public float playerScale;
 
     float currentSpeed = 1f;
     // Use this for initialization
@@ -19,9 +19,10 @@ public class PlayerAnimator : MonoBehaviour {
         ci = GetComponent<ControlInterpret>();
         ani = GetComponent<Animator>();
         pm = GetComponent<PlayerMover>();
+        playerScale = pm.cardOne.scale;
 
 
-        
+
     }
     public Vector3 ShootPos(bool backwards)
     {

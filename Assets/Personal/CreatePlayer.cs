@@ -170,6 +170,7 @@ public class CreatePlayer : MonoBehaviour
             p.GetComponent<PlayerHealth>().shieldImg = h.transform.Find("BarShield").gameObject.GetComponent<Image>();
             //h.SetActive(false);
             p.SetActive(false);
+            p.transform.position = new Vector3(999, -999, 0);
             active[playerNum] = true;
             players[playerNum] = p;
             CharSelectPortraits[playerNum].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
