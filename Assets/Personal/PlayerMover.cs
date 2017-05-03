@@ -1300,4 +1300,13 @@ public class PlayerMover : MonoBehaviour {
         
     }
 
+    public void phaseUp()
+    {
+        loadCard(cardOne);
+    }
+    public void phaseDown()
+    {
+        loadCard(cardTwo);
+    }
+
 }

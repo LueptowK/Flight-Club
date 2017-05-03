@@ -7,7 +7,7 @@ public class PlayerHealth : MonoBehaviour {
     public int maxHealth = 100;
     public int currentHealth;
     public Image img;
-
+    PlayerMover mover;
     public int maxShield = 0;
     public float currentShield;
     public Image shieldImg;
@@ -21,6 +21,7 @@ public class PlayerHealth : MonoBehaviour {
 	void Awake () {
         currentHealth = maxHealth;
         currentShield = maxShield;
+        mover = GetComponent<PlayerMover>();
 	}
     void FixedUpdate()
     {
@@ -34,6 +35,7 @@ public class PlayerHealth : MonoBehaviour {
                 recharging = false;
                 //TRANSITION -- FALSE
                 shieldImg.transform.SetAsLastSibling();
+                mover.phaseUp();
             }
             setShield();
         }
@@ -52,6 +54,7 @@ public class PlayerHealth : MonoBehaviour {
                 //TRANSITION -- TRUE
                 shieldImg.transform.SetAsFirstSibling();
                 setShield();
+                mover.phaseDown();
             }
             else
             {
