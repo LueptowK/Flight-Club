@@ -39,30 +39,44 @@ public class HitboxProperties : MonoBehaviour
         {
             if (!(playerCol.GetComponent<IFrames>().invincible()))
             {
-                Vector2 knockback;
-                if (transform.parent.parent.localScale.y < 0)
-                {
-                    knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * -transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * -transform.up.y);
-
-                }
-                else
-                {
-                    knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * transform.up.y);
-                }
-                if (transform.parent.tag == "FinisherSlash")
-                {
-                    int str = transform.parent.GetComponent<Attack>().comboStrength;
-                    float strength = str / 5f * 4f;
-                    playerCol.GetComponent<PlayerMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength));
-                }
-                else
-                {
-                    playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
-                }
-                atk.addHit(playerCol.gameObject, hitlag);
+                collidePlayer(playerCol);
             }
 
         }
+        
+    }
+    public void collidePlayer(Collider2D playerCol)
+    {
+        Vector2 knockback;
+        if (gameObject.CompareTag("Hazard"))
+        {
+            knockback = new Vector2(hitboxVector.x * transform.right.x, hitboxVector.y);
+            playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
+        }
+        else
+        {
+            if (transform.parent.parent.localScale.y < 0)
+            {
+                knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * -transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * -transform.up.y);
+
+            }
+            else
+            {
+                knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * transform.up.y);
+            }
+            if (transform.parent.tag == "FinisherSlash")
+            {
+                int str = transform.parent.GetComponent<Attack>().comboStrength;
+                float strength = str / 5f * 4f;
+                playerCol.GetComponent<PlayerMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength));
+            }
+            else
+            {
+                playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
+            }
+            atk.addHit(playerCol.gameObject, hitlag);
+        }
+            
         
     }
 }

@@ -14,6 +14,27 @@ public class IFrames : MonoBehaviour {
         if (iFrames > 0 && !gameObject.GetComponent<PlayerMover>().paused)
         {
             iFrames--;
+            if (iFrames == 0)
+            {
+                Collider2D col = GetComponent<Collider2D>();
+                ContactFilter2D cf = new ContactFilter2D();
+                Collider2D[] ret = new Collider2D[5];
+                cf.layerMask = (1 << 11);
+                cf.useLayerMask = true;
+                cf.useTriggers = true;
+                col.OverlapCollider(cf, ret);
+                for(int i=0; i<ret.Length; i++)
+                {
+                    print(i);
+                    if (ret[i] == null)
+                    {
+                        break;
+                    }
+                    ret[i].GetComponent<HitboxProperties>().collidePlayer(col);
+
+                }
+
+            }
         }
 	}
 
