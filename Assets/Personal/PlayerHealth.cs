@@ -42,7 +42,7 @@ public class PlayerHealth : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	public void takeDamage(int damage)
+	public int takeDamage(int damage)
     {
         if (!recharging)
         {
@@ -55,10 +55,12 @@ public class PlayerHealth : MonoBehaviour {
                 shieldImg.transform.SetAsFirstSibling();
                 setShield();
                 mover.phaseDown();
+                return 1;
             }
             else
             {
                 setShield();
+                return 0;
             }
             
         }
@@ -66,6 +68,7 @@ public class PlayerHealth : MonoBehaviour {
         {
             currentHealth -= damage;
             img.fillAmount = (float)currentHealth / maxHealth;
+            return 0;
         }
 
         

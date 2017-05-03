@@ -763,14 +763,27 @@ public class PlayerMover : MonoBehaviour {
             {
                 hitVector = new Vector2(hitVector.x, -hitVector.y);
             }
+            int result = health.takeDamage(damage);
             states = new Queue<StatePair>();
-            states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
+            
+            if (result == 0)
+            {
+                states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
+                states.Enqueue(new StatePair(PState.Hitstun, hitStun));
+            }
+            else //result is 1
+            {
+                states.Enqueue(new StatePair(PState.Delay, 30, ExecState.hitLag));
+                states.Enqueue(new StatePair(PState.Burnout, 40));
+                iframes.SetFrames(115);
+            }
+            
             registerHit = true;
             cam.screenShake = (float)damage;
-            states.Enqueue(new StatePair(PState.Hitstun, hitStun));
+            
             rb.velocity = Vector2.zero;
             //DAMAGE
-            health.takeDamage(damage);
+            
             //combo.incrementCombo(-1);
         }
     }
@@ -1094,7 +1107,7 @@ public class PlayerMover : MonoBehaviour {
                     transform.position = new Vector3(transform.position.x, r.point.y -col.bounds.extents.y, 0);
                     break;
                 case PState.Burnout:
-                    rb.velocity = new Vector2(0, 8f);
+                    rb.velocity = new Vector2(rb.velocity.x, 8f);
                     break;
                 case PState.Shoot:
                     //atk.shoot();
