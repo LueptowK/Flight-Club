@@ -152,6 +152,10 @@ public class PlayerMover : MonoBehaviour {
         maxDI = card.maxDI;
         hitstunFriction = card.hitstunFriction;
         maxDashes = card.maxDashes;
+        if (maxDashes < dashesAvailable)
+        {
+            dashesAvailable = maxDashes;
+        }
         moveSpeed = card.moveSpeed;
         airSpeed = card.airSpeed;
         maxAirSpeed = card.maxAirSpeed;
