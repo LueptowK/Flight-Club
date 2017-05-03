@@ -15,6 +15,8 @@ public class CreatePlayer : MonoBehaviour
     public GameObject portraitSlot2;
     public GameObject portraitSlot3;
     public GameObject portraitSlot4;
+    private Shader shaderGUItext;
+    private Shader shaderSpritesDefault;
     Color KeithBase = Color.white;
     Color WaltBase = new Color(.6f,.6f,.6f, 0);
     private bool[] active;
@@ -53,6 +55,9 @@ public class CreatePlayer : MonoBehaviour
 
         active = new bool[4];
         players = new GameObject[4];
+
+        shaderGUItext = Shader.Find("GUI/Text Shader");
+        shaderSpritesDefault = Shader.Find("Sprites/Default");
     }
 
     public void changeColor(int player, bool inArray)
@@ -98,7 +103,9 @@ public class CreatePlayer : MonoBehaviour
         Color finalColor = pColors[i].color;
         if (players[player].GetComponent<PlayerMover>().cardOne.character == 1)
         {
-            finalColor -= WaltBase;
+            players[player].GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
+            CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
+            //finalColor -= WaltBase;
         }
         players[player].GetComponent<SpriteRenderer>().color = finalColor;
         players[player].GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
