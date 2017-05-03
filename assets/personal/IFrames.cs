@@ -25,7 +25,7 @@ public class IFrames : MonoBehaviour {
                 col.OverlapCollider(cf, ret);
                 for(int i=0; i<ret.Length; i++)
                 {
-                    print(i);
+
                     if (ret[i] == null)
                     {
                         break;
