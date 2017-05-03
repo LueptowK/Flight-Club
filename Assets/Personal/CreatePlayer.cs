@@ -96,11 +96,10 @@ public class CreatePlayer : MonoBehaviour
     {
         pColors[i].owner = player;
         Color finalColor = pColors[i].color;
-        if (players[player].GetComponent<PlayerMover>().card.character == 1)
+        if (players[player].GetComponent<PlayerMover>().cardOne.character == 1)
         {
             finalColor -= WaltBase;
         }
-        print(finalColor);
         players[player].GetComponent<SpriteRenderer>().color = finalColor;
         players[player].GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
         CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().color = finalColor;
@@ -127,6 +126,7 @@ public class CreatePlayer : MonoBehaviour
             GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
             p.GetComponent<PlayerInput>().PlayerNumber = playerNum;
             p.GetComponent<PlayerHealth>().img = h.transform.Find("BarFill").gameObject.GetComponent<Image>();
+            p.GetComponent<PlayerHealth>().shieldImg = h.transform.Find("BarShield").gameObject.GetComponent<Image>();
             //h.SetActive(false);
             p.SetActive(false);
             active[playerNum] = true;

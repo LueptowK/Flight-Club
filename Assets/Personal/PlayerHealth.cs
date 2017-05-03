@@ -9,25 +9,75 @@ public class PlayerHealth : MonoBehaviour {
     public Image img;
 
     public int maxShield = 0;
-    public int currentShield;
+    public float currentShield;
+    public Image shieldImg;
+    public float recharge;
+    bool recharging;
 
-    
+    int width = 270;
+    int offset = 50;
 
 	// Use this for initialization
 	void Awake () {
         currentHealth = maxHealth;
         currentShield = maxShield;
 	}
+    void FixedUpdate()
+    {
+        if (recharging)
+        {
+
+            currentShield += recharge/60;
+            if(currentShield>= maxShield)
+            {
+                currentShield = maxShield;
+                recharging = false;
+                //TRANSITION -- FALSE
+                shieldImg.transform.SetAsLastSibling();
+            }
+            setShield();
+        }
+    }
 	
 	// Update is called once per frame
 	public void takeDamage(int damage)
     {
-        currentHealth -= damage;
-        img.fillAmount = (float)currentHealth / maxHealth;
+        if (!recharging)
+        {
+            currentShield -= damage;
+            if (currentShield <= 0)
+            {
+                recharging = true;
+                currentShield = 0;
+                //TRANSITION -- TRUE
+                shieldImg.transform.SetAsFirstSibling();
+                setShield();
+            }
+            else
+            {
+                setShield();
+            }
+            
+        }
+        else
+        {
+            currentHealth -= damage;
+            img.fillAmount = (float)currentHealth / maxHealth;
+        }
+
+        
     }
     public void reset()
     {
         currentHealth = maxHealth;
+        currentShield = maxShield;
         img.fillAmount = (float)currentHealth / maxHealth;
+        shieldImg.fillAmount = (float)currentShield / maxShield;
+    }
+    void setShield()
+    {
+        shieldImg.rectTransform.sizeDelta= new Vector2(currentShield / maxShield *width, 30);
+        //shieldImg.GetComponent<RectTransform>().anchoredPosition = new Vector3(-(currentShield / maxShield) * width / 2, 0);
+        shieldImg.transform.localPosition = new Vector3((currentShield / maxShield) * width / 2 -85, 0);
     }
 }

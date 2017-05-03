@@ -20,7 +20,8 @@ public class PlayerMover : MonoBehaviour {
     public PhysicsMaterial2D neutral;//unused
     public PhysicsMaterial2D bounce; //unused
 
-    public StatCard card;
+    public StatCard cardOne;
+    public StatCard cardTwo;
 
     public enum PState
     {
@@ -140,9 +141,9 @@ public class PlayerMover : MonoBehaviour {
         paused = false;
         rb.sharedMaterial = neutral;
 
-        loadCard();
+        loadCard(cardOne);
     }
-    void loadCard()
+    void loadCard(StatCard card)
     {
         character = card.character;
         maxDI = card.maxDI;
