@@ -17,16 +17,15 @@ public class CreatePlayer : MonoBehaviour
     public GameObject portraitSlot4;
     private Shader shaderGUItext;
     private Shader shaderSpritesDefault;
-    Color KeithBase = Color.white;
-    Color WaltBase = new Color(.6f,.6f,.6f, 0);
     private bool[] active;
-    playerColor[] pColors;
+    playerColor[] keithColors;
+    playerColor[] waltColors;
     GameObject[] players;
     GameObject[] CharSelectPortraits;
     
     int activeCount = 0;
 
-    struct playerColor
+    public struct playerColor
     {
         public Color color;
         public int owner;
@@ -39,13 +38,22 @@ public class CreatePlayer : MonoBehaviour
     }
     void Awake()
     {
-        pColors = new playerColor[6];
-        pColors[0] = new playerColor(Color.white);
-        pColors[1] = new playerColor(new Color(1f,.2f,.2f,1f));
-        pColors[2] = new playerColor(new Color(0f, 1f, 1f, 1f));
-        pColors[3] = new playerColor(new Color(.4f,.4f,.4f,1f));
-        pColors[4] = new playerColor(new Color(1f,0.4f,1f));
-        pColors[5] = new playerColor(Color.yellow);
+        keithColors = new playerColor[6];
+        keithColors[0] = new playerColor(Color.white);
+        keithColors[1] = new playerColor(new Color(1f,.2f,.2f,1f));
+        keithColors[2] = new playerColor(new Color(0f, 1f, 1f, 1f));
+        keithColors[3] = new playerColor(new Color(.4f,.4f,.4f,1f));
+        keithColors[4] = new playerColor(new Color(1f,0.4f,1f));
+        keithColors[5] = new playerColor(Color.yellow);
+
+        waltColors = new playerColor[6];
+        waltColors[0] = new playerColor(Color.black);
+        waltColors[1] = new playerColor(new Color(0.2f,.7f,0.2f));
+        waltColors[2] = new playerColor(Color.blue);
+        waltColors[3] = new playerColor(Color.white);
+        waltColors[4] = new playerColor(new Color32(0x68,0x2f,0x6d, 0xFF));
+        waltColors[5] = new playerColor(Color.yellow);
+
 
         CharSelectPortraits = new GameObject[4];
         CharSelectPortraits[0] = portraitSlot1;
@@ -62,6 +70,15 @@ public class CreatePlayer : MonoBehaviour
 
     public void changeColor(int player, bool inArray)
     {
+        playerColor[] pColors;
+        if (players[player].GetComponent<PlayerMover>().cardOne.character == 1)
+        {
+            pColors = waltColors;
+        }
+        else
+        {
+            pColors = keithColors;
+        }
         if (inArray)
         {
             int j;
@@ -99,13 +116,21 @@ public class CreatePlayer : MonoBehaviour
     }
     public void setColor(int i, int player)
     {
+        playerColor[] pColors;
+        if (players[player].GetComponent<PlayerMover>().cardOne.character == 1)
+        {
+            pColors = waltColors;
+        }
+        else
+        {
+            pColors = keithColors;
+        }
         pColors[i].owner = player;
         Color finalColor = pColors[i].color;
         if (players[player].GetComponent<PlayerMover>().cardOne.character == 1)
         {
             players[player].GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
             CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
-            //finalColor -= WaltBase;
         }
         players[player].GetComponent<SpriteRenderer>().color = finalColor;
         players[player].GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
@@ -139,7 +164,15 @@ public class CreatePlayer : MonoBehaviour
             active[playerNum] = true;
             players[playerNum] = p;
             CharSelectPortraits[playerNum].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
-            changeColor(playerNum, false);
+            if (character == 0)
+            {
+                changeColor(playerNum, false);
+            }
+            else
+            {
+                changeColor(playerNum, false);
+            }
+            
             activeCount++;
         }
     }
