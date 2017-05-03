@@ -132,6 +132,11 @@ public class CreatePlayer : MonoBehaviour
             players[player].GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
             CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
         }
+        else
+        {
+            players[player].GetComponent<SpriteRenderer>().material.shader = shaderSpritesDefault;
+            CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderSpritesDefault;
+        }
         players[player].GetComponent<SpriteRenderer>().color = finalColor;
         players[player].GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
         CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().color = finalColor;
@@ -139,6 +144,10 @@ public class CreatePlayer : MonoBehaviour
 
     public void activatePlayer(int playerNum, int character)
     {
+        if(active[playerNum] && character != players[playerNum].GetComponent<PlayerMover>().cardOne.character)
+        {
+            deactivatePlayer(playerNum);
+        }
         if (!active[playerNum])
         {
             GameObject p;
@@ -179,7 +188,28 @@ public class CreatePlayer : MonoBehaviour
 
     public void deactivatePlayer(int playerNum)
     {
-        print("deactivatePlayer not implemented yet");
+        GameObject p = players[playerNum];
+        Destroy(p.GetComponent<PlayerHealth>().img.transform.parent.gameObject);
+        active[playerNum] = false;
+        CharSelectPortraits[playerNum].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
+        Destroy(p);
+        playerColor[] pColors;
+        if (players[playerNum].GetComponent<PlayerMover>().cardOne.character == 1)
+        {
+            pColors = waltColors;
+        }
+        else
+        {
+            pColors = keithColors;
+        }
+        for (int i = 0; i<6; i++)
+        {
+            if (pColors[i].owner == playerNum)
+            {
+                pColors[i].owner = -1;
+            }
+        }
+        activeCount--;
     }
 
     public void goToMapSelect()

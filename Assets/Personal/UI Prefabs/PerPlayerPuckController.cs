@@ -11,6 +11,7 @@ public class PerPlayerPuckController : MonoBehaviour
     public GameObject selected;
     int aPressCooldown;
     int yPressCooldown;
+    int bPressCooldown;
     bool characterSelected;
     // Use this for initialization
     void Start()
@@ -19,6 +20,7 @@ public class PerPlayerPuckController : MonoBehaviour
         selected = null;
         aPressCooldown = 0;
         yPressCooldown = 0;
+        bPressCooldown = 0;
         creator = GameObject.Find("Main Camera").GetComponent<CreatePlayer>();
     }
 
@@ -32,6 +34,10 @@ public class PerPlayerPuckController : MonoBehaviour
         if (yPressCooldown > 0)
         {
             yPressCooldown--;
+        }
+        if(bPressCooldown > 0)
+        {
+            bPressCooldown--;
         }
         Vector2 move = new Vector2();
         rb.velocity = Vector2.zero;
@@ -75,6 +81,12 @@ public class PerPlayerPuckController : MonoBehaviour
         if(playerNum == 0 && g.DPad.Up == ButtonState.Pressed)
         {
             creator.createDummy();
+        }
+
+        if(g.Buttons.B == ButtonState.Pressed && characterSelected && bPressCooldown == 0)
+        {
+            creator.deactivatePlayer(playerNum);
+            bPressCooldown = 30;
         }
 
     }
