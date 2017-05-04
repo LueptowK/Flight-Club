@@ -195,7 +195,6 @@ public class PlayerMover : MonoBehaviour {
             stallCooldownCurrent--;
             shootCooldownCurrent--;
 
-
             if (registerHit) // hit in the queue
             {
                 atk.stopAttack();
@@ -655,7 +654,7 @@ public class PlayerMover : MonoBehaviour {
                     case ExecState.Jump:
                         Vector2 ogVel = (rb.velocity * (Mathf.Pow(1f / 0.8f, jumpSquatFrames)));
                         rb.velocity = new Vector2(ci.move.x * 0.5f * ogVel.x * Mathf.Sign(ogVel.x) + ogVel.x * 0.5f, jumpVel);
-                        states.Enqueue(new StatePair(PState.Air, 0));
+                        //states.Enqueue(new StatePair(PState.Air, 0));
                         break;
                     case ExecState.hitLag:
                         if (ci.move != Vector2.zero)
