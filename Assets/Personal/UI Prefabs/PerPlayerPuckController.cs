@@ -86,6 +86,7 @@ public class PerPlayerPuckController : MonoBehaviour
         if(g.Buttons.B == ButtonState.Pressed && characterSelected && bPressCooldown == 0)
         {
             creator.deactivatePlayer(playerNum);
+            characterSelected = false;
             bPressCooldown = 30;
         }
 
