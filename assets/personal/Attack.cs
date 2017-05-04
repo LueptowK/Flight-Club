@@ -219,4 +219,11 @@ public class Attack : MonoBehaviour {
         }
         return guess;
     }
+    public bool inHitlag
+    {
+        get
+        {
+            return currentHitlag > 0;
+        }
+    }
 }

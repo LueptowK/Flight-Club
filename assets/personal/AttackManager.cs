@@ -154,6 +154,10 @@ public class AttackManager : MonoBehaviour {
     {
         if (currentAttack) {
             int frames = currentAttack.GetComponent<Attack>().ending();
+            if (currentAttack.GetComponent<Attack>().inHitlag)
+            {
+                lag(false);
+            }
             Destroy(currentAttack);
             return frames;
         }
