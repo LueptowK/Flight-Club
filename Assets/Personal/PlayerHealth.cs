@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour {
 	}
     void FixedUpdate()
     {
-        if (recharging)
+        if (recharging && maxShield > 0)
         {
 
             currentShield += recharge/60;
@@ -44,7 +44,7 @@ public class PlayerHealth : MonoBehaviour {
 	// Update is called once per frame
 	public int takeDamage(int damage)
     {
-        if (!recharging)
+        if (!recharging && maxShield > 0)
         {
             currentShield -= damage;
             if (currentShield <= 0)
