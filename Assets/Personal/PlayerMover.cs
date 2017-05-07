@@ -19,9 +19,11 @@ public class PlayerMover : MonoBehaviour {
 
     public PhysicsMaterial2D neutral;//unused
     public PhysicsMaterial2D bounce; //unused
+    public GameObject PhaseUpPre;
 
     public StatCard cardOne;
     public StatCard cardTwo;
+    bool phase2;
 
     public enum PState
     {
@@ -39,7 +41,8 @@ public class PlayerMover : MonoBehaviour {
         Burnout,
         Flip,
         Shoot,
-        ShootWall
+        ShootWall,
+        Parry
     }
 
     public enum ExecState
@@ -143,7 +146,7 @@ public class PlayerMover : MonoBehaviour {
         dead = false;
         paused = false;
         rb.sharedMaterial = neutral;
-
+        phase2 = false;
         loadCard(cardOne);
     }
     void loadCard(StatCard card)
@@ -628,7 +631,15 @@ public class PlayerMover : MonoBehaviour {
                     }
                     rb.velocity = vel;
                     break;
+                #endregion
+                #region Parry State
+                case PState.Parry:
+                    vel = rb.velocity;
+                    vel.x += applyFriction(rb.velocity.y,2);
+                    rb.velocity = vel;
+                    break;
                     #endregion
+
             }
 
 
@@ -753,34 +764,43 @@ public class PlayerMover : MonoBehaviour {
         if (!dead)
         {
             //print(knockback + " ---- " + hitLag+" ---- " + hitStun);
-            hitVector = knockback;
-            if ((OnLeftWall && hitVector.x < 0) || (OnRightWall && hitVector.x > 0))
+            if(current.state== PState.Parry)
             {
-                hitVector = new Vector2(-hitVector.x, hitVector.y);
+                iframes.SetFrames(60);
+                health.charge(0.15f);
             }
-            if ((onCeiling && hitVector.y > 0) || (grounded && hitVector.y < 0))
+            else
             {
-                hitVector = new Vector2(hitVector.x, -hitVector.y);
+                hitVector = knockback;
+                if ((OnLeftWall && hitVector.x < 0) || (OnRightWall && hitVector.x > 0))
+                {
+                    hitVector = new Vector2(-hitVector.x, hitVector.y);
+                }
+                if ((onCeiling && hitVector.y > 0) || (grounded && hitVector.y < 0))
+                {
+                    hitVector = new Vector2(hitVector.x, -hitVector.y);
+                }
+                int result = health.takeDamage(damage);
+                states = new Queue<StatePair>();
+
+                if (result == 0)
+                {
+                    states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
+                    states.Enqueue(new StatePair(PState.Hitstun, hitStun));
+                }
+                else //result is 1
+                {
+                    states.Enqueue(new StatePair(PState.Delay, 30, ExecState.hitLag));
+                    states.Enqueue(new StatePair(PState.Burnout, 40));
+                    iframes.SetFrames(115);
+                }
+
+                registerHit = true;
+                cam.screenShake = (float)damage;
+
+                rb.velocity = Vector2.zero;
             }
-            int result = health.takeDamage(damage);
-            states = new Queue<StatePair>();
             
-            if (result == 0)
-            {
-                states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
-                states.Enqueue(new StatePair(PState.Hitstun, hitStun));
-            }
-            else //result is 1
-            {
-                states.Enqueue(new StatePair(PState.Delay, 30, ExecState.hitLag));
-                states.Enqueue(new StatePair(PState.Burnout, 40));
-                iframes.SetFrames(115);
-            }
-            
-            registerHit = true;
-            cam.screenShake = (float)damage;
-            
-            rb.velocity = Vector2.zero;
             //DAMAGE
             
             //combo.incrementCombo(-1);
@@ -886,7 +906,7 @@ public class PlayerMover : MonoBehaviour {
 
     bool tryFinisherSlash()
     {
-        if (ci.Slash && combo.currentCombo > 0)
+        if (ci.Slash && combo.currentCombo > 0&& !phase2)
         {
             states.Enqueue(new StatePair(PState.FinisherSlash, 0));
             return true;
@@ -897,15 +917,25 @@ public class PlayerMover : MonoBehaviour {
     {
         if (ci.Attack)
         {
-            states.Enqueue(new StatePair(PState.Attack, 0));
             attkQuad = ci.AttackQuad;
+            if (phase2)
+            {
+                if(attkQuad!= ControlInterpret.StickQuadrant.Neutral)
+                {
+                    return false;
+                }
+            }
+            states.Enqueue(new StatePair(PState.Attack, 0));
             return true;
         }
         return false;
     }
     bool tryDodge()
     {
-        if(ci.Dodge&& states.Count<1)
+
+        #region OLD DODGE CODE
+        /*
+        if (ci.Dodge&& states.Count<1)
         {
             if(ci.moveQuad == ControlInterpret.StickQuadrant.Down)
             {
@@ -938,10 +968,21 @@ public class PlayerMover : MonoBehaviour {
         }
 
         return false;
+        */
+        #endregion
+        if (ci.Dodge && states.Count < 1&& phase2)
+        {
+            states.Enqueue(new StatePair(PState.Delay, 1));
+            states.Enqueue(new StatePair(PState.Parry, 10 ));
+            states.Enqueue(new StatePair(PState.Delay, 30));
+            return true;
+        }
+        return false;
+
     }
     bool tryShoot()
     {
-        if (ci.Shoot&&combo.currentCombo>0&&shootCooldownCurrent<0)
+        if (ci.Shoot&&combo.currentCombo>0&&shootCooldownCurrent<0&&!phase2)
         {
 
             if (onWall && !grounded)
@@ -1318,10 +1359,13 @@ public class PlayerMover : MonoBehaviour {
 
     public void phaseUp()
     {
+        phase2 = false;
         loadCard(cardOne);
+        Instantiate(PhaseUpPre, transform);
     }
     public void phaseDown()
     {
+        phase2 = true;
         loadCard(cardTwo);
     }
 

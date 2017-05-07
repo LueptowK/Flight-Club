@@ -40,6 +40,24 @@ public class PlayerHealth : MonoBehaviour {
             setShield();
         }
     }
+    public void charge(float percent)
+    {
+
+        if (recharging && maxShield > 0)
+        {
+
+            currentShield += maxShield*percent;
+            if (currentShield >= maxShield)
+            {
+                currentShield = maxShield;
+                recharging = false;
+                //TRANSITION -- FALSE
+                shieldImg.transform.SetAsLastSibling();
+                mover.phaseUp();
+            }
+            setShield();
+        }
+    }
 	
 	// Update is called once per frame
 	public int takeDamage(int damage)
@@ -50,6 +68,8 @@ public class PlayerHealth : MonoBehaviour {
             if (currentShield <= 0)
             {
                 recharging = true;
+                currentHealth += (int)currentShield;
+                img.fillAmount = (float)currentHealth / maxHealth;
                 currentShield = 0;
                 //TRANSITION -- TRUE
                 shieldImg.transform.SetAsFirstSibling();

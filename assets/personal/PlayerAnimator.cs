@@ -115,10 +115,20 @@ public class PlayerAnimator : MonoBehaviour {
             //spr.color = new Color(spr.color.r, spr.color.g, spr.color.b, 255 - (130 * per));
             tmp.a = 0.5f - 0.3f * per;
         }
+        else if(c.state== PlayerMover.PState.Parry)
+        {
+            float secPerCycle = 0.05f;
+            float t = Time.time % secPerCycle;
+            float per = Mathf.Abs(t - (secPerCycle / 2)) / (secPerCycle / 2);
+            //print(per);
+            //spr.color = new Color(spr.color.r, spr.color.g, spr.color.b, 255 - (130 * per));
+            tmp.a = 1f - 0.8f * per;
+        }
         else
         {
             tmp.a = 1f;
         }
+
         spr.color = tmp;
 
     }
@@ -139,7 +149,8 @@ public class PlayerAnimator : MonoBehaviour {
         Burnout,  //12
         Flip,
         Shoot,
-        LandLag
+        LandLag,
+        Parry //16
         
     }
     void LateUpdate()
@@ -289,6 +300,10 @@ public class PlayerAnimator : MonoBehaviour {
         else if (c.state == PlayerMover.PState.ShootWall)
         {
             ani.SetInteger("State", (int)AnimationState.Shoot);
+        }
+        else if (c.state == PlayerMover.PState.Parry)
+        {
+            ani.SetInteger("State", (int)AnimationState.Parry);
         }
         else
         {
