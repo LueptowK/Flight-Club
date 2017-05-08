@@ -33,6 +33,7 @@ public class HitboxProperties : MonoBehaviour
         {
             atk.addHit(playerCol.gameObject, hitlag);
             Destroy(playerCol.gameObject);
+
             
         }
         else if (!atk.hit.Contains(playerCol.gameObject))
