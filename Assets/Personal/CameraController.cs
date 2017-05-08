@@ -131,7 +131,7 @@ public class CameraController : MonoBehaviour
         box mod = new box();
         float min = 0.5f;
 
-        vel *= 0.15f;
+        vel *= 0.10f;
         mod.minY = Mathf.Min(vel.y, -min);
         //mod.maxY = Mathf.Max(vel.y, min);
         //mod.minX = Mathf.Min(vel.x, -min);
