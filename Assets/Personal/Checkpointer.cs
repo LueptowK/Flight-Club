@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckpointerAdvTutorial : MonoBehaviour {
+public class Checkpointer : MonoBehaviour {
 
     public int checkNum;
 
 	void OnTriggerEnter2D(Collider2D col)
     {
-        GameObject.Find("Main Camera").GetComponent<AdvTutorialManager>().checkpoint(checkNum);
+        GameObject.Find("Main Camera").GetComponent<Manager>().checkpoint(checkNum);
     }
 }

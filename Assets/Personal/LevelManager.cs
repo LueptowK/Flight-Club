@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class AdvTutorialManager : Manager {
+public class LevelManager : Manager
+{
     public GameObject Player;
     public GameObject spawn1;
     public GameObject spawn2;
@@ -19,8 +20,9 @@ public class AdvTutorialManager : Manager {
     bool paused;
     int deathCounter;
     int startTimer;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         endCounter = 120;
         spawns = new GameObject[4];
         spawns[0] = spawn1;
@@ -43,7 +45,7 @@ public class AdvTutorialManager : Manager {
             {
                 startTimer--;
             }
-            
+
             if (finished)
             {
                 endCounter--;
@@ -70,19 +72,19 @@ public class AdvTutorialManager : Manager {
                 dead = true;
             }
         }
-        
+
     }
 
     public override void checkpoint(int checkNum)
     {
-        if(checkNum == 4)
+        if (checkNum == 4)
         {
             finished = true;
             GameObject.Find("Canvas").transform.Find("Complete").gameObject.SetActive(true);
         }
         else
         {
-        lastSpawn = spawns[checkNum];
+            lastSpawn = spawns[checkNum];
         }
     }
 
