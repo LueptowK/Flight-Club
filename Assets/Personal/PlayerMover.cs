@@ -315,13 +315,13 @@ public class PlayerMover : MonoBehaviour {
                                 if (OnRightWall)
                                 {
                                     FacingLeft = false;
-                                    RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.right, 2.0f, 1 << 8);
+                                    RaycastHit2D r = wallCast(false);
                                     transform.position = new Vector3(r.point.x - col.bounds.extents.x, transform.position.y, 0);
                                     rb.velocity = new Vector2(0, rb.velocity.y);
                                 }
                                 else
                                 {
-                                    RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.left, 2.0f, 1 << 8);
+                                    RaycastHit2D r = wallCast(true);
                                     transform.position = new Vector3(r.point.x + col.bounds.extents.x, transform.position.y, 0);
                                     rb.velocity = new Vector2(0, rb.velocity.y);
                                     FacingLeft = true;
@@ -1066,17 +1066,32 @@ public class PlayerMover : MonoBehaviour {
     {
         get
         {
-            return Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.1f, 1 << 8);
+            return wallCast(false);
+            //return Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.1f, 1 << 8);
         }
     }
     public bool OnLeftWall
     {
         get
         {
-            
-            return Physics2D.Raycast(transform.position, -Vector2.right, col.bounds.extents.x + 0.1f, 1 << 8);
+            return wallCast(true);
+
+            //return Physics2D.Raycast(transform.position, -Vector2.right, col.bounds.extents.x + 0.1f, 1 << 8);
 
         }
+    }
+    RaycastHit2D wallCast(bool left)
+    {
+        Vector3 dist = new Vector3(col.bounds.extents.x, 0);
+        Vector2 box = new Vector2(col.bounds.extents.x / 2, col.bounds.extents.y / 2);
+        Vector2 dir = Vector2.right;
+        if (left)
+        {
+            dir = -dir;
+            dist = -dist;
+        }
+        return Physics2D.BoxCast(transform.position + dist / 2, box, 0, dir, 0.2f, 1 << 8);
+
     }
     #endregion
     void nextState()
