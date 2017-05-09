@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
     public float shakeSlowRate = 0.95f;
     public float damageToShakeRatio = 0.045f;
 
-    public float minCamZoom = 5;
+    public float minCamZoom = 6;
     public float maxCamSoftZoom = 8f;
     public float camDivider = 3.8f;
     public GameObject camBaseObj;

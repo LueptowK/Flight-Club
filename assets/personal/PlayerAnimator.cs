@@ -8,6 +8,7 @@ public class PlayerAnimator : MonoBehaviour {
     ControlInterpret ci;
     Animator ani;
     PlayerMover pm;
+    AttackManager am;
     bool backDash =false;
 
     public float playerScale;
@@ -19,6 +20,7 @@ public class PlayerAnimator : MonoBehaviour {
         ci = GetComponent<ControlInterpret>();
         ani = GetComponent<Animator>();
         pm = GetComponent<PlayerMover>();
+        am = GetComponent<AttackManager>();
         playerScale = pm.cardOne.scale;
 
 
@@ -53,20 +55,9 @@ public class PlayerAnimator : MonoBehaviour {
         switch (c.state)
         {
             case PlayerMover.PState.Dash:
+                a = rotFromVec(pm.dashDirection,0);
 
-                if (pm.FacingLeft)
-                {
-                    Vector2 v2 = pm.dashDirection- Vector2.left;
-                    a = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg ;
-                    a += 180;
-
-                }
-                else
-                {
-                    Vector2 v2 = pm.dashDirection - Vector2.right;
-                    a = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
-
-                }
+                
                 if (backDash)
                 {
                     a += 200;
@@ -90,6 +81,9 @@ public class PlayerAnimator : MonoBehaviour {
                     a = t * 360 *direction /secPerRot ;
                 }
 
+                break;
+            case PlayerMover.PState.Finisher:
+                a = rotFromVec(rb.velocity,-90);
                 break;
             default:
                 a = 0;
@@ -131,6 +125,30 @@ public class PlayerAnimator : MonoBehaviour {
 
         spr.color = tmp;
 
+    }
+    float rotFromVec(Vector2 v, float extra)
+    {
+        float a;
+        if (v == Vector2.zero)
+        {
+            a = 0;
+        }
+        else {
+            if (pm.FacingLeft)
+            {
+                Vector2 v2 = v - Vector2.left;
+                a = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
+                a += 180;
+                a -= extra;
+            }
+            else
+            {
+                Vector2 v2 = v - Vector2.right;
+                a = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
+                a += extra;
+            }
+        }
+        return a;
     }
     enum AnimationState
     {
@@ -237,6 +255,10 @@ public class PlayerAnimator : MonoBehaviour {
             {
                 ani.SetInteger("State", (int)AnimationState.LandLag);
             }
+            else if (c.action == PlayerMover.ExecState.Grabbed)
+            {
+                ani.SetInteger("State", (int)AnimationState.Hitstun);
+            }
             else
             {
                 ani.SetInteger("State", (int)AnimationState.Unknown);
@@ -281,7 +303,7 @@ public class PlayerAnimator : MonoBehaviour {
         {
             ani.SetInteger("State", (int)AnimationState.GroundAttack);
         }
-        else if (c.state == PlayerMover.PState.FinisherSlash)
+        else if (c.state == PlayerMover.PState.Finisher)
         {
             ani.SetInteger("State", (int)AnimationState.Finisher);
         }

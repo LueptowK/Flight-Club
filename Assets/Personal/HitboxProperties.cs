@@ -65,15 +65,15 @@ public class HitboxProperties : MonoBehaviour
             {
                 knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * transform.up.y);
             }
-            if (transform.parent.tag == "FinisherSlash")
+            if (transform.parent.tag == "Finisher")
             {
                 int str = transform.parent.GetComponent<Attack>().comboStrength;
                 float strength = str / 5f * 4f;
-                playerCol.GetComponent<PlayerMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength));
+                playerCol.GetComponent<PlayerMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength), atk);
             }
             else
             {
-                playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
+                playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage, atk);
             }
             atk.addHit(playerCol.gameObject, hitlag);
         }

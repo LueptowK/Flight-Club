@@ -88,12 +88,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Personal\AdvTutorialManager.cs" />
+    <Compile Include="Assets\Personal\Attack Prefabs\Finisher.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Projectile.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\RingMove.cs" />
+    <Compile Include="Assets\Personal\Attack Prefabs\Slash.cs" />
+    <Compile Include="Assets\Personal\Attack Prefabs\Tackle.cs" />
     <Compile Include="Assets\Personal\Attack.cs" />
     <Compile Include="Assets\Personal\AttackManager.cs" />
     <Compile Include="Assets\Personal\CameraController.cs" />
-    <Compile Include="Assets\Personal\CheckpointerAdvTutorial.cs" />
+    <Compile Include="Assets\Personal\Checkpointer.cs" />
     <Compile Include="Assets\Personal\CheckpointerTutorial.cs" />
     <Compile Include="Assets\Personal\ComboCounter.cs" />
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="Assets\Personal\CreatePlayerOld.cs" />
     <Compile Include="Assets\Personal\HitboxProperties.cs" />
     <Compile Include="Assets\Personal\IFrames.cs" />
+    <Compile Include="Assets\Personal\LevelManager.cs" />
     <Compile Include="Assets\Personal\LoadSceneOnClick.cs" />
     <Compile Include="Assets\Personal\Manager.cs" />
     <Compile Include="Assets\Personal\MapManager.cs" />

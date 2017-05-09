@@ -13,7 +13,7 @@ public class AttackManager : MonoBehaviour {
     public GameObject BackGround;
     public GameObject ForwardGround;
     public GameObject NeutralGround;
-    public GameObject SlashFinisher;
+    public GameObject Finisher;
     public GameObject RangedAttack;
     private ControlInterpret ci;
     PlayerMover pm;
@@ -37,7 +37,7 @@ public class AttackManager : MonoBehaviour {
         ForwardGround,
         BackGround,
         NeutralGround,
-        SlashFinisher
+        Finisher
     }
 	// Use this for initialization
 	void Start () {
@@ -134,8 +134,8 @@ public class AttackManager : MonoBehaviour {
             case AtkType.NeutralGround:
                 currentAttack = Instantiate(NeutralGround, transform, false);
                 break;
-            case AtkType.SlashFinisher:
-                currentAttack = Instantiate(SlashFinisher, transform, false);
+            case AtkType.Finisher:
+                currentAttack = Instantiate(Finisher, transform, false);
                 ComboCounter c = GetComponent<ComboCounter>();
                 currentAttack.GetComponent<Attack>().comboStrength = c.currentCombo;
                 c.reset();
@@ -163,9 +163,11 @@ public class AttackManager : MonoBehaviour {
         }
         return 0;
     }
-    public void atkFinished()
+    public void atkFinished(AtkType t)
     {
-        pm.atkFinished();
+        pm.atkFinished(t== AtkType.Finisher);
+
+        Destroy(currentAttack);
     }
     public void currentAttackHitStart()
     {
@@ -180,6 +182,19 @@ public class AttackManager : MonoBehaviour {
             }
 
             currentAttack.transform.rotation = Quaternion.Euler(0f, 0f, angleDiff);
+        }
+    }
+    public Vector2 getFinisherMotion(Vector2 vel)
+    {
+        Finisher f = currentAttack.GetComponent<Finisher>();
+        if (f)
+        {
+            return f.motion(vel);
+        }
+        else
+        {
+            print("fucked up");
+            return Vector2.zero;
         }
     }
 }

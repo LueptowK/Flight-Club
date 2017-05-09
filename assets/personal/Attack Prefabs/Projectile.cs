@@ -44,7 +44,7 @@ public class Projectile : MonoBehaviour {
                     knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * transform.up.y);
 
 
-                    playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
+                    playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage );
                     atk.updateLastAttack(AttackManager.AtkType.None);
                     Destroy(gameObject);
                 }

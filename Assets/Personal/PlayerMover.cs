@@ -37,7 +37,7 @@ public class PlayerMover : MonoBehaviour {
         AirAttack,
         GroundAttack,
         Attack, 
-        FinisherSlash,
+        Finisher,
         Burnout,
         Flip,
         Shoot,
@@ -59,7 +59,8 @@ public class PlayerMover : MonoBehaviour {
         Flip,
         Normal,
         Shoot,
-        LandLag
+        LandLag,
+        Grabbed
 
     }
 
@@ -124,6 +125,12 @@ public class PlayerMover : MonoBehaviour {
     Vector2 resumeVelocity;
 
     public bool paused;
+
+
+    int grabDamage;
+    int grabHitstun;
+    Attack grabAtk;
+    Vector3 grabDif;
 
     [HideInInspector]public bool FacingLeft = false;
 
@@ -202,7 +209,7 @@ public class PlayerMover : MonoBehaviour {
             {
                 atk.stopAttack();
                 int safety = states.Count;
-                while ((current.state != PState.Delay || current.action != ExecState.hitLag) && safety > 0)
+                while (!(current.state == PState.Delay && (current.action == ExecState.hitLag||current.action== ExecState.Grabbed)) && safety > 0)
                 {
                     nextState();
                     safety--;
@@ -235,7 +242,7 @@ public class PlayerMover : MonoBehaviour {
                         {
                             if (!tryAttack())
                             {
-                                if (!tryFinisherSlash())
+                                if (!tryFinisher())
                                 {
                                     tryShoot();
                                 }
@@ -281,7 +288,7 @@ public class PlayerMover : MonoBehaviour {
                         {
                             if (!tryAttack())
                             {
-                                if (!tryFinisherSlash())
+                                if (!tryFinisher())
                                 {
                                     tryShoot();
                                 }
@@ -390,7 +397,7 @@ public class PlayerMover : MonoBehaviour {
                             {
                                 if (!tryAttack())
                                 {
-                                    tryFinisherSlash();
+                                    tryFinisher();
                                 }
                             }
                         }
@@ -454,6 +461,16 @@ public class PlayerMover : MonoBehaviour {
                                 tempX += applyFriction(tempX, 2.0f);
                             }
                             rb.velocity = new Vector2(tempX, rb.velocity.y - 9.8f * tempGrav * Time.fixedDeltaTime);
+                            break;
+                        case ExecState.Grabbed:
+                            rb.velocity = Vector2.zero;
+                            transform.position = grabAtk.gameObject.transform.position + grabDif;
+                            if (!grabAtk)
+                            {
+                                states.Enqueue(new StatePair(PState.Delay, 0, ExecState.Normal));
+                                break;
+                            }
+                        
                             break;
                     }
 
@@ -574,10 +591,10 @@ public class PlayerMover : MonoBehaviour {
                     }
                     break;
                 #endregion
-                #region FinisherSlash State
-                case PState.FinisherSlash:
+                #region Finisher State
+                case PState.Finisher:
                     atk.NestedUpdate();
-                    rb.velocity = Vector2.zero;
+                    rb.velocity = atk.getFinisherMotion(ci.move);
                     break;
                 #endregion
                 #region Burnout State
@@ -758,8 +775,16 @@ public class PlayerMover : MonoBehaviour {
             }
         }
     }
- 
+    public void grabFin()
+    {
+        takeDamage(grabDamage, 0, grabHitstun);
+    }
     public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage)
+    {
+        getHit( knockback, hitLag, hitStun,damage, null);
+    
+    }
+    public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage, Attack a)
     {
         if (!dead)
         {
@@ -772,39 +797,55 @@ public class PlayerMover : MonoBehaviour {
             else
             {
                 hitVector = knockback;
-                if ((OnLeftWall && hitVector.x < 0) || (OnRightWall && hitVector.x > 0))
-                {
-                    hitVector = new Vector2(-hitVector.x, hitVector.y);
-                }
-                if ((onCeiling && hitVector.y > 0) || (grounded && hitVector.y < 0))
-                {
-                    hitVector = new Vector2(hitVector.x, -hitVector.y);
-                }
-                int result = health.takeDamage(damage);
+                registerHit = true;
+                rb.velocity = Vector2.zero;
                 states = new Queue<StatePair>();
 
-                if (result == 0)
+
+                if (a!=null &&a.isGrab)
                 {
-                    states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
-                    states.Enqueue(new StatePair(PState.Hitstun, hitStun));
+                    grabDamage = damage;
+                    grabAtk = a;
+                    grabHitstun = hitStun;
+                    grabDif = transform.position - a.transform.position;
+                    states.Enqueue(new StatePair(PState.Delay, 0, ExecState.Grabbed));
                 }
-                else //result is 1
+                else
                 {
-                    states.Enqueue(new StatePair(PState.Delay, 30, ExecState.hitLag));
-                    states.Enqueue(new StatePair(PState.Burnout, 40));
-                    iframes.SetFrames(115);
+                    takeDamage(damage, hitLag, hitStun);
                 }
 
-                registerHit = true;
-                cam.screenShake = (float)damage;
+                
+                
 
-                rb.velocity = Vector2.zero;
+                
             }
             
             //DAMAGE
             
             //combo.incrementCombo(-1);
         }
+    }
+    void takeDamage(int damage, int hitLag, int hitStun)
+    {
+
+        int result = health.takeDamage(damage);
+        if (result == 0)
+        {
+            if (hitLag > 0)
+            {
+                states.Enqueue(new StatePair(PState.Delay, hitLag, ExecState.hitLag));
+            }
+           
+            states.Enqueue(new StatePair(PState.Hitstun, hitStun));
+        }
+        else //result is 1
+        {
+            states.Enqueue(new StatePair(PState.Delay, 30, ExecState.hitLag));
+            states.Enqueue(new StatePair(PState.Burnout, 40));
+            iframes.SetFrames(115);
+        }
+        cam.screenShake = (float)damage;
     }
 
 
@@ -904,11 +945,11 @@ public class PlayerMover : MonoBehaviour {
     }
 
 
-    bool tryFinisherSlash()
+    bool tryFinisher()
     {
         if (ci.Slash && combo.currentCombo > 0&& !phase2)
         {
-            states.Enqueue(new StatePair(PState.FinisherSlash, 0));
+            states.Enqueue(new StatePair(PState.Finisher, 0));
             return true;
         }
         return false;
@@ -1099,8 +1140,14 @@ public class PlayerMover : MonoBehaviour {
 
         if (states.Count == 0)
         {
-
-            if (current.state == PState.GroundAttack || current.state == PState.AirAttack)
+            if(current.state == PState.Delay && current.action == ExecState.Grabbed)
+            {
+                if (current.delay < -2)
+                {
+                    pani.StateChange(false);
+                }            
+            }
+            else if (current.state == PState.GroundAttack || current.state == PState.AirAttack|| current.state == PState.Finisher)
             {
                 pani.StateChange(false);
             }
@@ -1132,10 +1179,10 @@ public class PlayerMover : MonoBehaviour {
             switch (current.state)
             {
 
-                case PState.FinisherSlash:
-                    frames = atk.makeAttack(AttackManager.AtkType.SlashFinisher);
-                    current.delay = frames;
-                    states.Enqueue(new StatePair(PState.Burnout, 110));
+                case PState.Finisher:
+                    frames = atk.makeAttack(AttackManager.AtkType.Finisher);
+                    //current.delay = frames;
+                    
                     //states.Enqueue(new StatePair(PState.Ground,0));
                     break;
                 case PState.Attack:
@@ -1164,8 +1211,16 @@ public class PlayerMover : MonoBehaviour {
                 case PState.Burnout:
                     rb.velocity = new Vector2(rb.velocity.x, 8f);
                     break;
-                case PState.Shoot:
-                    //atk.shoot();
+                case PState.Hitstun:
+                    if ((OnLeftWall && hitVector.x < 0) || (OnRightWall && hitVector.x > 0))
+                    {
+                        hitVector = new Vector2(-hitVector.x, hitVector.y);
+                    }
+                    if ((onCeiling && hitVector.y > 0) || (grounded && hitVector.y < 0))
+                    {
+                        hitVector = new Vector2(hitVector.x, -hitVector.y);
+                    }
+                    rb.velocity = hitVector;
                     break;
             }
             pani.StateChange(true);
@@ -1174,16 +1229,24 @@ public class PlayerMover : MonoBehaviour {
 
         
     }
-    public void atkFinished()
+    public void atkFinished(bool burnout)
     {
-        if (grounded)
+        if (burnout)
         {
-            states.Enqueue(new StatePair(PState.Ground, 0));
+            states.Enqueue(new StatePair(PState.Burnout, 110));
         }
         else
         {
-            states.Enqueue(new StatePair(PState.Air, 0));
+            if (grounded)
+            {
+                states.Enqueue(new StatePair(PState.Ground, 0));
+            }
+            else
+            {
+                states.Enqueue(new StatePair(PState.Air, 0));
+            }
         }
+        
     }
     void alignGround()
     {

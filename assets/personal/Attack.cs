@@ -9,6 +9,8 @@ public class Attack : MonoBehaviour {
     public int attackReduction, landLag=6;
     public int[] autoCanFrames;
     public int autoCanLag;
+
+    public bool isGrab;
     // Use this for initialization
 
     AttackManager mngr;
@@ -56,6 +58,19 @@ public class Attack : MonoBehaviour {
             }
             animBox = Instantiate(windUpBox, transform);
             
+        }
+    }
+    public bool released
+    {
+        get{
+            return frameNum > windup + atkTime;
+        }
+    }
+    public bool attacking
+    {
+        get
+        {
+            return frameNum > windup && frameNum <= windup + atkTime;
         }
     }
     public void setType(AttackManager.AtkType t)
@@ -108,6 +123,10 @@ public class Attack : MonoBehaviour {
 
                 if (frameNum == windup + atkTime + 1)
                 {
+                    if (isGrab)
+                    {
+                        grabDamage();
+                    }
                     if (isBasic)
                     {
 
@@ -136,8 +155,8 @@ public class Attack : MonoBehaviour {
             }
             else if (frameNum > atkFrames)
             {
-                mngr.atkFinished();
-                Destroy(gameObject);
+                mngr.atkFinished(type);
+           
             }
             else
             {
@@ -159,13 +178,31 @@ public class Attack : MonoBehaviour {
             frameNum++;
         }
 	}
+    public void grabDamage()
+    {
+        for (int i = 0; i < alreadyHit.Count; i++)
+        {
+            if (i > 0)
+            {
+                GameObject g = alreadyHit[i];
+                if (g)
+                {
+                    g.GetComponent<PlayerMover>().grabFin();
+                }
+            }
+        }
+    }
+    public void windDown()
+    {
+        frameNum = windup + atkTime;
+    }
     public void addHit(GameObject h, int hitLag)
     {
         
         alreadyHit.Add(h);
         mngr.updateLastAttack(type);
         alreadyHit[0].GetComponent<PlayerMover>().restoreTools();
-        if (type != AttackManager.AtkType.SlashFinisher &&  !mngr.alreadyHitByType.Contains(h))
+        if (type != AttackManager.AtkType.Finisher &&  !mngr.alreadyHitByType.Contains(h))
         {
             alreadyHit[0].GetComponent<ComboCounter>().incrementCombo(1);
         }
@@ -174,7 +211,7 @@ public class Attack : MonoBehaviour {
             GetComponentInParent<ComboCounter>().resetComboTime();
         }
         mngr.addHit(h);
-        if(type!= AttackManager.AtkType.SlashFinisher)
+        if(type!= AttackManager.AtkType.Finisher && hitLag>0)
         {
             currentHitlag = hitLag;
             mngr.lag(true);
