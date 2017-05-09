@@ -465,6 +465,7 @@ public class PlayerMover : MonoBehaviour {
                         case ExecState.Grabbed:
                             rb.velocity = Vector2.zero;
                             transform.position = grabAtk.gameObject.transform.position + grabDif;
+                            
                             if (!grabAtk)
                             {
                                 states.Enqueue(new StatePair(PState.Delay, 0, ExecState.Normal));
@@ -807,7 +808,8 @@ public class PlayerMover : MonoBehaviour {
                     grabDamage = damage;
                     grabAtk = a;
                     grabHitstun = hitStun;
-                    grabDif = transform.position - a.transform.position;
+                    //grabDif = transform.position - a.transform.position;
+                    grabDif = a.transform.up * 1f;
                     states.Enqueue(new StatePair(PState.Delay, 0, ExecState.Grabbed));
                 }
                 else

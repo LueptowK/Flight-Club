@@ -18,7 +18,11 @@ public class Tackle : Finisher {
         {
             if(tackleDir == Vector2.zero)
             {
-                tackleDir = input;
+                tackleDir = input.normalized;
+                if(input == Vector2.zero)
+                {
+                    tackleDir = transform.right;
+                }
             }
             return tackleDir * speed;
         }
