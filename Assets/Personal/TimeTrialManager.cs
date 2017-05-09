@@ -124,7 +124,7 @@ public class TimeTrialManager : Manager {
         SceneManager.LoadScene(9);
     }
 
-    public override void checkpoint(int checkNum)
+    public override void checkpoint(int checkNum, Vector2 position)
     {
         throw new NotImplementedException();
     }

@@ -79,7 +79,7 @@ public class TutorialManager : Manager {
         }
     }
 
-    public override void checkpoint(int checkNum)
+    public override void checkpoint(int checkNum, Vector2 position)
     {
         lastSpawn = spawns[checkNum];
     }

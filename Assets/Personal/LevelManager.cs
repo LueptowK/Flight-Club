@@ -6,15 +6,12 @@ using UnityEngine.SceneManagement;
 public class LevelManager : Manager
 {
     public GameObject Player;
-    public GameObject spawn1;
-    public GameObject spawn2;
-    public GameObject spawn3;
-    public GameObject spawn4;
     public GameObject pauseScreen;
 
     private int endCounter;
-    GameObject[] spawns;
-    private GameObject lastSpawn;
+    public GameObject startSpawn;
+    private Vector2 currentSpawn;
+    public Checkpointer finalPoint;
     bool dead;
     bool finished;
     bool paused;
@@ -24,15 +21,11 @@ public class LevelManager : Manager
     void Start()
     {
         endCounter = 120;
-        spawns = new GameObject[4];
-        spawns[0] = spawn1;
-        spawns[1] = spawn2;
-        spawns[2] = spawn3;
-        spawns[3] = spawn4;
 
+        currentSpawn = startSpawn.transform.position;
         startTimer = 10;
         deathCounter = 0;
-        lastSpawn = spawn1;
+        //currentSpawn = spawn1;
         Player.GetComponent<PlayerMover>().TutorialStart();
     }
 
@@ -60,7 +53,7 @@ public class LevelManager : Manager
                 if (deathCounter == 0)
                 {
                     Player.GetComponent<PlayerMover>().reset();
-                    Player.transform.position = lastSpawn.transform.position;
+                    Player.transform.position = currentSpawn;
                     Player.GetComponent<PlayerHealth>().currentHealth = 5;
                     dead = false;
                 }
@@ -75,16 +68,16 @@ public class LevelManager : Manager
 
     }
 
-    public override void checkpoint(int checkNum)
+    public override void checkpoint(int checkNum, Vector2 position)
     {
-        if (checkNum == 4)
+        if (checkNum == finalPoint.checkNum)
         {
             finished = true;
             GameObject.Find("Canvas").transform.Find("Complete").gameObject.SetActive(true);
         }
         else
         {
-            lastSpawn = spawns[checkNum];
+            currentSpawn = position;
         }
     }
 

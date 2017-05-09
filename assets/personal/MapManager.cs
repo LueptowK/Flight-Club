@@ -132,7 +132,7 @@ public class MapManager : Manager {
         SceneManager.LoadScene(1);
     }
 
-    public override void checkpoint(int checkNum)
+    public override void checkpoint(int checkNum, Vector2 position)
     {
         throw new NotImplementedException();
     }

@@ -8,6 +8,6 @@ public class CheckpointerTutorial : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col)
     {
-        GameObject.Find("Main Camera").GetComponent<TutorialManager>().checkpoint(checkNum);
+        GameObject.Find("Main Camera").GetComponent<TutorialManager>().checkpoint(checkNum, this.transform.position);
     }
 }

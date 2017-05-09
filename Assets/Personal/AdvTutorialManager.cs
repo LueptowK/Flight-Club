@@ -73,7 +73,7 @@ public class AdvTutorialManager : Manager {
         
     }
 
-    public override void checkpoint(int checkNum)
+    public override void checkpoint(int checkNum, Vector2 position)
     {
         if(checkNum == 4)
         {
