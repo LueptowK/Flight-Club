@@ -12,6 +12,18 @@ public class MapItem : MenuItemAbst {
         {
             Application.Quit();
         }
+
+        if(nextScene == -2)
+        {
+            MapItem[] maps = FindObjectsOfType<MapItem>();
+            int i = Random.Range(0, maps.Length);
+            while (maps[i].nextScene == -2)
+            {
+                i = Random.Range(0, maps.Length);
+            }
+            SceneManager.LoadScene(maps[i].nextScene);
+        }
+
         SceneManager.LoadScene(nextScene);
     }
 }
