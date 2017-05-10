@@ -21,7 +21,8 @@ public class PerPlayerPuckController : MonoBehaviour
         aPressCooldown = 0;
         yPressCooldown = 0;
         bPressCooldown = 0;
-        creator = GameObject.Find("Main Camera").GetComponent<CreatePlayer>();
+        creator = GameObject.Find("PlayerCreator").GetComponent<CreatePlayer>();
+        characterSelected = creator.active[playerNum];
     }
 
     // Update is called once per frame

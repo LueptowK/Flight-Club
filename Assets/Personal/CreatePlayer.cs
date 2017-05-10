@@ -17,10 +17,10 @@ public class CreatePlayer : MonoBehaviour
     public GameObject portraitSlot4;
     private Shader shaderGUItext;
     private Shader shaderSpritesDefault;
-    private bool[] active;
+    public bool[] active;
     playerColor[] keithColors;
     playerColor[] waltColors;
-    GameObject[] players;
+    playerInfo[] players;
     GameObject[] CharSelectPortraits;
     
     int activeCount = 0;
@@ -34,10 +34,30 @@ public class CreatePlayer : MonoBehaviour
             this.color = c;
             this.owner = -1;
         }
-
     }
+
+    public struct playerInfo
+    {
+        public int character;
+        public int colorNum;
+    }
+
     void Awake()
     {
+        if (FindObjectsOfType(GetType()).Length > 1)
+        {
+            foreach (CreatePlayer i in FindObjectsOfType(GetType()))
+            {
+                if (this != i)
+                {
+                    i.reset();
+                }
+            }
+            Destroy(gameObject);
+        }
+
+
+
         keithColors = new playerColor[6];
         keithColors[0] = new playerColor(Color.white);
         keithColors[1] = new playerColor(new Color(1f,.2f,.2f,1f));
@@ -62,7 +82,7 @@ public class CreatePlayer : MonoBehaviour
         CharSelectPortraits[3] = portraitSlot4;
 
         active = new bool[4];
-        players = new GameObject[4];
+        players = new playerInfo[4];
 
         shaderGUItext = Shader.Find("GUI/Text Shader");
         shaderSpritesDefault = Shader.Find("Sprites/Default");
@@ -71,7 +91,7 @@ public class CreatePlayer : MonoBehaviour
     public void changeColor(int player, bool inArray)
     {
         playerColor[] pColors;
-        if (players[player].GetComponent<PlayerMover>().cardOne.character == 1)
+        if (players[player].character == 1)
         {
             pColors = waltColors;
         }
@@ -117,7 +137,7 @@ public class CreatePlayer : MonoBehaviour
     public void setColor(int i, int player)
     {
         playerColor[] pColors;
-        if (players[player].GetComponent<PlayerMover>().cardOne.character == 1)
+        if (players[player].character == 1)
         {
             pColors = waltColors;
         }
@@ -127,57 +147,58 @@ public class CreatePlayer : MonoBehaviour
         }
         pColors[i].owner = player;
         Color finalColor = pColors[i].color;
-        if (players[player].GetComponent<PlayerMover>().cardOne.character == 1)
+        if (players[player].character == 1)
         {
-            players[player].GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
+            //players[player].GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
             CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
         }
         else
         {
-            players[player].GetComponent<SpriteRenderer>().material.shader = shaderSpritesDefault;
+            //players[player].GetComponent<SpriteRenderer>().material.shader = shaderSpritesDefault;
             CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderSpritesDefault;
         }
-        players[player].GetComponent<SpriteRenderer>().color = finalColor;
-        players[player].GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
+        players[player].colorNum = i;
+        //players[player].GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
         CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().color = finalColor;
     }
 
     public void activatePlayer(int playerNum, int character)
     {
-        if(active[playerNum] && character != players[playerNum].GetComponent<PlayerMover>().cardOne.character)
+        if(active[playerNum] && character != players[playerNum].character)
         {
             deactivatePlayer(playerNum);
         }
         if (!active[playerNum])
         {
-            GameObject p;
-            if (character == 0)
-            {
-                p = Instantiate(Keith);
-            }
-            else if (character == 1)
-            {
-                p = Instantiate(Walt);
-            }
-            else if (character == -1)
-            {
-                print("RANDOM CHARACTER");
-                return;
-            }
-            else
-            {
-                p = null;
-                print("fuck");
-            }
-            GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
-            p.GetComponent<PlayerInput>().PlayerNumber = playerNum;
-            p.GetComponent<PlayerHealth>().img = h.transform.Find("BarFill").gameObject.GetComponent<Image>();
-            p.GetComponent<PlayerHealth>().shieldImg = h.transform.Find("BarShield").gameObject.GetComponent<Image>();
+            //GameObject p;
+            //if (character == 0)
+            //{
+            //    p = Instantiate(Keith);
+            //}
+            //else if (character == 1)
+            //{
+            //    p = Instantiate(Walt);
+            //}
+            //else if (character == -1)
+            //{
+            //    print("RANDOM CHARACTER");
+            //    return;
+            //}
+            //else
+            //{
+            //    p = null;
+            //    print("fuck");
+            //}
+            //GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
+            //p.GetComponent<PlayerInput>().PlayerNumber = playerNum;
+            //p.GetComponent<PlayerHealth>().img = h.transform.Find("BarFill").gameObject.GetComponent<Image>();
+            //p.GetComponent<PlayerHealth>().shieldImg = h.transform.Find("BarShield").gameObject.GetComponent<Image>();
             //h.SetActive(false);
-            p.SetActive(false);
-            p.transform.position = new Vector3(999, -999, 0);
+            //p.SetActive(false);
+            //p.transform.position = new Vector3(999, -999, 0);
+            //players[playerNum] = p;
+            players[playerNum].character = character;
             active[playerNum] = true;
-            players[playerNum] = p;
             CharSelectPortraits[playerNum].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
             if (character == 0)
             {
@@ -194,13 +215,16 @@ public class CreatePlayer : MonoBehaviour
 
     public void deactivatePlayer(int playerNum)
     {
-        GameObject p = players[playerNum];
-        Destroy(p.GetComponent<PlayerHealth>().img.transform.parent.gameObject);
+        //GameObject p = players[playerNum];
+        //Destroy(p.GetComponent<PlayerHealth>().img.transform.parent.gameObject);
         active[playerNum] = false;
         CharSelectPortraits[playerNum].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
-        Destroy(p);
+        //Destroy(p);
+
+        
+
         playerColor[] pColors;
-        if (players[playerNum].GetComponent<PlayerMover>().cardOne.character == 1)
+        if (players[playerNum].character == 1)
         {
             pColors = waltColors;
         }
@@ -223,21 +247,60 @@ public class CreatePlayer : MonoBehaviour
         if (activeCount > 1)
         {
             DontDestroyOnLoad(Canvas);
-            for (int j = 0; j < players.Length; j++)
-            {
-                if (active[j])
-                {
-                    players[j].SetActive(true);
-                    DontDestroyOnLoad(players[j]);
-                    players[j].GetComponent<ComboCounter>().reset();
-                    players[j].GetComponent<SpriteRenderer>().enabled = false;
-                    //reset(players[i]);
-                }
-            }
+            spawnPlayers();
             //Destroy(Canvas.transform.FindChild("TutorialText").gameObject);
             SceneManager.LoadScene(2); //UPDATE TO MAP SELECT SCREEN WHEN THAT EXISTS
         }
 
+    }
+
+    public void spawnPlayers()
+    {
+        for (int j = 0; j < players.Length; j++)
+        {
+            if (active[j])
+            {
+                GameObject p;
+                playerColor[] pColors;
+                if (players[j].character == 0)
+                {
+                    p = Instantiate(Keith);
+                    pColors = keithColors;
+                }
+                else if (players[j].character == 1)
+                {
+                    p = Instantiate(Walt);
+                    pColors = waltColors;
+                }
+                else if (players[j].character == -1)
+                {
+                    print("RANDOM CHARACTER");
+                    return;
+                }
+                else
+                {
+                    p = null;
+                    print("fuck");
+                    return;
+                }
+                GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
+                p.GetComponent<PlayerInput>().PlayerNumber = j;
+                p.GetComponent<PlayerHealth>().img = h.transform.Find("BarFill").gameObject.GetComponent<Image>();
+                p.GetComponent<PlayerHealth>().shieldImg = h.transform.Find("BarShield").gameObject.GetComponent<Image>();
+
+                Color finalColor = pColors[players[j].colorNum].color;
+                p.GetComponent<SpriteRenderer>().color = finalColor;
+                p.GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
+
+                //h.SetActive(false);
+                p.transform.position = new Vector3(999, -999, 0);
+                DontDestroyOnLoad(p);
+                p.GetComponent<ComboCounter>().reset();
+                p.GetComponent<SpriteRenderer>().enabled = false;
+                //reset(p);
+                DontDestroyOnLoad(this);
+            }
+        }
     }
 
     public void createDummy()
@@ -246,5 +309,29 @@ public class CreatePlayer : MonoBehaviour
         {
             activatePlayer(1, 0);
         }
+    }
+
+    public void reset()
+    {
+        Canvas = GameObject.Find("Canvas");
+        portraitSlot1 = GameObject.Find("CharSelectPlayer");
+        portraitSlot2 = GameObject.Find("CharSelectPlayer (1)");
+        portraitSlot3 = GameObject.Find("CharSelectPlayer (2)");
+        portraitSlot4 = GameObject.Find("CharSelectPlayer (3)");
+        CharSelectPortraits[0] = portraitSlot1;
+        CharSelectPortraits[1] = portraitSlot2;
+        CharSelectPortraits[2] = portraitSlot3;
+        CharSelectPortraits[3] = portraitSlot4;
+
+        for (int i=0; i<4; i++)
+        {
+            if (active[i])
+            {
+                CharSelectPortraits[i].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
+                setColor(players[i].colorNum, i);
+            }
+        }
+
+        
     }
 }
