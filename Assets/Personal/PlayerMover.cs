@@ -10,7 +10,7 @@ public class PlayerMover : MonoBehaviour {
     PlayerAnimator pani;
     Collider2D col;
     AttackManager atk;
-    PlayerHealth health;
+    Health health;
     ComboCounter combo;
     CameraController cam;
     IFrames iframes;
@@ -145,7 +145,7 @@ public class PlayerMover : MonoBehaviour {
         pani = GetComponent<PlayerAnimator>();
         col = GetComponent<Collider2D>();
         atk = GetComponent<AttackManager>();
-        health = GetComponent<PlayerHealth>();
+        health = GetComponent<Health>();
         combo = GetComponent<ComboCounter>();
         iframes = GetComponent<IFrames>();
         dashVel = Vector2.zero;
@@ -473,6 +473,9 @@ public class PlayerMover : MonoBehaviour {
                             }
                         
                             break;
+                        case ExecState.Death:
+                            rb.velocity = Vector2.zero;
+                            break;
                     }
 
                     break;
@@ -793,7 +796,7 @@ public class PlayerMover : MonoBehaviour {
             if(current.state== PState.Parry&& a.tag!= "Finisher")
             {
                 iframes.SetFrames(60);
-                health.charge(0.15f);
+                ((PlayerHealth)health).charge(0.15f);
             }
             else
             {
@@ -802,8 +805,9 @@ public class PlayerMover : MonoBehaviour {
                 rb.velocity = Vector2.zero;
                 states = new Queue<StatePair>();
 
+                
 
-                if (a!=null &&a.isGrab)
+                if (a!=null && a.isActive &&((AttackActive)a).isGrab)
                 {
                     grabDamage = damage;
                     grabAtk = a;
@@ -815,6 +819,10 @@ public class PlayerMover : MonoBehaviour {
                 else
                 {
                     takeDamage(damage, hitLag, hitStun);
+                    if (a != null && !a.isActive&&!(health.currentHealth<=0))
+                    {
+                        iframes.SetFrames(75);
+                    }
                 }
 
                 
@@ -825,7 +833,7 @@ public class PlayerMover : MonoBehaviour {
             
             //DAMAGE
             
-            //combo.incrementCombo(-1);
+            
         }
     }
     void takeDamage(int damage, int hitLag, int hitStun)
@@ -1025,7 +1033,7 @@ public class PlayerMover : MonoBehaviour {
     }
     bool tryShoot()
     {
-        if (ci.Shoot&&combo.currentCombo>0&&shootCooldownCurrent<0&&!phase2)
+        if (ci.Shoot&&(!combo||combo.currentCombo>0)&&shootCooldownCurrent<0&&!phase2)
         {
 
             if (onWall && !grounded)
@@ -1365,11 +1373,17 @@ public class PlayerMover : MonoBehaviour {
 
     public void kill()
     {
-        current = new StatePair(PState.Delay, 30, ExecState.Death);
+        
+        //pani.StateChange(true);
         registerHit = false;
         dead = true;
-        combo.reset();
+        if (combo) //enemies dont have combo
+        {
+            combo.reset();
+        }
+        
         states = new Queue<StatePair>();
+        states.Enqueue(new StatePair(PState.Delay, 30, ExecState.Death));
         states.Enqueue( new StatePair(PState.Delay, 60, ExecState.Destroy));
     }
 
@@ -1447,6 +1461,28 @@ public class PlayerMover : MonoBehaviour {
     {
         phase2 = true;
         loadCard(cardTwo);
+    }
+    public bool actionable
+    {
+        get
+        {
+            PState s = current.state;
+            if(s== PState.Hitstun)
+            {
+                return false;
+            }
+            else if(s == PState.Delay)
+            {
+                ExecState a = current.action;
+                if (a == ExecState.hitLag || a == ExecState.Grabbed)
+                {
+                    
+                    return false;
+                }
+                return true;
+            }
+            return true;
+        }
     }
 
 }

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour {
-    public int maxHealth = 100;
-    public int currentHealth;
+public class PlayerHealth : Health {
+    
     public Image img;
-    PlayerMover mover;
+    
     public int maxShield = 0;
     public float currentShield;
     public Image shieldImg;
@@ -18,11 +17,12 @@ public class PlayerHealth : MonoBehaviour {
     int offset = 50;
 
 	// Use this for initialization
-	void Awake () {
-        currentHealth = maxHealth;
+	new void Awake()
+    {
         currentShield = maxShield;
-        mover = GetComponent<PlayerMover>();
-	}
+        
+        base.Awake();
+    }
     void FixedUpdate()
     {
         if (recharging && maxShield > 0)
@@ -60,7 +60,7 @@ public class PlayerHealth : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	public int takeDamage(int damage)
+	 public override int takeDamage(int damage)
     {
         if (!recharging && maxShield > 0)
         {
@@ -93,9 +93,9 @@ public class PlayerHealth : MonoBehaviour {
 
         
     }
-    public void reset()
+    new public void reset()
     {
-        currentHealth = maxHealth;
+        base.reset();
         currentShield = maxShield;
         img.fillAmount = (float)currentHealth / maxHealth;
         shieldImg.fillAmount = (float)currentShield / maxShield;

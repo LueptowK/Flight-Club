@@ -15,10 +15,12 @@ public class AttackManager : MonoBehaviour {
     public GameObject NeutralGround;
     public GameObject Finisher;
     public GameObject RangedAttack;
+    public GameObject TouchAttack;
     private ControlInterpret ci;
     PlayerMover pm;
     ComboCounter combo;
 
+    GameObject currentTouchAttack;
     GameObject currentAttack;
     [HideInInspector]
     public AtkType lastAttack;
@@ -45,17 +47,28 @@ public class AttackManager : MonoBehaviour {
         combo = GetComponent<ComboCounter>();
         pm = GetComponent<PlayerMover>();
         lastAttack = AtkType.None;
+        if (TouchAttack)
+        {
+            currentTouchAttack = Instantiate(TouchAttack, transform);
+        }
+        
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void FixedUpdate () {
+        if (!currentTouchAttack&& TouchAttack)
+        {
+            if (pm.actionable)
+            {
+                currentTouchAttack=Instantiate(TouchAttack, transform);
+            }
+        }
 	}
     public void NestedUpdate()
     {
         if (currentAttack)
         {
-            currentAttack.GetComponent<Attack>().NestedUpdate();
+            currentAttack.GetComponent<AttackActive>().NestedUpdate();
         }
     }
     public void shoot(bool backwards)
@@ -75,8 +88,12 @@ public class AttackManager : MonoBehaviour {
         Projectile p = m.GetComponent<Projectile>();
         p.hitPlayers.Add(gameObject);
         p.setMngr(this);
-        combo.incrementCombo(-1);
-        combo.resetComboTime();
+        if (combo)
+        {
+            combo.incrementCombo(-1);
+            combo.resetComboTime();
+        }
+        
     }
     public void updateLastAttack(AtkType t)
     {
@@ -137,7 +154,7 @@ public class AttackManager : MonoBehaviour {
             case AtkType.Finisher:
                 currentAttack = Instantiate(Finisher, transform, false);
                 ComboCounter c = GetComponent<ComboCounter>();
-                currentAttack.GetComponent<Attack>().comboStrength = c.currentCombo;
+                currentAttack.GetComponent<AttackActive>().comboStrength = c.currentCombo;
                 c.reset();
                 break;
             default:
@@ -147,14 +164,19 @@ public class AttackManager : MonoBehaviour {
 
 
         }
-        currentAttack.GetComponent<Attack>().setType(a);
-        return currentAttack.GetComponent<Attack>().atkFrames;
+        currentAttack.GetComponent<AttackActive>().setType(a);
+        return currentAttack.GetComponent<AttackActive>().atkFrames;
     }
     public int stopAttack()
     {
+        if (currentTouchAttack)
+        {
+            Destroy(currentTouchAttack);
+            
+        }
         if (currentAttack) {
-            int frames = currentAttack.GetComponent<Attack>().ending();
-            if (currentAttack.GetComponent<Attack>().inHitlag)
+            int frames = currentAttack.GetComponent<AttackActive>().ending();
+            if (currentAttack.GetComponent<AttackActive>().inHitlag)
             {
                 lag(false);
             }

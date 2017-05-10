@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Tackle : Finisher {
     Vector2 tackleDir = Vector2.zero;
-    Attack a;
+    AttackActive a;
     AttackManager mngr;
 
     int lifetime = 0;
@@ -31,7 +31,7 @@ public class Tackle : Finisher {
 
     // Use this for initialization
     void Start () {
-        a = GetComponent<Attack>();
+        a = GetComponent<AttackActive>();
         mngr = transform.parent.GetComponent<AttackManager>();
 	}
 	

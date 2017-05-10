@@ -26,14 +26,9 @@ public class HitboxProperties : MonoBehaviour
             if (!(playerCol.GetComponent<IFrames>().invincible()))
             {
                 Vector2 knockback = new Vector2(hitboxVector.x * transform.right.x, hitboxVector.y);
-                if (playerCol.tag == "Enemy")
-                {
-                    playerCol.GetComponent<EnemyMover>().getHit(knockback, hitlag, hitstun, damage);
-                }
-                else
-                {
-                    playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
-                }
+                
+                playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
+                
                    
             }
         }
@@ -73,32 +68,19 @@ public class HitboxProperties : MonoBehaviour
             {
                 knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * transform.up.y);
             }
-            if(playerCol.tag == "Enemy")
+            
+            
+            if (transform.parent.tag == "Finisher")
             {
-                if (transform.parent.tag == "Finisher")
-                {
-                    int str = transform.parent.GetComponent<Attack>().comboStrength;
-                    float strength = str / 5f * 4f;
-                    playerCol.GetComponent<EnemyMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength), atk);
-                }
-                else
-                {
-                    playerCol.GetComponent<EnemyMover>().getHit(knockback, hitlag, hitstun, damage, atk);
-                }
+                int str = transform.parent.GetComponent<AttackActive>().comboStrength;
+                float strength = str / 5f * 4f;
+                playerCol.GetComponent<PlayerMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength), atk);
             }
             else
             {
-                if (transform.parent.tag == "Finisher")
-                {
-                    int str = transform.parent.GetComponent<Attack>().comboStrength;
-                    float strength = str / 5f * 4f;
-                    playerCol.GetComponent<PlayerMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength), atk);
-                }
-                else
-                {
-                    playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage, atk);
-                }
+                playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage, atk);
             }
+            
             
             atk.addHit(playerCol.gameObject, hitlag);
         }

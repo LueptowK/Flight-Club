@@ -87,7 +87,7 @@
     <Compile Include="Assets\Personal\Attack Prefabs\RingMove.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Slash.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Tackle.cs" />
-    <Compile Include="Assets\Personal\Attack.cs" />
+    <Compile Include="Assets\Personal\AttackActive.cs" />
     <Compile Include="Assets\Personal\AttackManager.cs" />
     <Compile Include="Assets\Personal\CameraController.cs" />
     <Compile Include="Assets\Personal\Checkpointer.cs" />
@@ -96,8 +96,10 @@
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
     <Compile Include="Assets\Personal\CreatePlayer.cs" />
     <Compile Include="Assets\Personal\CreatePlayerOld.cs" />
+    <Compile Include="Assets\Personal\Enemy\Attack.cs" />
+    <Compile Include="Assets\Personal\Enemy\AttackPassive.cs" />
     <Compile Include="Assets\Personal\Enemy\EnemyHealth.cs" />
-    <Compile Include="Assets\Personal\Enemy\EnemyMover.cs" />
+    <Compile Include="Assets\Personal\Health.cs" />
     <Compile Include="Assets\Personal\HitboxProperties.cs" />
     <Compile Include="Assets\Personal\IFrames.cs" />
     <Compile Include="Assets\Personal\LevelManager.cs" />

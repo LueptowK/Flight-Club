@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attack : MonoBehaviour {
+public class AttackActive : Attack {
     public bool isBasic;
     public int windup, atkTime, endLag;
     public int attackReduction, landLag=6;
@@ -13,8 +13,8 @@ public class Attack : MonoBehaviour {
     public bool isGrab;
     // Use this for initialization
 
-    AttackManager mngr;
-    List<GameObject> alreadyHit;
+    
+    
     int frameNum=1;
     List<GameObject> activeBoxes;
     List<List<GameObject>> frameByFrame;
@@ -28,10 +28,9 @@ public class Attack : MonoBehaviour {
     GameObject animBox;
     Transform target;
     AttackManager.AtkType type;
-	void Start () {
-        mngr= GetComponentInParent<AttackManager>();
-        alreadyHit = new List<GameObject>();
-        alreadyHit.Add(transform.parent.gameObject);
+	new void Start () {
+        base.Start();
+        isActive = true;
         if (!isBasic) {
             activeBoxes = new List<GameObject>();
             frameByFrame = new List<List<GameObject>>();
@@ -196,21 +195,27 @@ public class Attack : MonoBehaviour {
     {
         frameNum = windup + atkTime;
     }
-    public void addHit(GameObject h, int hitLag)
+    public override void addHit(GameObject h, int hitLag)
     {
-        
+
         alreadyHit.Add(h);
+        mngr.addHit(h);
         mngr.updateLastAttack(type);
         alreadyHit[0].GetComponent<PlayerMover>().restoreTools();
-        if (type != AttackManager.AtkType.Finisher &&  !mngr.alreadyHitByType.Contains(h))
+        ComboCounter c = GetComponentInParent<ComboCounter>();
+        if (c)
         {
-            alreadyHit[0].GetComponent<ComboCounter>().incrementCombo(1);
+            if (type != AttackManager.AtkType.Finisher && !mngr.alreadyHitByType.Contains(h))
+            {
+                c.incrementCombo(1);
+            }
+            else
+            {
+                c.resetComboTime();
+            }
         }
-        else
-        {
-            GetComponentInParent<ComboCounter>().resetComboTime();
-        }
-        mngr.addHit(h);
+        
+
         if(type!= AttackManager.AtkType.Finisher && hitLag>0)
         {
             currentHitlag = hitLag;
@@ -218,13 +223,7 @@ public class Attack : MonoBehaviour {
         }
 
     }
-    public List<GameObject> hit
-    {
-        get
-        {
-            return alreadyHit;
-        }
-    }
+    
     void closeBoxes()
     {
         foreach(GameObject hitbox in activeBoxes)
