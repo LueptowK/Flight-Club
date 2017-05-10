@@ -13,7 +13,12 @@ public class MapItem : MenuItemAbst {
             Application.Quit();
         }
 
-        if(nextScene == -2)
+        if (SceneManager.GetActiveScene().buildIndex == 2 && nextScene != 1)
+        {
+            GameObject.Find("PlayerCreator").GetComponent<CreatePlayer>().spawnPlayers();
+        }
+
+        if (nextScene == -2)
         {
             MapItem[] maps = FindObjectsOfType<MapItem>();
             int i = Random.Range(0, maps.Length);

@@ -247,7 +247,7 @@ public class CreatePlayer : MonoBehaviour
         if (activeCount > 1)
         {
             DontDestroyOnLoad(Canvas);
-            spawnPlayers();
+            DontDestroyOnLoad(this);
             //Destroy(Canvas.transform.FindChild("TutorialText").gameObject);
             SceneManager.LoadScene(2); //UPDATE TO MAP SELECT SCREEN WHEN THAT EXISTS
         }
@@ -298,7 +298,7 @@ public class CreatePlayer : MonoBehaviour
                 p.GetComponent<ComboCounter>().reset();
                 p.GetComponent<SpriteRenderer>().enabled = false;
                 //reset(p);
-                DontDestroyOnLoad(this);
+                //DontDestroyOnLoad(this);
             }
         }
     }
