@@ -790,7 +790,7 @@ public class PlayerMover : MonoBehaviour {
         if (!dead)
         {
             //print(knockback + " ---- " + hitLag+" ---- " + hitStun);
-            if(current.state== PState.Parry)
+            if(current.state== PState.Parry&& a.tag!= "Finisher")
             {
                 iframes.SetFrames(60);
                 health.charge(0.15f);

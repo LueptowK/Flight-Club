@@ -96,6 +96,8 @@
     <Compile Include="Assets\Personal\ControlInterpret.cs" />
     <Compile Include="Assets\Personal\CreatePlayer.cs" />
     <Compile Include="Assets\Personal\CreatePlayerOld.cs" />
+    <Compile Include="Assets\Personal\Enemy\EnemyHealth.cs" />
+    <Compile Include="Assets\Personal\Enemy\EnemyMover.cs" />
     <Compile Include="Assets\Personal\HitboxProperties.cs" />
     <Compile Include="Assets\Personal\IFrames.cs" />
     <Compile Include="Assets\Personal\LevelManager.cs" />
