@@ -17,7 +17,7 @@ public class MapItem : MenuItemAbst {
         {
             MapItem[] maps = FindObjectsOfType<MapItem>();
             int i = Random.Range(0, maps.Length);
-            while (maps[i].nextScene == -2)
+            while (maps[i].nextScene == -2 || maps[i].nextScene == 1)
             {
                 i = Random.Range(0, maps.Length);
             }
