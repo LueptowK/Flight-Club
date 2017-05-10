@@ -283,6 +283,12 @@ public class CreatePlayer : MonoBehaviour
                     print("fuck");
                     return;
                 }
+
+                if (players[j].character == 1)
+                {
+                    p.GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
+                }
+
                 GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
                 p.GetComponent<PlayerInput>().PlayerNumber = j;
                 p.GetComponent<PlayerHealth>().img = h.transform.Find("BarFill").gameObject.GetComponent<Image>();
