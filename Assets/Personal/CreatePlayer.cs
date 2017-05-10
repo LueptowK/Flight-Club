@@ -159,6 +159,11 @@ public class CreatePlayer : MonoBehaviour
             {
                 p = Instantiate(Walt);
             }
+            else if (character == -1)
+            {
+                print("RANDOM CHARACTER");
+                return;
+            }
             else
             {
                 p = null;

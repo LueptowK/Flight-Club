@@ -64,6 +64,11 @@ public class PerPlayerPuckController : MonoBehaviour
                     creator.activatePlayer(playerNum, 1);
                     characterSelected = true;
                 }
+                if(selected.name == "CharSelectSquareRandom")
+                {
+                    creator.activatePlayer(playerNum, -1);
+                    characterSelected = true;
+                }
             }
 
         }
