@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-public class ControlInterpret : MonoBehaviour {
+public class ControlInterpret : Interpreter {
 
     private PlayerInput control;
     private int JumpDown;
@@ -202,7 +202,7 @@ public class ControlInterpret : MonoBehaviour {
 
     }
 
-    public Vector2 move{
+    public override Vector2 move{
         get
         {
             return inputHistory[0].dir;
@@ -216,7 +216,7 @@ public class ControlInterpret : MonoBehaviour {
         }
     }
     int idleFrames=4;
-    public bool idle
+    public override bool idle
     {
         get
         {
@@ -231,7 +231,7 @@ public class ControlInterpret : MonoBehaviour {
         }
     }
     int fallFrames = 1;
-    public bool fall
+    public override bool fall
     {
         get
         {
@@ -246,7 +246,7 @@ public class ControlInterpret : MonoBehaviour {
             return true;
         }
     }
-    public bool Jump {
+    public override bool Jump {
         get
         {
             if (JumpDown == 1)
@@ -256,7 +256,7 @@ public class ControlInterpret : MonoBehaviour {
             return false;
         }
     }
-    public bool Dash
+    public override bool Dash
     {
         get
         {
@@ -267,14 +267,14 @@ public class ControlInterpret : MonoBehaviour {
             return false;
         }
     }
-    public bool Stall
+    public override bool Stall
     {
         get
         {
             return control.Stall;
         }
     }
-    public bool Slash
+    public override bool Slash
     {
         get
         {
@@ -285,7 +285,7 @@ public class ControlInterpret : MonoBehaviour {
             return false;
         }
     }
-    public bool Pause
+    public override bool Pause
     {
         get
         {
@@ -296,7 +296,7 @@ public class ControlInterpret : MonoBehaviour {
             return false;
         }
     }
-    public bool Dodge
+    public override bool Dodge
     {
         get
         {
@@ -307,7 +307,7 @@ public class ControlInterpret : MonoBehaviour {
             return false;
         }
     }
-    public bool Shoot
+    public override bool Shoot
     {
         get
         {
@@ -318,14 +318,14 @@ public class ControlInterpret : MonoBehaviour {
             return false;
         }
     }
-    public bool TauntDown
+    public override bool TauntDown
     {
         get
         {
             return control.TauntD;
         }
     }
-    public bool PauseExit
+    public override bool PauseExit
     {
         get
         {
@@ -341,7 +341,7 @@ public class ControlInterpret : MonoBehaviour {
             return StickFixer.fixStick(new Vector2(control.AtkHor, control.AtkVer), AxisAdjust);
         }
     }
-    public StickQuadrant AttackQuad
+    public override StickQuadrant AttackQuad
     {
         get
         {
@@ -350,7 +350,7 @@ public class ControlInterpret : MonoBehaviour {
            
         }
     }
-    public bool Attack{
+    public override bool Attack{
         get
         {
             if (AttackDown == 1)

@@ -103,6 +103,7 @@
     <Compile Include="Assets\Personal\Attack Prefabs\Slash.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Tackle.cs" />
     <Compile Include="Assets\Personal\CreatePlayerOld.cs" />
+    <Compile Include="Assets\Personal\Enemy\AIInterpreter.cs" />
     <Compile Include="Assets\Personal\Enemy\AttackPassive.cs" />
     <Compile Include="Assets\Personal\Enemy\EnemyHealth.cs" />
     <Compile Include="Assets\Personal\Map\AdvTutorialManager.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Assets\Personal\UI Prefabs\PerPlayerPuckController.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\PuckController.cs" />
     <Compile Include="Assets\Personal\Xbox input\ControlInterpret.cs" />
+    <Compile Include="Assets\Personal\Xbox input\Interpreter.cs" />
     <Compile Include="Assets\Personal\Xbox input\PlayerInput.cs" />
     <Compile Include="Assets\Personal\Xbox input\StickFixer.cs" />
     <Compile Include="Assets\Personal\anim\Orbital.cs" />
