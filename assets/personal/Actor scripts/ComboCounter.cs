@@ -11,6 +11,7 @@ public class ComboCounter : MonoBehaviour {
     public GameObject OrbitalPrefab;
 
     AttackManager mngr;
+    public bool paused = false;
     GameObject[] Orbitals;
 	// Use this for initialization
 	void Awake () {
@@ -31,7 +32,7 @@ public class ComboCounter : MonoBehaviour {
     void FixedUpdate()
     {
         
-        if (comboCountdown > 0)
+        if (comboCountdown > 0 && !paused)
         {
             comboCountdown--;
         }
