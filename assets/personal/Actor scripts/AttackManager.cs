@@ -16,7 +16,7 @@ public class AttackManager : MonoBehaviour {
     public GameObject Finisher;
     public GameObject RangedAttack;
     public GameObject TouchAttack;
-    private ControlInterpret ci;
+    private Interpreter ci;
     PlayerMover pm;
     ComboCounter combo;
 
@@ -43,7 +43,7 @@ public class AttackManager : MonoBehaviour {
     }
 	// Use this for initialization
 	void Start () {
-        ci = GetComponent<ControlInterpret>();
+        ci = GetComponent<Interpreter>();
         combo = GetComponent<ComboCounter>();
         pm = GetComponent<PlayerMover>();
         lastAttack = AtkType.None;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour {
 
     Rigidbody2D rb;
-    ControlInterpret ci;
+    Interpreter ci;
     Animator ani;
     PlayerMover pm;
     AttackManager am;
@@ -17,7 +17,7 @@ public class PlayerAnimator : MonoBehaviour {
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
-        ci = GetComponent<ControlInterpret>();
+        ci = GetComponent<Interpreter>();
         ani = GetComponent<Animator>();
         pm = GetComponent<PlayerMover>();
         am = GetComponent<AttackManager>();

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class PlayerMover : MonoBehaviour {
 
     Rigidbody2D rb;
-    ControlInterpret ci;
+    Interpreter ci;
     PlayerAnimator pani;
     Collider2D col;
     AttackManager atk;
@@ -141,7 +141,7 @@ public class PlayerMover : MonoBehaviour {
     void Start() {
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
         rb = GetComponent<Rigidbody2D>();
-        ci = GetComponent<ControlInterpret>();
+        ci = GetComponent<Interpreter>();
         pani = GetComponent<PlayerAnimator>();
         col = GetComponent<Collider2D>();
         atk = GetComponent<AttackManager>();
