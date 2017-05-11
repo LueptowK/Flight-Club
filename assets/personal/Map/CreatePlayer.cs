@@ -17,11 +17,14 @@ public class CreatePlayer : MonoBehaviour
     public GameObject portraitSlot4;
     private Shader shaderGUItext;
     private Shader shaderSpritesDefault;
+    private playerColor[][] Colors = new playerColor[2][];
     public bool[] active;
     playerColor[] keithColors;
     playerColor[] waltColors;
     playerInfo[] players;
     GameObject[] CharSelectPortraits;
+
+    int numCharacters;
     
     int activeCount = 0;
 
@@ -74,6 +77,11 @@ public class CreatePlayer : MonoBehaviour
         waltColors[4] = new playerColor(new Color32(0x68,0x2f,0x6d, 0xFF));
         waltColors[5] = new playerColor(Color.yellow);
 
+        
+        Colors[0] = keithColors;
+        Colors[1] = waltColors;
+
+
 
         CharSelectPortraits = new GameObject[4];
         CharSelectPortraits[0] = portraitSlot1;
@@ -91,14 +99,9 @@ public class CreatePlayer : MonoBehaviour
     public void changeColor(int player, bool inArray)
     {
         playerColor[] pColors;
-        if (players[player].character == 1)
-        {
-            pColors = waltColors;
-        }
-        else
-        {
-            pColors = keithColors;
-        }
+        if (players[player].character == -1) { return; }
+
+        pColors = Colors[players[player].character];
         if (inArray)
         {
             int j;
@@ -132,38 +135,30 @@ public class CreatePlayer : MonoBehaviour
                 }
             }
         }
-
+        Colors[players[player].character] = pColors;
     }
     public void setColor(int i, int player)
     {
-        playerColor[] pColors;
-        if (players[player].character == 1)
-        {
-            pColors = waltColors;
-        }
-        else
-        {
-            pColors = keithColors;
-        }
-        pColors[i].owner = player;
-        Color finalColor = pColors[i].color;
-        if (players[player].character == 1)
-        {
-            //players[player].GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
-            CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
-        }
-        else
-        {
-            //players[player].GetComponent<SpriteRenderer>().material.shader = shaderSpritesDefault;
-            CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderSpritesDefault;
-        }
+        Colors[players[player].character][i].owner = player;
+        Color finalColor = Colors[players[player].character][i].color;
+        //if (players[player].character == 1)
+        //{
+        //    //players[player].GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
+        //    CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
+        //}
+        //else
+        //{
+        //    //players[player].GetComponent<SpriteRenderer>().material.shader = shaderSpritesDefault;
+        //    CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderSpritesDefault;
+        //}
         players[player].colorNum = i;
         //players[player].GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
-        CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().color = finalColor;
+        CharSelectPortraits[player].transform.GetChild(players[player].character).GetComponent<SpriteRenderer>().color = finalColor;
     }
 
     public void activatePlayer(int playerNum, int character)
     {
+        print(character);
         if(active[playerNum] && character != players[playerNum].character)
         {
             deactivatePlayer(playerNum);
@@ -199,15 +194,23 @@ public class CreatePlayer : MonoBehaviour
             //players[playerNum] = p;
             players[playerNum].character = character;
             active[playerNum] = true;
-            CharSelectPortraits[playerNum].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
-            if (character == 0)
+            if (character != -1)
             {
-                changeColor(playerNum, false);
+                CharSelectPortraits[playerNum].transform.GetChild(character).GetComponent<SpriteRenderer>().enabled = true;
             }
             else
             {
-                changeColor(playerNum, false);
+                print("random char");
             }
+            changeColor(playerNum, false);
+            //if (character == 0)
+            //{
+            //    changeColor(playerNum, false);
+            //}
+            //else
+            //{
+            //    changeColor(playerNum, false);
+            //}
             
             activeCount++;
         }
@@ -222,21 +225,11 @@ public class CreatePlayer : MonoBehaviour
         //Destroy(p);
 
         
-
-        playerColor[] pColors;
-        if (players[playerNum].character == 1)
-        {
-            pColors = waltColors;
-        }
-        else
-        {
-            pColors = keithColors;
-        }
         for (int i = 0; i<6; i++)
         {
-            if (pColors[i].owner == playerNum)
+            if (Colors[players[playerNum].character][i].owner == playerNum)
             {
-                pColors[i].owner = -1;
+                Colors[players[playerNum].character][i].owner = -1;
             }
         }
         activeCount--;
@@ -262,20 +255,28 @@ public class CreatePlayer : MonoBehaviour
             {
                 GameObject p;
                 playerColor[] pColors;
-                if (players[j].character == 0)
+                int character = players[j].character;
+                if (players[j].character == -1)
+                {
+                    character = Random.Range(0, 2);
+                    players[j].colorNum = Random.Range(0, 6);
+                    while (Colors[character][players[j].colorNum].owner != -1)
+                    {
+                        players[j].colorNum = Random.Range(0, 6);
+                    }
+                    Colors[character][players[j].colorNum].owner = j;
+                }
+
+
+                if (character == 0)
                 {
                     p = Instantiate(Keith);
-                    pColors = keithColors;
+                    pColors = Colors[character];
                 }
-                else if (players[j].character == 1)
+                else if (character == 1)
                 {
                     p = Instantiate(Walt);
-                    pColors = waltColors;
-                }
-                else if (players[j].character == -1)
-                {
-                    print("RANDOM CHARACTER");
-                    return;
+                    pColors = Colors[character];
                 }
                 else
                 {
@@ -284,10 +285,10 @@ public class CreatePlayer : MonoBehaviour
                     return;
                 }
 
-                if (players[j].character == 1)
-                {
-                    p.GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
-                }
+                //if (players[j].character == 1)
+                //{
+                //    p.GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
+                //}
 
                 GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
                 p.GetComponent<PlayerInput>().PlayerNumber = j;
@@ -333,8 +334,11 @@ public class CreatePlayer : MonoBehaviour
         {
             if (active[i])
             {
-                CharSelectPortraits[i].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
-                setColor(players[i].colorNum, i);
+                if (players[i].character != -1)
+                {
+                    CharSelectPortraits[i].transform.GetChild(players[i].character).GetComponent<SpriteRenderer>().enabled = true;
+                    setColor(players[i].colorNum, i);
+                }
             }
         }
 
