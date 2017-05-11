@@ -59,8 +59,6 @@ public class CreatePlayer : MonoBehaviour
             Destroy(gameObject);
         }
 
-
-
         keithColors = new playerColor[6];
         keithColors[0] = new playerColor(Color.white);
         keithColors[1] = new playerColor(new Color(1f,.2f,.2f,1f));
@@ -77,11 +75,9 @@ public class CreatePlayer : MonoBehaviour
         waltColors[4] = new playerColor(new Color32(0x68,0x2f,0x6d, 0xFF));
         waltColors[5] = new playerColor(Color.yellow);
 
-        
         Colors[0] = keithColors;
         Colors[1] = waltColors;
-
-
+        //Colors[][] is addressed as Colors[character number][color number]
 
         CharSelectPortraits = new GameObject[4];
         CharSelectPortraits[0] = portraitSlot1;
@@ -91,9 +87,6 @@ public class CreatePlayer : MonoBehaviour
 
         active = new bool[4];
         players = new playerInfo[4];
-
-        shaderGUItext = Shader.Find("GUI/Text Shader");
-        shaderSpritesDefault = Shader.Find("Sprites/Default");
     }
 
     public void changeColor(int player, bool inArray)
@@ -141,76 +134,31 @@ public class CreatePlayer : MonoBehaviour
     {
         Colors[players[player].character][i].owner = player;
         Color finalColor = Colors[players[player].character][i].color;
-        //if (players[player].character == 1)
-        //{
-        //    //players[player].GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
-        //    CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
-        //}
-        //else
-        //{
-        //    //players[player].GetComponent<SpriteRenderer>().material.shader = shaderSpritesDefault;
-        //    CharSelectPortraits[player].transform.GetChild(0).GetComponent<SpriteRenderer>().material.shader = shaderSpritesDefault;
-        //}
         players[player].colorNum = i;
-        //players[player].GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
         CharSelectPortraits[player].transform.GetChild(players[player].character).GetComponent<SpriteRenderer>().color = finalColor;
     }
 
     public void activatePlayer(int playerNum, int character)
     {
-        print(character);
         if(active[playerNum] && character != players[playerNum].character)
         {
             deactivatePlayer(playerNum);
         }
         if (!active[playerNum])
         {
-            //GameObject p;
-            //if (character == 0)
-            //{
-            //    p = Instantiate(Keith);
-            //}
-            //else if (character == 1)
-            //{
-            //    p = Instantiate(Walt);
-            //}
-            //else if (character == -1)
-            //{
-            //    print("RANDOM CHARACTER");
-            //    return;
-            //}
-            //else
-            //{
-            //    p = null;
-            //    print("fuck");
-            //}
-            //GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
-            //p.GetComponent<PlayerInput>().PlayerNumber = playerNum;
-            //p.GetComponent<PlayerHealth>().img = h.transform.Find("BarFill").gameObject.GetComponent<Image>();
-            //p.GetComponent<PlayerHealth>().shieldImg = h.transform.Find("BarShield").gameObject.GetComponent<Image>();
-            //h.SetActive(false);
-            //p.SetActive(false);
-            //p.transform.position = new Vector3(999, -999, 0);
-            //players[playerNum] = p;
             players[playerNum].character = character;
             active[playerNum] = true;
+
+            //THIS IF SHOULD CHANGE/go away once we have random char images
             if (character != -1)
             {
                 CharSelectPortraits[playerNum].transform.GetChild(character).GetComponent<SpriteRenderer>().enabled = true;
             }
             else
             {
-                print("random char");
+                print("random char, unimplemented portrait");
             }
             changeColor(playerNum, false);
-            //if (character == 0)
-            //{
-            //    changeColor(playerNum, false);
-            //}
-            //else
-            //{
-            //    changeColor(playerNum, false);
-            //}
             
             activeCount++;
         }
@@ -218,12 +166,8 @@ public class CreatePlayer : MonoBehaviour
 
     public void deactivatePlayer(int playerNum)
     {
-        //GameObject p = players[playerNum];
-        //Destroy(p.GetComponent<PlayerHealth>().img.transform.parent.gameObject);
         active[playerNum] = false;
         CharSelectPortraits[playerNum].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
-        //Destroy(p);
-
         
         for (int i = 0; i<6; i++)
         {
@@ -241,8 +185,7 @@ public class CreatePlayer : MonoBehaviour
         {
             DontDestroyOnLoad(Canvas);
             DontDestroyOnLoad(this);
-            //Destroy(Canvas.transform.FindChild("TutorialText").gameObject);
-            SceneManager.LoadScene(2); //UPDATE TO MAP SELECT SCREEN WHEN THAT EXISTS
+            SceneManager.LoadScene(2);
         }
 
     }
@@ -256,7 +199,7 @@ public class CreatePlayer : MonoBehaviour
                 GameObject p;
                 playerColor[] pColors;
                 int character = players[j].character;
-                if (players[j].character == -1)
+                if (character == -1)
                 {
                     character = Random.Range(0, 2);
                     players[j].colorNum = Random.Range(0, 6);
@@ -285,11 +228,6 @@ public class CreatePlayer : MonoBehaviour
                     return;
                 }
 
-                //if (players[j].character == 1)
-                //{
-                //    p.GetComponent<SpriteRenderer>().material.shader = shaderGUItext;
-                //}
-
                 GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
                 p.GetComponent<PlayerInput>().PlayerNumber = j;
                 p.GetComponent<PlayerHealth>().img = h.transform.Find("BarFill").gameObject.GetComponent<Image>();
@@ -299,13 +237,10 @@ public class CreatePlayer : MonoBehaviour
                 p.GetComponent<SpriteRenderer>().color = finalColor;
                 p.GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
 
-                //h.SetActive(false);
                 p.transform.position = new Vector3(999, -999, 0);
                 DontDestroyOnLoad(p);
                 p.GetComponent<ComboCounter>().reset();
                 p.GetComponent<SpriteRenderer>().enabled = false;
-                //reset(p);
-                //DontDestroyOnLoad(this);
             }
         }
     }
@@ -334,6 +269,7 @@ public class CreatePlayer : MonoBehaviour
         {
             if (active[i])
             {
+                //THIS IF SHOULD CHANGE once there are random character images
                 if (players[i].character != -1)
                 {
                     CharSelectPortraits[i].transform.GetChild(players[i].character).GetComponent<SpriteRenderer>().enabled = true;
