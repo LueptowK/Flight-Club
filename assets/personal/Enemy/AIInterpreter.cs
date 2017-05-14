@@ -5,11 +5,24 @@ using UnityEngine;
 
 public class AIInterpreter : Interpreter
 {
+    AIInput ai;
+    // Use this for initialization
+    void Start()
+    {
+        ai = GetComponent<AIInput>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
     public override bool Attack
     {
         get
         {
-            throw new NotImplementedException();
+            return ai.ctrl.attack;
         }
     }
 
@@ -17,7 +30,7 @@ public class AIInterpreter : Interpreter
     {
         get
         {
-            throw new NotImplementedException();
+            return ai.ctrl.quad;
         }
     }
 
@@ -25,7 +38,7 @@ public class AIInterpreter : Interpreter
     {
         get
         {
-            throw new NotImplementedException();
+            return ai.ctrl.dash;
         }
     }
 
@@ -33,7 +46,7 @@ public class AIInterpreter : Interpreter
     {
         get
         {
-            throw new NotImplementedException();
+            return ai.ctrl.dodge;
         }
     }
 
@@ -41,7 +54,7 @@ public class AIInterpreter : Interpreter
     {
         get
         {
-            throw new NotImplementedException();
+            return ai.ctrl.fall;
         }
     }
 
@@ -57,7 +70,7 @@ public class AIInterpreter : Interpreter
     {
         get
         {
-            throw new NotImplementedException();
+            return ai.ctrl.jump;
         }
     }
 
@@ -65,7 +78,7 @@ public class AIInterpreter : Interpreter
     {
         get
         {
-            throw new NotImplementedException();
+            return ai.ctrl.move;
         }
     }
 
@@ -89,7 +102,7 @@ public class AIInterpreter : Interpreter
     {
         get
         {
-            throw new NotImplementedException();
+            return ai.ctrl.shoot;
         }
     }
 
@@ -105,7 +118,7 @@ public class AIInterpreter : Interpreter
     {
         get
         {
-            throw new NotImplementedException();
+            return ai.ctrl.stall;
         }
     }
 
@@ -117,13 +130,5 @@ public class AIInterpreter : Interpreter
         }
     }
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 }

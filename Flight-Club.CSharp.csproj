@@ -87,6 +87,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Personal\AI\AIInput.cs" />
+    <Compile Include="Assets\Personal\AI\BehaviorTree\BehaviorTreeNode.cs" />
+    <Compile Include="Assets\Personal\AI\BehaviorTree\Chase.cs" />
+    <Compile Include="Assets\Personal\AI\BehaviorTree\DeciderType.cs" />
+    <Compile Include="Assets\Personal\AI\BehaviorTree\Fire.cs" />
+    <Compile Include="Assets\Personal\AI\BehaviorTree\GroupDecider.cs" />
+    <Compile Include="Assets\Personal\AI\BehaviorTree\Idle.cs" />
+    <Compile Include="Assets\Personal\AI\BehaviorTree\TurnTowards.cs" />
+    <Compile Include="Assets\Personal\AI\Waypoint.cs" />
     <Compile Include="Assets\Personal\Actor scripts\AttackManager.cs" />
     <Compile Include="Assets\Personal\Actor scripts\ComboCounter.cs" />
     <Compile Include="Assets\Personal\Actor scripts\Health.cs" />
