@@ -763,6 +763,10 @@ public class PlayerMover : MonoBehaviour {
 
             
         }
+        
+    }
+    void Update()
+    {
         if (man != null)
         {
 
@@ -1429,24 +1433,28 @@ public class PlayerMover : MonoBehaviour {
     {
         if (paused && !pausing)
         {
-            rb.velocity = resumeVelocity;
-            pani.pause(false);
+            //rb.velocity = resumeVelocity;
+            //pani.pause(false);
             paused = false;
+            /*
             if (combo)
             {
                 combo.paused = false;
             }
+            */
         }
         if (!paused && pausing)
         {
-            resumeVelocity = rb.velocity;
-            rb.velocity = Vector2.zero;
-            pani.pause(true);
+            //resumeVelocity = rb.velocity;
+            //rb.velocity = Vector2.zero;
+            //pani.pause(true);
             paused = true;
+            /*
             if (combo)
             {
                 combo.paused = true;
             }
+            */
         }
     }
     

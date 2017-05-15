@@ -181,14 +181,7 @@ public class ControlInterpret : Interpreter {
         {
             DodgeDown = 0;
         }
-        if (control.Pause)
-        {
-            PauseDown += 1;
-        }
-        else
-        {
-            PauseDown = 0;
-        }
+        
         if (control.Shoot)
         {
             ShootDown += 1;
@@ -200,6 +193,17 @@ public class ControlInterpret : Interpreter {
         Quads.RemoveAt(1);
         Quads.Insert(0, AttackQuad);
 
+    }
+    void Update()
+    {
+        if (control.Pause)
+        {
+            PauseDown += 1;
+        }
+        else
+        {
+            PauseDown = 0;
+        }
     }
 
     public override Vector2 move{
@@ -289,6 +293,7 @@ public class ControlInterpret : Interpreter {
     {
         get
         {
+
             if(PauseDown == 1)
             {
                 return true;

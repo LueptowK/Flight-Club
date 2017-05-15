@@ -110,6 +110,7 @@ public class MapManager : Manager {
             }
             paused = true;
             pauseScreen.SetActive(true);
+            Time.timeScale = 0;
         }
         else if (paused)
         {
@@ -119,6 +120,7 @@ public class MapManager : Manager {
             }
             paused = false;
             pauseScreen.SetActive(false);
+            Time.timeScale = 1;
         }
     }
 

@@ -12,6 +12,13 @@ public class PlayerInput : MonoBehaviour {
     {
         state = GamePad.GetState((PlayerIndex)PlayerNumber);
     }
+    void Update()
+    {
+        if (Time.timeScale == 0)
+        {
+            state = GamePad.GetState((PlayerIndex)PlayerNumber);
+        }
+    }
 
     public float MoveVer { get {
             //float ver = Input.GetAxis("Vertical" + PlayerNumber);

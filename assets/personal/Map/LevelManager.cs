@@ -88,12 +88,14 @@ public class LevelManager : Manager
             Player.GetComponent<PlayerMover>().pause(true);
             paused = true;
             pauseScreen.SetActive(true);
+            Time.timeScale = 0;
         }
         else if (paused)
         {
             paused = false;
             Player.GetComponent<PlayerMover>().pause(false);
             pauseScreen.SetActive(false);
+            Time.timeScale = 1;
         }
     }
 

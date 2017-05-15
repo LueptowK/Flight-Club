@@ -110,12 +110,14 @@ public class TimeTrialManager : Manager {
             Player.GetComponent<PlayerMover>().pause(true);
             paused = true;
             pauseScreen.SetActive(true);
+            Time.timeScale = 0;
         }
         else if (gameStartCounter <= 0 && paused)
         {
             paused = false;
             Player.GetComponent<PlayerMover>().pause(false);
             pauseScreen.SetActive(false);
+            Time.timeScale = 1;
         }
     }
 
