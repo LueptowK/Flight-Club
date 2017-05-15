@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class Chase : BehaviorTreeNode {
 
+    public float jumpRange = 0;
     // Use this for initialization
     public override bool Tick(AIInput g)
     {
-        Vector2 dir = Player.transform.position - g.transform.position;
-        dir.y = 0;
-        if (dir.magnitude < 0.5f)
+        g.move(Player.transform.position);
+        if (jumpRange != 0)
         {
-            dir = Vector2.zero;
+            Vector3 dif = Player.transform.position - g.transform.position;
+            if (Mathf.Abs(dif.x) < jumpRange&& dif.y>1)
+            {
+                g.jump();
+            }
         }
-        else
-        {
-            
-            dir.Normalize();
-        }
-        
-        g.setCtrl(new AIInput.aiMove(dir));
+          
         return false;
     }
 }

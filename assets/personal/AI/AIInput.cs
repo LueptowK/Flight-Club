@@ -32,9 +32,13 @@ public class AIInput : MonoBehaviour {
     public aiMove ctrl;
 
     public BehaviorTreeNode tree;
+
+
+    PlayerMover pm;
 	// Use this for initialization
 	void Start () {
         ctrl = new aiMove(Vector2.zero);
+        pm = GetComponent<PlayerMover>();
 	}
 	
 	// Update is called once per frame
@@ -45,5 +49,27 @@ public class AIInput : MonoBehaviour {
     public void setCtrl(aiMove newCtrl)
     {
         ctrl = newCtrl;
+    }
+
+    public void move(Vector3 target)
+    {
+        Vector2 dir = target - transform.position;
+        dir.y = 0;
+        if (dir.magnitude < 0.5f)
+        {
+            dir = Vector2.zero;
+        }
+        else
+        {
+
+            dir.Normalize();
+        }
+
+
+        setCtrl(new AIInput.aiMove(dir));
+    }
+    public void jump()
+    {
+        ctrl.jump = true;
     }
 }

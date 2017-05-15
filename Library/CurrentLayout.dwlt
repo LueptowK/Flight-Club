@@ -109,7 +109,7 @@ MonoBehaviour:
   m_MinSize: {x: 683, y: 495}
   m_MaxSize: {x: 14004, y: 14045}
   vertical: 0
-  controlID: 5673
+  controlID: 1181
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 495}
   m_MaxSize: {x: 10002, y: 14045}
   vertical: 1
-  controlID: 5674
+  controlID: 1182
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 224}
   m_MaxSize: {x: 8006, y: 4024}
   vertical: 0
-  controlID: 5675
+  controlID: 1183
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -367,9 +367,9 @@ MonoBehaviour:
     height: 381
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 16350000
+    m_SelectedIDs: 04070000
     m_LastClickedID: 0
-    m_ExpandedIDs: e0cbffffa2fbffff00000000
+    m_ExpandedIDs: e2fbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -557,19 +557,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Personal
+    - Assets/Personal/Actor scripts
   m_ViewMode: 1
   m_StartGridSize: 60
   m_LastFolders:
-  - Assets/Personal
+  - Assets/Personal/Actor scripts
   m_LastFoldersGridSize: 60
   m_LastProjectPath: E:\Unity projects\Flight-Club
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 32}
-    m_SelectedIDs: 4a2b0000
-    m_LastClickedID: 11082
-    m_ExpandedIDs: 00000000fe2a00002a2b00004a2b0000bc2b000078340000563500008a370000783a0000ea3a0000ec3a000000ca9a3bffffff7f
+    m_SelectedIDs: 04310000
+    m_LastClickedID: 12548
+    m_ExpandedIDs: 00000000c4250000f62500001a260000c0260000a4300000de300000c4310000cc310000263400005239000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -597,7 +597,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: b4050000
     m_LastClickedID: 1460
-    m_ExpandedIDs: 00000000fe2a00002a2b00004a2b0000bc2b000078340000563500008a370000783a0000ea3a0000ec3a000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000c4250000f62500001a260000c0260000a4300000de300000c4310000cc310000263400005239000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -624,7 +624,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: fa220000f6220000ca2100002a240000342400002824000040240000242400008afaffff9e2400002625000040e2ffff90240000c62400008024000076240000602600004a8fffff06270000102700001c270000f6240000c65400008a2800005425000076cafcff2e27000098240000ae240000aa240000d22a00001e2b000036a5ffff6c250000ae360000302c0000be250000983c000004e7ffff2a2c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -753,7 +753,7 @@ MonoBehaviour:
     y: 101
     width: 305
     height: 675
-  m_ScrollPosition: {x: 0, y: 525.9551}
+  m_ScrollPosition: {x: 0, y: 0}
   m_InspectorMode: 0
   m_PreviewResizer:
     m_CachedPref: 160

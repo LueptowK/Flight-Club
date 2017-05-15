@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour {
     public int hitlag;
     public int damage;
     public float velocity;
+    public int maxLifetime=0;
     Rigidbody2D rb;
     [HideInInspector]
     public List<GameObject> hitPlayers;
@@ -28,6 +29,10 @@ public class Projectile : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         lifetime++;
+        if(maxLifetime!=0&& lifetime > maxLifetime)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D playerCol)

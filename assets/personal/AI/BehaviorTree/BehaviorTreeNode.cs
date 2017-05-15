@@ -65,16 +65,16 @@ public abstract class BehaviorTreeNode : ScriptableObject
             b.Append(name);
     }
 
-   
+
     #endregion
 
     #region Silly Unity stuff
     /// <summary>
     /// Just here to make sure the Player global is initialized.
     /// </summary>
+    PlayerMover pm;
     internal virtual void OnEnable()
     {
-        
         if (Player == null)
             Player = GameObject.FindWithTag("Player").transform;
        // Debug.Log(Player);
