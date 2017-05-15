@@ -1232,6 +1232,12 @@ public class PlayerMover : MonoBehaviour {
                     }
                     rb.velocity = hitVector;
                     break;
+                case PState.Delay:
+                    if(current.action == ExecState.Death)
+                    {
+                        atk.stopAttack();
+                    }
+                    break;
             }
             pani.StateChange(true);
         }
@@ -1373,8 +1379,9 @@ public class PlayerMover : MonoBehaviour {
 
     public void kill()
     {
-        
+
         //pani.StateChange(true);
+        
         registerHit = false;
         dead = true;
         if (combo) //enemies dont have combo
