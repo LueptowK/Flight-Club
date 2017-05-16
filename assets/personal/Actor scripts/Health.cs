@@ -5,13 +5,13 @@ using UnityEngine;
 public abstract class Health : MonoBehaviour {
     public int maxHealth = 100;
     public int currentHealth;
-    protected PlayerMover mover;
+    protected Mover mover;
 
     // Use this for initialization
     protected void Awake()
     {
         currentHealth = maxHealth;
-        mover = GetComponent<PlayerMover>();
+        mover = GetComponent<Mover>();
     }
     public abstract int takeDamage(int damage);
     public void reset()

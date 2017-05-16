@@ -50,7 +50,11 @@ public class Projectile : MonoBehaviour {
 
 
                     playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage );
-                    atk.updateLastAttack(AttackManager.AtkType.None);
+                    if (atk)
+                    {
+                        atk.updateLastAttack(AttackManager.AtkType.None);
+                    }
+                    //print("destroyed");
                     Destroy(gameObject);
                 }
             }
@@ -61,7 +65,7 @@ public class Projectile : MonoBehaviour {
             {
                 Destroy(playerCol.gameObject);
             }
-            if (lifetime != 0) { Destroy(gameObject); }
+            if (lifetime != 0) {  Destroy(gameObject); }
             
         }
     }

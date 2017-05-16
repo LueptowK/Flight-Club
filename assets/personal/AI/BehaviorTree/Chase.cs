@@ -8,7 +8,7 @@ public class Chase : BehaviorTreeNode {
     // Use this for initialization
     public override bool Tick(AIInput g)
     {
-        g.move(Player.transform.position);
+        g.moveHor(Player.transform.position);
         if (jumpRange != 0)
         {
             Vector3 dif = Player.transform.position - g.transform.position;

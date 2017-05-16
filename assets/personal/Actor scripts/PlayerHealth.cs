@@ -16,11 +16,12 @@ public class PlayerHealth : Health {
     int width = 270;
     int offset = 50;
 
+    PlayerMover pm;
 	// Use this for initialization
 	new void Awake()
     {
         currentShield = maxShield;
-        
+        pm = (PlayerMover)mover;
         base.Awake();
     }
     void FixedUpdate()
@@ -35,7 +36,7 @@ public class PlayerHealth : Health {
                 recharging = false;
                 //TRANSITION -- FALSE
                 shieldImg.transform.SetAsLastSibling();
-                mover.phaseUp();
+                pm.phaseUp();
             }
             setShield();
         }
@@ -53,7 +54,7 @@ public class PlayerHealth : Health {
                 recharging = false;
                 //TRANSITION -- FALSE
                 shieldImg.transform.SetAsLastSibling();
-                mover.phaseUp();
+                pm.phaseUp();
             }
             setShield();
         }
@@ -74,7 +75,7 @@ public class PlayerHealth : Health {
                 //TRANSITION -- TRUE
                 shieldImg.transform.SetAsFirstSibling();
                 setShield();
-                mover.phaseDown();
+                pm.phaseDown();
                 return 1;
             }
             else

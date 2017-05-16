@@ -51,7 +51,7 @@ public class AIInput : MonoBehaviour {
         ctrl = newCtrl;
     }
 
-    public void move(Vector3 target)
+    public void moveHor(Vector3 target)
     {
         Vector2 dir = target - transform.position;
         dir.y = 0;
@@ -68,8 +68,16 @@ public class AIInput : MonoBehaviour {
 
         setCtrl(new AIInput.aiMove(dir));
     }
+    public void move(Vector3 target)
+    {
+        setCtrl(new AIInput.aiMove(target - transform.position));
+    }
     public void jump()
     {
         ctrl.jump = true;
+    }
+    public void shoot()
+    {
+        ctrl.shoot = true;
     }
 }

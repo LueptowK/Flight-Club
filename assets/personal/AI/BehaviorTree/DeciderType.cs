@@ -40,8 +40,8 @@ public static class DeciderImplementation
 
             case DeciderType.FacingTarget:
                 Vector3 dif = BehaviorTreeNode.Player.position - g.transform.position;
-                dif.y = 0;
-                return Vector3.Angle(g.transform.forward, dif) < 10;
+                
+                return Vector3.Angle(g.transform.right, dif) < 10;
 
             default:
                 throw new ArgumentException("Unknown Decider: " + d);

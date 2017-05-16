@@ -39,9 +39,17 @@ public class HitboxProperties : MonoBehaviour
 
             
         }
+        else if (playerCol.gameObject.CompareTag("Turret"))
+        {
+            atk.addHit(playerCol.gameObject, hitlag);
+            playerCol.gameObject.GetComponent<EnemyHealth>().takeDamage(damage);
+
+
+        }
         else if (!atk.hit.Contains(playerCol.gameObject))
         {
-            if (!(playerCol.GetComponent<IFrames>().invincible()))
+            IFrames i = playerCol.GetComponent<IFrames>();
+            if (!i ||(!i.invincible()))
             {
                 collidePlayer(playerCol);
             }

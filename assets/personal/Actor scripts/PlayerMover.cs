@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-public class PlayerMover : MonoBehaviour {
+public class PlayerMover : Mover {
 
     Rigidbody2D rb;
     Interpreter ci;
@@ -778,6 +778,7 @@ public class PlayerMover : MonoBehaviour {
             {
                 if (ci.PauseExit)
                 {
+                    Time.timeScale = 1;
                     man.Quit();
                 }
             }
@@ -1381,7 +1382,7 @@ public class PlayerMover : MonoBehaviour {
         }
     }
 
-    public void kill()
+    public override void kill()
     {
 
         //pani.StateChange(true);
