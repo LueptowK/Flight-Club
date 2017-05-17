@@ -21,7 +21,8 @@ public class PlayerHealth : Health {
 	new void Awake()
     {
         currentShield = maxShield;
-        pm = (PlayerMover)mover;
+        //pm = (PlayerMover)mover;
+        pm = GetComponent<PlayerMover>();
         base.Awake();
     }
     void FixedUpdate()
