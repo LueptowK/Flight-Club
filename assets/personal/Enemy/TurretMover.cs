@@ -37,7 +37,7 @@ public class TurretMover : Mover {
                 rot = 1;
             }
 
-            Vector2 v2 = ci.move - Vector2.right;
+            Vector2 v2 = ci.move;
             a = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, a), rot);
         }

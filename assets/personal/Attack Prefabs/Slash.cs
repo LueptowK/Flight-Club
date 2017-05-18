@@ -20,7 +20,12 @@ public class Slash : Finisher
             if (dir==false)
             {
                 dir = true;
-                transform.rotation = Quaternion.Euler(0, 0, Vector2.Angle(Vector2.right, input));
+                print(input.normalized);
+                Vector2 v2 = input;
+                print(v2);
+                float angle = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
+                print(angle);
+                transform.rotation = Quaternion.Euler(0, 0, angle);
             }
             
         }
