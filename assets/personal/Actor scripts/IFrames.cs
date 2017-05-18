@@ -30,7 +30,14 @@ public class IFrames : MonoBehaviour {
                     {
                         break;
                     }
-                    ret[i].GetComponent<HitboxProperties>().collidePlayer(col);
+
+                    HitboxProperties h = ret[i].GetComponent<HitboxProperties>();
+                    if (!h.GetComponentInParent<Attack>().hit.Contains(gameObject))
+                    {
+                        h.collidePlayer(col);
+                    }
+                    
+                        
 
                 }
 

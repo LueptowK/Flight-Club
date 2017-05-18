@@ -209,6 +209,7 @@ public class PlayerMover : Mover {
             {
                 atk.stopAttack();
                 int safety = states.Count;
+                falling = false;
                 while (!(current.state == PState.Delay && (current.action == ExecState.hitLag||current.action== ExecState.Grabbed)) && safety > 0)
                 {
                     nextState();

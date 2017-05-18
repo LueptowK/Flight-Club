@@ -5,7 +5,7 @@ using UnityEngine;
 public class AttackPassive : Attack {
 
 	// Use this for initialization
-	new void Start () {
+	void Awake () {
         base.Start();
         isActive = false;
         foreach (Transform child in transform)
