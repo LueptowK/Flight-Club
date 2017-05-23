@@ -156,7 +156,7 @@ public class CreatePlayer : MonoBehaviour
             }
             else
             {
-                print("random char, unimplemented portrait");
+                CharSelectPortraits[playerNum].transform.FindChild("PlayerSlotRandom").GetComponent<SpriteRenderer>().enabled = true;
             }
             changeColor(playerNum, false);
             
@@ -167,15 +167,22 @@ public class CreatePlayer : MonoBehaviour
     public void deactivatePlayer(int playerNum)
     {
         active[playerNum] = false;
-        CharSelectPortraits[playerNum].transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
-        
-        for (int i = 0; i<6; i++)
+        if (players[playerNum].character != -1)
         {
-            if (Colors[players[playerNum].character][i].owner == playerNum)
-            {
-                Colors[players[playerNum].character][i].owner = -1;
+            CharSelectPortraits[playerNum].transform.GetChild(players[playerNum].character).GetComponent<SpriteRenderer>().enabled = false;
+            for(int i = 0; i < 6; i++)
+        {
+                if (Colors[players[playerNum].character][i].owner == playerNum)
+                {
+                    Colors[players[playerNum].character][i].owner = -1;
+                }
             }
         }
+        else
+        {
+            CharSelectPortraits[playerNum].transform.FindChild("PlayerSlotRandom").GetComponent<SpriteRenderer>().enabled = false;
+        }    
+
         activeCount--;
     }
 
@@ -274,6 +281,10 @@ public class CreatePlayer : MonoBehaviour
                 {
                     CharSelectPortraits[i].transform.GetChild(players[i].character).GetComponent<SpriteRenderer>().enabled = true;
                     setColor(players[i].colorNum, i);
+                }
+                else
+                {
+                    CharSelectPortraits[i].transform.FindChild("PlayerSlotRandom").GetComponent<SpriteRenderer>().enabled = true;
                 }
             }
         }
