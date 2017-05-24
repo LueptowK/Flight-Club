@@ -1401,7 +1401,8 @@ public class PlayerMover : Mover {
         {
             Destroy(PhaseTint);
         }
-        
+        iframes.SetFrames(0);
+        current.delay = 0;
         states = new Queue<StatePair>();
         states.Enqueue(new StatePair(PState.Delay, 30, ExecState.Death));
         states.Enqueue( new StatePair(PState.Delay, 60, ExecState.Destroy));
