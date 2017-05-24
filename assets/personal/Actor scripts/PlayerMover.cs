@@ -20,6 +20,9 @@ public class PlayerMover : Mover {
     public PhysicsMaterial2D neutral;//unused
     public PhysicsMaterial2D bounce; //unused
     public GameObject PhaseUpPre;
+    public GameObject PhaseTintPre;
+
+    GameObject PhaseTint;
 
     public StatCard cardOne;
     public StatCard cardTwo;
@@ -1394,6 +1397,10 @@ public class PlayerMover : Mover {
         {
             combo.reset();
         }
+        if (PhaseTint)
+        {
+            Destroy(PhaseTint);
+        }
         
         states = new Queue<StatePair>();
         states.Enqueue(new StatePair(PState.Delay, 30, ExecState.Death));
@@ -1481,11 +1488,13 @@ public class PlayerMover : Mover {
         phase2 = false;
         loadCard(cardOne);
         Instantiate(PhaseUpPre, transform);
+        Destroy(PhaseTint);
     }
     public void phaseDown()
     {
         phase2 = true;
         loadCard(cardTwo);
+        PhaseTint = Instantiate(PhaseTintPre, transform);
     }
     public bool actionable
     {
