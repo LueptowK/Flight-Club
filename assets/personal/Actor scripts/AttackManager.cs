@@ -22,6 +22,7 @@ public class AttackManager : MonoBehaviour {
 
     GameObject currentTouchAttack;
     GameObject currentAttack;
+    MovePhysics mf;
     [HideInInspector]
     public AtkType lastAttack;
     [HideInInspector]
@@ -41,6 +42,7 @@ public class AttackManager : MonoBehaviour {
         NeutralGround,
         Finisher
     }
+    
 	// Use this for initialization
 	void Start () {
         ci = GetComponent<Interpreter>();
@@ -165,6 +167,7 @@ public class AttackManager : MonoBehaviour {
 
         }
         currentAttack.GetComponent<AttackActive>().setType(a);
+        mf = currentAttack.GetComponent<MovePhysics>();
         return currentAttack.GetComponent<AttackActive>().atkFrames;
     }
     public int stopAttack()
@@ -206,17 +209,21 @@ public class AttackManager : MonoBehaviour {
             currentAttack.transform.rotation = Quaternion.Euler(0f, 0f, angleDiff);
         }
     }
-    public Vector2 getFinisherMotion(Vector2 vel)
+    public MovePhysics.AtkMotion getMotion(Vector2 inp)
     {
-        Finisher f = currentAttack.GetComponent<Finisher>();
-        if (f)
+        
+        if (mf)
         {
-            return f.motion(vel);
+            return mf.motion(inp);
+            
         }
         else
         {
-            print("fucked up");
-            return Vector2.zero;
+            //print("fucked up");
+            MovePhysics.AtkMotion m = new MovePhysics.AtkMotion();
+            m.use = false;
+            m.motion = Vector2.zero;
+            return m;
         }
     }
 }

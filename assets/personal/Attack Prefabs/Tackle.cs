@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tackle : Finisher {
+public class Tackle : MovePhysics {
     Vector2 tackleDir = Vector2.zero;
     AttackActive a;
     AttackManager mngr;
@@ -12,8 +12,10 @@ public class Tackle : Finisher {
 
     float speed = 45;
 
-    public override Vector2 motion(Vector2 input)
+    public override AtkMotion motion(Vector2 input)
     {
+        AtkMotion m = new AtkMotion();
+        m.use = true;
         if (a.attacking)
         {
             if(tackleDir == Vector2.zero)
@@ -24,9 +26,11 @@ public class Tackle : Finisher {
                     tackleDir = transform.right;
                 }
             }
-            return tackleDir * speed;
+            m.motion = tackleDir * speed;
+            return m;
         }
-        return Vector2.zero;
+        m.motion = Vector2.zero;
+        return m;
     }
 
     // Use this for initialization

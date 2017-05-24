@@ -568,20 +568,29 @@ public class PlayerMover : Mover {
                     }
                     if (!hittingLag)
                     {
-                        desired = AirControl(move);
-                        if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
+                        MovePhysics.AtkMotion m = atk.getMotion(ci.move);
+                        if (m.use)
                         {
-                            falling = true;
+                            rb.velocity = m.motion;
                         }
-                        if (falling)
+                        else
                         {
-                            tempGrav *= 5;
+                            desired = AirControl(move);
+                            if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
+                            {
+                                falling = true;
+                            }
+                            if (falling)
+                            {
+                                tempGrav *= 5;
+                            }
+                            rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+                            if (rb.velocity.y < -maxFallSpeed)
+                            {
+                                rb.velocity = desired + new Vector2(0, -maxFallSpeed);
+                            }
                         }
-                        rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
-                        if (rb.velocity.y < -maxFallSpeed)
-                        {
-                            rb.velocity = desired + new Vector2(0, -maxFallSpeed);
-                        }
+                        
                     }
                     break;
                 #endregion
@@ -590,7 +599,16 @@ public class PlayerMover : Mover {
                     atk.NestedUpdate();
                     if (!hittingLag)
                     {
-                        rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x, 5f), rb.velocity.y);
+                        MovePhysics.AtkMotion m = atk.getMotion(ci.move);
+                        if (m.use)
+                        {
+                            rb.velocity = m.motion;
+                        }
+                        else
+                        {
+                            rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x, 5f), rb.velocity.y);
+                        }
+                        
                     }   
                     if (!grounded)
                     {
@@ -602,7 +620,7 @@ public class PlayerMover : Mover {
                 #region Finisher State
                 case PState.Finisher:
                     atk.NestedUpdate();
-                    rb.velocity = atk.getFinisherMotion(ci.move);
+                    rb.velocity = atk.getMotion(ci.move).motion;
                     break;
                 #endregion
                 #region Burnout State

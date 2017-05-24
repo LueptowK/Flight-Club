@@ -100,8 +100,9 @@
     <Compile Include="Assets\Personal\Actor scripts\PlayerMover.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Attack.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\AttackActive.cs" />
-    <Compile Include="Assets\Personal\Attack Prefabs\Finisher.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\HitboxProperties.cs" />
+    <Compile Include="Assets\Personal\Attack Prefabs\Lunge.cs" />
+    <Compile Include="Assets\Personal\Attack Prefabs\MovePhysics.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Projectile.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\RingMove.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Slash.cs" />
