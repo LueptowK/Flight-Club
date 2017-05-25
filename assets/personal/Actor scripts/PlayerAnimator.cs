@@ -99,7 +99,8 @@ public class PlayerAnimator : MonoBehaviour {
         if (pm.FacingLeft){ b = -Mathf.Abs(realScale.y); a += 180; }
         else{b = Mathf.Abs(realScale.y); }
 
-        transform.rotation = Quaternion.Euler(0, 0, a);
+        //transform.rotation= Quaternion.Euler(0, 0, a);
+        transform.localRotation = Quaternion.Euler(0, 0, a);
         transform.localScale = new Vector3(realScale.x, b, realScale.z);
 
         Color tmp = spr.color;

@@ -17,24 +17,38 @@ public class PlatformMov : MonoBehaviour {
 	}
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag != null)
+        if (other.gameObject.tag != null&&other.transform.parent==null)
         {
             //print("parented");
+            Vector3 s= interchangeScale(other.transform, true);
             other.transform.parent = transform;
-            //other.transform.localScale = interchangeScale(other.transform);
+            other.transform.localScale = s;
+
         }
 
     }
     void OnCollisionExit2D(Collision2D other)
     {
 
-        if (other.gameObject.tag != null)
+        if (other.gameObject.tag != null && other.transform.parent == transform) 
         {
             //print("DE parented");
+            Vector3 s = interchangeScale(other.transform, false);
             other.transform.parent = null;
+            other.transform.localScale = s;
         }
     }
-
+    Vector3 interchangeScale(Transform t, bool giving)
+    {
+        if(giving){
+            return Vec3.Div(t.localScale, transform.localScale);
+        }
+        else
+        {
+            return Vec3.Mult(t.localScale, transform.localScale);
+        }
+        
+    }
 
    
 }
