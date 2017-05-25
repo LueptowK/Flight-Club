@@ -31,6 +31,9 @@ public class PlayerMover : Mover {
     public StatCard cardTwo;
     bool phase2;
 
+    const int PLAYER_LAYER = 9;
+    const int FALLING_LAYER = 17;
+
     public enum PState
     {
         Air,
@@ -199,7 +202,7 @@ public class PlayerMover : Mover {
     void FixedUpdate() {
         if (!paused)
         {
-
+            resetLayer();
             Vector2 move = ci.move;
             move.y = 0;
             move.x += 0.15f * Math.Sign(move.x);
@@ -237,7 +240,7 @@ public class PlayerMover : Mover {
                         falling = false;
 
                         restoreTools();
-
+                        changeLayer(ci.move);
                         if (ci.Jump)
                         {
                             states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
@@ -1112,7 +1115,12 @@ public class PlayerMover : Mover {
     {
         get
         {
-            RaycastHit2D ray = Physics2D.BoxCast(transform.position - new Vector3(0, col.bounds.extents.y, 0), new Vector2(col.bounds.extents.x * 1.9f, col.bounds.extents.y * 1f), 0, -Vector2.up, 0.08f, 1 << 10);
+            int layerMask = 1 << 10;
+            if(gameObject.layer == PLAYER_LAYER)
+            {
+                layerMask = layerMask | 1 << 16;
+            }
+            RaycastHit2D ray = Physics2D.BoxCast(transform.position - new Vector3(0, col.bounds.extents.y, 0), new Vector2(col.bounds.extents.x * 1.9f, col.bounds.extents.y * 1f), 0, -Vector2.up, 0.08f, layerMask);
             if (rb.velocity.y <= 0.01)
             {
                 return ray;
@@ -1298,7 +1306,7 @@ public class PlayerMover : Mover {
     }
     void alignGround()
     {
-        RaycastHit2D r = Physics2D.BoxCast(transform.position - new Vector3(0, col.bounds.extents.y, 0), new Vector2(col.bounds.extents.x * 1.9f, col.bounds.extents.y * 1f), 0, -Vector2.up, 0.08f, 1 << 10);
+        RaycastHit2D r = Physics2D.BoxCast(transform.position - new Vector3(0, col.bounds.extents.y, 0), new Vector2(col.bounds.extents.x * 1.9f, col.bounds.extents.y * 1f), 0, -Vector2.up, 0.08f, 1 << 10|1<<16);
         transform.position = new Vector3(transform.position.x, r.point.y + col.bounds.extents.y, 0);
     }
     Vector2 AirControl(Vector2 move)
@@ -1543,4 +1551,40 @@ public class PlayerMover : Mover {
         }
     }
 
+    void changeLayer(Vector2 inp)
+    {
+        if (inp.y < -0.6)
+        {
+            setLayer(true);
+            states.Enqueue(new StatePair(PState.Air, 0));
+        }
+    }
+    void resetLayer()
+    {
+        if(gameObject.layer == FALLING_LAYER)
+        {
+            ContactFilter2D cf = new ContactFilter2D();
+            Collider2D[] ret = new Collider2D[1];
+            cf.layerMask = (1 << 16);
+            cf.useLayerMask = true;
+            col.OverlapCollider(cf, ret);
+            if (ret[0] == null)
+            {
+                setLayer(false);
+            }
+        }
+    }
+    void setLayer(bool falling)
+    {
+        print(falling);
+        if (falling)
+        {
+            gameObject.layer = FALLING_LAYER;
+    
+        }
+        else
+        {
+            gameObject.layer = PLAYER_LAYER;
+        }
+    }
 }
