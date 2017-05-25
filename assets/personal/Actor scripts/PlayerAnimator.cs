@@ -12,6 +12,7 @@ public class PlayerAnimator : MonoBehaviour {
     bool backDash =false;
 
     public float playerScale;
+    Vector3 realScale;
 
     float currentSpeed = 1f;
     // Use this for initialization
@@ -22,7 +23,7 @@ public class PlayerAnimator : MonoBehaviour {
         pm = GetComponent<PlayerMover>();
         am = GetComponent<AttackManager>();
         playerScale = pm.cardOne.scale;
-
+        realScale = new Vector3(playerScale,playerScale,playerScale);
 
 
     }
@@ -51,6 +52,8 @@ public class PlayerAnimator : MonoBehaviour {
         PlayerMover.StatePair c = pm.currentState;
         SpriteRenderer spr = GetComponent<SpriteRenderer>();
         float a, b;
+        realScale = transform.localScale;
+        
 
         switch (c.state)
         {
@@ -93,11 +96,11 @@ public class PlayerAnimator : MonoBehaviour {
         
 
 
-        if (pm.FacingLeft){ b = -playerScale; a += 180; }
-        else{b = playerScale;}
+        if (pm.FacingLeft){ b = -Mathf.Abs(realScale.y); a += 180; }
+        else{b = Mathf.Abs(realScale.y); }
 
         transform.rotation = Quaternion.Euler(0, 0, a);
-        transform.localScale = new Vector3(playerScale, b, playerScale);
+        transform.localScale = new Vector3(realScale.x, b, realScale.z);
 
         Color tmp = spr.color;
         if (GetComponent<IFrames>().invincible())
@@ -185,9 +188,9 @@ public class PlayerAnimator : MonoBehaviour {
     }
     public void updateFacing()
     {
-        float b= playerScale;
+        float b= realScale.y;
         if (pm.FacingLeft) { b = -b;}
-        transform.localScale = new Vector3(playerScale, b, playerScale);
+        transform.localScale = new Vector3(realScale.x, b, realScale.z);
 
     }
     public void jump()

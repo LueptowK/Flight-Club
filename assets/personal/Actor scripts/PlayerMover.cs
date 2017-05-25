@@ -1578,7 +1578,7 @@ public class PlayerMover : Mover {
             }
         }
     }
-    void setLayer(bool falling)
+    public void setLayer(bool falling)
     {
 
         if (falling)
