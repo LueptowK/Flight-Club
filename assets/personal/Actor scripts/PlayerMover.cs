@@ -1556,7 +1556,7 @@ public class PlayerMover : Mover {
         if (inp.y < -0.6)
         {
             setLayer(true);
-            states.Enqueue(new StatePair(PState.Air, 0));
+            
         }
     }
     void resetLayer()
@@ -1576,7 +1576,7 @@ public class PlayerMover : Mover {
     }
     void setLayer(bool falling)
     {
-        print(falling);
+
         if (falling)
         {
             gameObject.layer = FALLING_LAYER;
