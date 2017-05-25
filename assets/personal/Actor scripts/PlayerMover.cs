@@ -471,6 +471,10 @@ public class PlayerMover : Mover {
                             {
                                 tempX += applyFriction(tempX, 2.0f);
                             }
+                            else
+                            {
+                                current.delay = 0;
+                            }
                             rb.velocity = new Vector2(tempX, rb.velocity.y - 9.8f * tempGrav * Time.fixedDeltaTime);
                             break;
                         case ExecState.Grabbed:
