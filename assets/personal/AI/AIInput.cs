@@ -32,7 +32,7 @@ public class AIInput : MonoBehaviour {
     public aiMove ctrl;
 
     public BehaviorTreeNode tree;
-
+    public Vector2[] threat;
 
     PlayerMover pm;
 	// Use this for initialization
@@ -79,5 +79,14 @@ public class AIInput : MonoBehaviour {
     public void shoot()
     {
         ctrl.shoot = true;
+    }
+    public void FG(bool left)
+    {
+        if (pm.grounded)
+        {
+            ctrl.attack = true;
+            ctrl.quad = left ? ControlInterpret.StickQuadrant.Left : ControlInterpret.StickQuadrant.Right;
+        }
+        
     }
 }

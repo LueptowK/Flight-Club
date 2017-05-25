@@ -6,7 +6,7 @@ using UnityEngine;
 public class Lunge : MovePhysics {
     AttackActive a;
 
-    float speed = 14f;
+    float speed = 17f;
 	// Use this for initialization
 	void Start () {
         a = GetComponent<AttackActive>();
