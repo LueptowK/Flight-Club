@@ -9,6 +9,7 @@ public abstract class Attack : MonoBehaviour {
 
     [HideInInspector]
     public bool isActive;
+    public AudioClip attackSound;
     // Use this for initialization
     protected void Start () {
         mngr = GetComponentInParent<AttackManager>();

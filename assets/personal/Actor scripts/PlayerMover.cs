@@ -21,6 +21,9 @@ public class PlayerMover : Mover {
     public PhysicsMaterial2D bounce; //unused
     public GameObject PhaseUpPre;
     public GameObject PhaseTintPre;
+    public AudioClip getHitSound;
+
+    private AudioSource source;
 
     GameObject PhaseTint;
 
@@ -151,6 +154,7 @@ public class PlayerMover : Mover {
         health = GetComponent<Health>();
         combo = GetComponent<ComboCounter>();
         iframes = GetComponent<IFrames>();
+        source = GetComponent<AudioSource>();
         dashVel = Vector2.zero;
         restoreTools();
         dead = false;
@@ -817,6 +821,7 @@ public class PlayerMover : Mover {
     }
     public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage, Attack a)
     {
+        source.PlayOneShot(null, (.1f+(damage/50f)));
         if (!dead)
         {
             //print(knockback + " ---- " + hitLag+" ---- " + hitStun);
