@@ -243,6 +243,7 @@ public class CreatePlayer : MonoBehaviour
                 Color finalColor = pColors[players[j].colorNum].color;
                 p.GetComponent<SpriteRenderer>().color = finalColor;
                 p.GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().color = finalColor;
+                p.GetComponent<PlayerHealth>().img.transform.parent.Find("BarIdentifier").GetComponent<Image>().material = p.GetComponent<SpriteRenderer>().material;
 
                 p.transform.position = new Vector3(999, -999, 0);
                 DontDestroyOnLoad(p);
