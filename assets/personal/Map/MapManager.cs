@@ -15,6 +15,9 @@ public class MapManager : Manager {
     private int gameStartCounter;
     private Canvas c;
     private bool paused;
+    public AudioClip song;
+    private AudioSource source;
+
     // Use this for initialization
     void Start () {
         gameEndCounter = 300;
@@ -23,6 +26,9 @@ public class MapManager : Manager {
         removed = new List<GameObject>();
         Spawns = GameObject.FindGameObjectsWithTag("Respawn");
         Players = GameObject.FindGameObjectsWithTag("Player");
+        source = GetComponent<AudioSource>();
+        source.volume = 0.7f;
+        source.loop = true;
         List<int> spawnL = new List<int>();
         spawnL.AddRange(Enumerable.Range(0,Spawns.Length-1));
         foreach(GameObject player in Players)
@@ -62,6 +68,8 @@ public class MapManager : Manager {
             {
                 c.transform.Find("1").gameObject.SetActive(false);
                 c.transform.Find("GO").gameObject.SetActive(true);
+                source.clip = song;
+                source.Play();
             }
             if (gameStartCounter == -14)
             {
@@ -92,6 +100,7 @@ public class MapManager : Manager {
         if (gameOver)
         {
             gameEndCounter--;
+            source.volume -= 0.003f;
         }
 
         if (gameEndCounter == 0)
@@ -111,6 +120,7 @@ public class MapManager : Manager {
             paused = true;
             pauseScreen.SetActive(true);
             Time.timeScale = 0;
+            source.volume = 0.35f;
         }
         else if (paused)
         {
@@ -121,6 +131,7 @@ public class MapManager : Manager {
             paused = false;
             pauseScreen.SetActive(false);
             Time.timeScale = 1;
+            source.volume = 0.7f;
         }
     }
 
