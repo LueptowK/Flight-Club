@@ -479,12 +479,16 @@ public class PlayerMover : Mover {
                             break;
                         case ExecState.Grabbed:
                             rb.velocity = Vector2.zero;
-                            transform.position = grabAtk.gameObject.transform.position + grabDif;
+                            
                             
                             if (!grabAtk)
                             {
                                 states.Enqueue(new StatePair(PState.Delay, 0, ExecState.Normal));
                                 break;
+                            }
+                            else
+                            {
+                                transform.position = grabAtk.gameObject.transform.position + grabDif;
                             }
                         
                             break;
