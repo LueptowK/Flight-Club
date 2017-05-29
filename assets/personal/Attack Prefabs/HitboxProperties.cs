@@ -36,23 +36,23 @@ public class HitboxProperties : MonoBehaviour
         {
             atk.addHit(playerCol.gameObject, hitlag);
             Destroy(playerCol.gameObject);
-
-            
-        }
-        else if (playerCol.gameObject.CompareTag("Turret"))
-        {
-            atk.addHit(playerCol.gameObject, hitlag);
-            playerCol.gameObject.GetComponent<EnemyHealth>().takeDamage(damage);
-
-
         }
         else if (!atk.hit.Contains(playerCol.gameObject))
         {
-            IFrames i = playerCol.GetComponent<IFrames>();
-            if (!i ||(!i.invincible()))
+            if (playerCol.gameObject.CompareTag("Turret"))
             {
-                collidePlayer(playerCol);
+                atk.addHit(playerCol.gameObject, hitlag);
+                playerCol.gameObject.GetComponent<EnemyHealth>().takeDamage(damage);
             }
+            else
+            {
+                IFrames i = playerCol.GetComponent<IFrames>();
+                if (!i ||(!i.invincible()))
+                {
+                    collidePlayer(playerCol);
+                }
+            }
+            
 
         }
         
