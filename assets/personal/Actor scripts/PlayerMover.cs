@@ -1014,7 +1014,7 @@ public class PlayerMover : Mover {
             attkQuad = ci.AttackQuad;
             if (phase2)
             {
-                if(attkQuad!= ControlInterpret.StickQuadrant.Neutral)
+                if(attkQuad!= ControlInterpret.StickQuadrant.Neutral || grounded)
                 {
                     return false;
                 }
