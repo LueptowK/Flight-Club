@@ -1576,6 +1576,7 @@ public class PlayerMover : Mover {
             Collider2D[] ret = new Collider2D[1];
             cf.layerMask = (1 << 16);
             cf.useLayerMask = true;
+            cf.useTriggers = true;
             col.OverlapCollider(cf, ret);
             if (ret[0] == null)
             {
