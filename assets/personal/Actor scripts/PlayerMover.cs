@@ -836,7 +836,7 @@ public class PlayerMover : Mover {
         if (!dead)
         {
             //print(knockback + " ---- " + hitLag+" ---- " + hitStun);
-            if(current.state== PState.Parry&& a.tag!= "Finisher")
+            if(current.state== PState.Parry&& (!a || a.tag!= "Finisher"))
             {
                 iframes.SetFrames(60);
                 ((PlayerHealth)health).charge(0.15f);
