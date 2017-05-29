@@ -95,7 +95,9 @@
     <Compile Include="Assets\Personal\AI\BehaviorTree\Fire.cs" />
     <Compile Include="Assets\Personal\AI\BehaviorTree\GroupDecider.cs" />
     <Compile Include="Assets\Personal\AI\BehaviorTree\Idle.cs" />
+    <Compile Include="Assets\Personal\AI\BehaviorTree\PointMover.cs" />
     <Compile Include="Assets\Personal\AI\BehaviorTree\TurnTowards.cs" />
+    <Compile Include="Assets\Personal\AI\BehaviorTree\Waiter.cs" />
     <Compile Include="Assets\Personal\AI\Waypoint.cs" />
     <Compile Include="Assets\Personal\Actor scripts\AttackManager.cs" />
     <Compile Include="Assets\Personal\Actor scripts\ComboCounter.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Assets\Personal\CreatePlayerOld.cs" />
     <Compile Include="Assets\Personal\Enemy\AIInterpreter.cs" />
     <Compile Include="Assets\Personal\Enemy\AttackPassive.cs" />
+    <Compile Include="Assets\Personal\Enemy\BossMover.cs" />
     <Compile Include="Assets\Personal\Enemy\EnemyHealth.cs" />
     <Compile Include="Assets\Personal\Enemy\TurretMover.cs" />
     <Compile Include="Assets\Personal\Map\AdvTutorialManager.cs" />

@@ -44,7 +44,7 @@ public class GroupDecider : BehaviorTreeNode
         /// </summary>
         Loop
     }
-
+    int sequentialChild = 0;
     /// <summary>
     /// We're not running anymore; recursively deactivate our selected child.
     /// </summary>
@@ -92,6 +92,8 @@ public class GroupDecider : BehaviorTreeNode
         if (response==false)
         {
             Deactivate(g);
+            sequentialChild++;
+            sequentialChild %= Children.Count;
         }
         return response;
     }
@@ -122,7 +124,25 @@ public class GroupDecider : BehaviorTreeNode
                 }
                 //Debug.Log("none");
                 return null;
+            case SelectionPolicy.Sequential:
 
+                for (int i = 0; i < Children.Count; i++)
+                {
+                    int j = (i + sequentialChild) % Children.Count;
+                    BehaviorTreeNode child = Children[j];
+                    //Debug.Log(child +" - "+i);
+                    if (selected == child)
+                    {
+                        return child;
+                    }
+                    if (child.Decide(g))
+                    {
+                        sequentialChild = j;
+                        return child;
+                    }
+                }
+                //Debug.Log("none");
+                return null;
             default:
                 throw new NotImplementedException("Unimplemented policy: " + Policy);
         }

@@ -17,7 +17,7 @@ public class AIInput : MonoBehaviour {
         public bool stall;
         public aiMove(Vector2 movement)
         {
-            move = movement;
+            move = movement.normalized;
             attack = false;
             quad = ControlInterpret.StickQuadrant.Neutral;
             dash = false;
@@ -32,7 +32,23 @@ public class AIInput : MonoBehaviour {
     public aiMove ctrl;
 
     public BehaviorTreeNode tree;
+    public List<GameObject> points;
+    GameObject lastPoint;
     public Vector2[] threat;
+
+   
+    float lastWait;
+    public bool waiting
+    {
+        get
+        {
+            return Time.time<lastWait;
+        }
+    }
+    public void wait(float w)
+    {
+        lastWait = Time.time+ w;
+    }
 
     PlayerMover pm;
 	// Use this for initialization
@@ -72,6 +88,18 @@ public class AIInput : MonoBehaviour {
     {
         setCtrl(new AIInput.aiMove(target - transform.position));
     }
+    public GameObject pickPoint()
+    {
+        points.Remove(lastPoint);
+        GameObject p = points[Mathf.FloorToInt(Random.value * points.Count)];
+        if (lastPoint)
+        {
+            points.Add(lastPoint);
+        }
+
+        lastPoint = p;
+        return p;
+    }
     public void jump()
     {
         ctrl.jump = true;
@@ -79,6 +107,10 @@ public class AIInput : MonoBehaviour {
     public void shoot()
     {
         ctrl.shoot = true;
+    }
+    public void stall()
+    {
+        ctrl.stall = true;
     }
     public void FG(bool left)
     {
