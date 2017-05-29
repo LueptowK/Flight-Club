@@ -10,9 +10,9 @@ public class FalPlat : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other)
     {
         PlayerMover pm =other.gameObject.GetComponent<PlayerMover>();
-        if (pm)
+        if (pm&&other.transform.position.y<transform.position.y)
         {
-           
+            
             pm.setLayer(true);
         }
         

@@ -398,6 +398,7 @@ public class PlayerMover : Mover {
                 case PState.Dash:
                     rb.velocity = dashVel;
                     falling = false;
+                    setLayer(true);
                     if (current.delay == 2) { dashVel *= dashEndMomentum; }
                     if (grounded) { dashVel.y = 0; }
                     if (states.Count < 1)
@@ -467,11 +468,10 @@ public class PlayerMover : Mover {
                             break;
                         case ExecState.LandLag:
                             float tempX = rb.velocity.x;
-                            if (grounded)
-                            {
-                                tempX += applyFriction(tempX, 2.0f);
-                            }
-                            else
+                            
+                            tempX += applyFriction(tempX, 3.0f);
+                            
+                            if(!grounded)
                             {
                                 current.delay = 0;
                             }
@@ -1253,6 +1253,7 @@ public class PlayerMover : Mover {
                     }
                     break;
                 case PState.Dash:
+                    
                     if (!calcDashVel())
                     {
                         current = new StatePair(PState.Air, 0);
