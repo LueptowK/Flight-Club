@@ -13,6 +13,9 @@ public class PlayerHealth : Health {
     public float recharge;
     bool recharging;
 
+    public float outOfCombat = -1;
+    float lastHit =0;
+
     int width = 270;
     int offset = 50;
 
@@ -42,6 +45,15 @@ public class PlayerHealth : Health {
             }
             setShield();
         }
+        else if(outOfCombat!=-1&&currentShield< maxShield && Time.time>lastHit+outOfCombat){
+            currentShield += recharge / 60;
+            if (currentShield >= maxShield)
+            {
+                currentShield = maxShield;
+               
+            }
+            setShield();
+        }
     }
     public void charge(float percent)
     {
@@ -65,6 +77,7 @@ public class PlayerHealth : Health {
 	// Update is called once per frame
 	 public override int takeDamage(int damage)
     {
+        lastHit = Time.time;
         if (!recharging && maxShield > 0)
         {
             currentShield -= damage;
@@ -93,7 +106,7 @@ public class PlayerHealth : Health {
             img.fillAmount = (float)currentHealth / maxHealth;
             return 0;
         }
-
+        
         
     }
     new public void reset()
