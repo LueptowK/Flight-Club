@@ -24,7 +24,7 @@ public class PlayerAnimator : MonoBehaviour {
         am = GetComponent<AttackManager>();
         playerScale = pm.cardOne.scale;
         realScale = new Vector3(playerScale,playerScale,playerScale);
-
+        transform.localScale = realScale;
 
     }
     public Vector3 ShootPos(bool backwards)

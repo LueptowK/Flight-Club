@@ -1566,7 +1566,7 @@ public class PlayerMover : Mover {
     }
     void resetLayer()
     {
-        if(gameObject.layer == FALLING_LAYER)
+        if(gameObject.layer == FALLING_LAYER&& current.state!= PState.Dash)
         {
             ContactFilter2D cf = new ContactFilter2D();
             Collider2D[] ret = new Collider2D[1];
