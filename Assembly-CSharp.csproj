@@ -69,7 +69,6 @@
      <Compile Include="Assets\Personal\Attack Prefabs\Attack.cs" />
      <Compile Include="Assets\Personal\Attack Prefabs\AttackActive.cs" />
      <Compile Include="Assets\Personal\Attack Prefabs\HitboxProperties.cs" />
-     <Compile Include="Assets\Personal\Attack Prefabs\Lunge.cs" />
      <Compile Include="Assets\Personal\Attack Prefabs\MovePhysics.cs" />
      <Compile Include="Assets\Personal\Attack Prefabs\Projectile.cs" />
      <Compile Include="Assets\Personal\Attack Prefabs\RingMove.cs" />
@@ -80,8 +79,10 @@
      <Compile Include="Assets\Personal\Enemy\AttackPassive.cs" />
      <Compile Include="Assets\Personal\Enemy\BossMover.cs" />
      <Compile Include="Assets\Personal\Enemy\EnemyHealth.cs" />
+     <Compile Include="Assets\Personal\Enemy\Lunge.cs" />
      <Compile Include="Assets\Personal\Enemy\TurretMover.cs" />
      <Compile Include="Assets\Personal\Map\AdvTutorialManager.cs" />
+     <Compile Include="Assets\Personal\Map\CamerBaseStart.cs" />
      <Compile Include="Assets\Personal\Map\CameraController.cs" />
      <Compile Include="Assets\Personal\Map\Checkpointer.cs" />
      <Compile Include="Assets\Personal\Map\CheckpointerTutorial.cs" />
@@ -136,7 +137,7 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
  <Reference Include="XInputDotNetPure">
- <HintPath>C:/Users/Kurt/Documents/EECS/FlightClub/Flight-Club/Assets/plugins/x86_64/XInputDotNetPure.dll</HintPath>
+ <HintPath>C:/Users/Kurt/Documents/EECS/FlightClub/Newest/Flight-Club/Assets/plugins/x86_64/XInputDotNetPure.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
