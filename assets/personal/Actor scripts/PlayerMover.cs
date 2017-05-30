@@ -15,16 +15,16 @@ public class PlayerMover : Mover {
     CameraController cam;
     IFrames iframes;
     Manager man;
+    ActorSounds sounds;
 
 
     public PhysicsMaterial2D neutral;//unused
     public PhysicsMaterial2D bounce; //unused
     public GameObject PhaseUpPre;
     public GameObject PhaseTintPre;
-    public AudioClip[] getHitSounds;
-    public AudioClip[] wallBounceSounds;
+    
 
-    private AudioSource source;
+    //private AudioSource source;
 
     GameObject PhaseTint;
 
@@ -158,7 +158,7 @@ public class PlayerMover : Mover {
         health = GetComponent<Health>();
         combo = GetComponent<ComboCounter>();
         iframes = GetComponent<IFrames>();
-        source = GetComponent<AudioSource>();
+        sounds = GetComponent<ActorSounds>();
         dashVel = Vector2.zero;
         restoreTools();
         dead = false;
@@ -546,14 +546,14 @@ public class PlayerMover : Mover {
                             hitVector = new Vector2(-rb.velocity.x, rb.velocity.y);
                             calculateDI();
                             rb.velocity = hitVector;
-                            source.PlayOneShot(wallBounceSounds[UnityEngine.Random.Range(0, 3)], 0.3f);
+                            sounds.hitWall();
                         }
                         else if (OnLeftWall && rb.velocity.x < 0)
                         {
                             hitVector = new Vector2(-rb.velocity.x, rb.velocity.y);
                             calculateDI();
                             rb.velocity = hitVector;
-                            source.PlayOneShot(wallBounceSounds[UnityEngine.Random.Range(0, 3)], 0.3f);
+                            sounds.hitWall();
                         }
 
                     }
@@ -563,7 +563,7 @@ public class PlayerMover : Mover {
                         hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
                         calculateDI();
                         rb.velocity = hitVector;
-                        source.PlayOneShot(wallBounceSounds[UnityEngine.Random.Range(0, 3)], 0.3f);
+                        sounds.hitWall();
                     }
                     if (rb.velocity.magnitude > 1.5 * moveSpeed && current.delay < 50)
                     {
@@ -834,7 +834,7 @@ public class PlayerMover : Mover {
     }
     public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage, Attack a)
     {
-        source.PlayOneShot(getHitSounds[UnityEngine.Random.Range(0, getHitSounds.Length)], (.1f+(damage/50f)));
+        sounds.getHit(damage);
         if (!dead)
         {
             //print(knockback + " ---- " + hitLag+" ---- " + hitStun);
