@@ -21,7 +21,7 @@ public class PlayerMover : Mover {
     public PhysicsMaterial2D bounce; //unused
     public GameObject PhaseUpPre;
     public GameObject PhaseTintPre;
-    public AudioClip getHitSound;
+    public AudioClip[] getHitSounds;
 
     private AudioSource source;
 
@@ -828,11 +828,10 @@ public class PlayerMover : Mover {
     public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage)
     {
         getHit( knockback, hitLag, hitStun,damage, null);
-    
     }
     public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage, Attack a)
     {
-        source.PlayOneShot(null, (.1f+(damage/50f)));
+        source.PlayOneShot(getHitSounds[UnityEngine.Random.Range(0, 6)], (.1f+(damage/50f)));
         if (!dead)
         {
             //print(knockback + " ---- " + hitLag+" ---- " + hitStun);

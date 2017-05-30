@@ -27,7 +27,7 @@ public class MapManager : Manager {
         Spawns = GameObject.FindGameObjectsWithTag("Respawn");
         Players = GameObject.FindGameObjectsWithTag("Player");
         source = GetComponent<AudioSource>();
-        source.volume = 0.7f;
+        source.volume = 0.4f;
         source.loop = true;
         List<int> spawnL = new List<int>();
         spawnL.AddRange(Enumerable.Range(0,Spawns.Length-1));
@@ -120,7 +120,7 @@ public class MapManager : Manager {
             paused = true;
             pauseScreen.SetActive(true);
             Time.timeScale = 0;
-            source.volume = 0.35f;
+            source.volume = 0.2f;
         }
         else if (paused)
         {
@@ -131,7 +131,7 @@ public class MapManager : Manager {
             paused = false;
             pauseScreen.SetActive(false);
             Time.timeScale = 1;
-            source.volume = 0.7f;
+            source.volume = 0.4f;
         }
     }
 
