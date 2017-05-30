@@ -10,7 +10,9 @@ public class FalPlat : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other)
     {
         PlayerMover pm =other.gameObject.GetComponent<PlayerMover>();
-        if (pm&&other.transform.position.y-other.GetComponent<Collider2D>().bounds.extents.y*0.8f<transform.position.y+GetComponent<Collider2D>().bounds.extents.y)
+        float xcomp = GetComponent<Collider2D>().bounds.extents.x;
+        //if (pm&&other.transform.position.y-other.GetComponent<Collider2D>().bounds.extents.y*0.8f<transform.position.y+GetComponent<Collider2D>().bounds.extents.y)
+        if (pm&&((other.transform.position.x<transform.position.x-xcomp||other.transform.position.x>transform.position.x+xcomp)||other.transform.position.y<transform.position.y))
         {
             
             pm.setLayer(true);

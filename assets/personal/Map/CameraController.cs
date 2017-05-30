@@ -36,7 +36,10 @@ public class CameraController : MonoBehaviour
             camBase = camBaseObj.transform;
         }
     }
-
+    public void setCamBase(GameObject cbo)
+    {
+        camBase = cbo.transform;
+    }
     struct box
     {
         public float minX, maxX, minY, maxY;

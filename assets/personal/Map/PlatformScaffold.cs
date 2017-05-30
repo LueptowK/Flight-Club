@@ -14,7 +14,7 @@ public class PlatformScaffold : MonoBehaviour {
     List<GameObject> Platforms;
     Vector2 nextPlt;
     bool wall, pos;
-
+    int spawnCoolDown=0;
 	// Use this for initialization
 	void Start () {
         Platforms = new List<GameObject>();
@@ -55,16 +55,16 @@ public class PlatformScaffold : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         Vector3 scaff = scaffSize;
-        scaff.z = 1;
-        if (Vec3.lessThan(scaff, Platforms[0].transform.localPosition))
+        scaff.z = 0;
+        if (Platforms.Count>0&&!Vec3.lessThan( Vec3.Abs(Platforms[0].transform.localPosition),scaff))
         {
             GameObject g = Platforms[0];
             Platforms.Remove(g);
             Destroy(g);
         }
-        GameObject last = Platforms[Platforms.Count - 1];
-        Vector3 v = -(Vector3)speed * spawnSpeed;
-        if (Vec3.lessThan(last.transform.localPosition+v, scaff)){
+        
+        spawnCoolDown--;
+        if (spawnCoolDown<=0){
             spawnPlat();
 
         }
@@ -75,6 +75,7 @@ public class PlatformScaffold : MonoBehaviour {
         plat.GetComponent<PlatformMov>().speed = speed;
         Platforms.Add(plat);
         setNextPlat();
+        spawnCoolDown = (int)(spawnSpeed * 60);
     }
 
     void setNextPlat()
@@ -92,7 +93,7 @@ public class PlatformScaffold : MonoBehaviour {
         }
         else
         {
-            x = Random.value - 0.5f * scaffSize.x;
+            x = (Random.value - 0.5f) * scaffSize.x;
             y = scaffSize.y;
             if (!pos)
             {

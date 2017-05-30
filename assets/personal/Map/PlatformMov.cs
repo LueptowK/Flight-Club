@@ -17,7 +17,7 @@ public class PlatformMov : MonoBehaviour {
 	}
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag != null)
+        if (other.gameObject.tag != "Untagged")
         {
             //print("parented");
             if(other.transform.parent == null)
@@ -45,18 +45,23 @@ public class PlatformMov : MonoBehaviour {
     }
     public void parentObj(GameObject g, bool p)
     {
-        if (p)
+        if (g.activeSelf)
         {
-            Vector3 s = interchangeScale(g.transform, true);
-            g.transform.parent = transform;
-            g.transform.localScale = s;
+            if (p)
+            {
+                Vector3 s = interchangeScale(g.transform, true);
+                g.transform.parent = transform;
+                g.transform.localScale = s;
+            }
+            else
+            {
+                Vector3 s = interchangeScale(g.transform, false);
+                g.transform.parent = null;
+                
+                g.transform.localScale = s;
+            }
         }
-        else
-        {
-            Vector3 s = interchangeScale(g.transform, false);
-            g.transform.parent = null;
-            g.transform.localScale = s;
-        }
+        
     }
 
     Vector3 interchangeScale(Transform t, bool giving)

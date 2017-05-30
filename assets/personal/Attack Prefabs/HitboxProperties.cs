@@ -23,14 +23,17 @@ public class HitboxProperties : MonoBehaviour
         //print("collided");
         if (gameObject.CompareTag("Hazard"))
         {
+            Vector2 knockback = new Vector2(hitboxVector.x * transform.right.x, hitboxVector.y);
+            int d = damage;
             if (!(playerCol.GetComponent<IFrames>().invincible()))
             {
-                Vector2 knockback = new Vector2(hitboxVector.x * transform.right.x, hitboxVector.y);
+
+                d = 0;
                 
-                playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
                 
                    
             }
+            playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
         }
         else if (playerCol.gameObject.CompareTag("Target"))
         {

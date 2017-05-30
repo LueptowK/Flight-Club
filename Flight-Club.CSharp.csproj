@@ -100,11 +100,9 @@
     <Compile Include="Assets\Personal\Actor scripts\Mover.cs" />
     <Compile Include="Assets\Personal\Actor scripts\PlayerAnimator.cs" />
     <Compile Include="Assets\Personal\Actor scripts\PlayerHealth.cs" />
-    <Compile Include="Assets\Personal\Actor scripts\PlayerMover.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Attack.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\AttackActive.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\HitboxProperties.cs" />
-    <Compile Include="Assets\Personal\Attack Prefabs\Lunge.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\MovePhysics.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Projectile.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\RingMove.cs" />
@@ -115,8 +113,10 @@
     <Compile Include="Assets\Personal\Enemy\AttackPassive.cs" />
     <Compile Include="Assets\Personal\Enemy\BossMover.cs" />
     <Compile Include="Assets\Personal\Enemy\EnemyHealth.cs" />
+    <Compile Include="Assets\Personal\Enemy\Lunge.cs" />
     <Compile Include="Assets\Personal\Enemy\TurretMover.cs" />
     <Compile Include="Assets\Personal\Map\AdvTutorialManager.cs" />
+    <Compile Include="Assets\Personal\Map\CamerBaseStart.cs" />
     <Compile Include="Assets\Personal\Map\CameraController.cs" />
     <Compile Include="Assets\Personal\Map\Checkpointer.cs" />
     <Compile Include="Assets\Personal\Map\CheckpointerTutorial.cs" />

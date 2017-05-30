@@ -897,8 +897,8 @@ public class PlayerMover : Mover {
         else //result is 1
         {
             states.Enqueue(new StatePair(PState.Delay, 30, ExecState.hitLag));
-            states.Enqueue(new StatePair(PState.Burnout, 40));
-            iframes.SetFrames(115);
+            states.Enqueue(new StatePair(PState.Burnout, Mathf.Max(40, hitStun))); 
+            iframes.SetFrames(Mathf.Max(90, hitStun) + 25);
         }
         cam.screenShake = (float)damage;
     }
@@ -1270,7 +1270,7 @@ public class PlayerMover : Mover {
                     transform.position = new Vector3(transform.position.x, r.point.y -col.bounds.extents.y, 0);
                     break;
                 case PState.Burnout:
-                    rb.velocity = new Vector2(rb.velocity.x, 8f);
+                    rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(8f, rb.velocity.y));
                     break;
                 case PState.Hitstun:
                     if ((OnLeftWall && hitVector.x < 0) || (OnRightWall && hitVector.x > 0))
@@ -1564,7 +1564,7 @@ public class PlayerMover : Mover {
 
     void changeLayer(Vector2 inp)
     {
-        if (inp.y < -0.6)
+        if (inp.y < -0.7)
         {
             setLayer(true);
             

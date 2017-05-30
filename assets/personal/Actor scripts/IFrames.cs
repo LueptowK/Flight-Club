@@ -11,7 +11,8 @@ public class IFrames : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        if (iFrames > 0 && !gameObject.GetComponent<PlayerMover>().paused)
+        //if (iFrames > 0 && !gameObject.GetComponent<PlayerMover>().paused)
+        if (iFrames > 0 )
         {
             iFrames--;
             if (iFrames == 0)
@@ -23,9 +24,10 @@ public class IFrames : MonoBehaviour {
                 cf.useLayerMask = true;
                 cf.useTriggers = true;
                 col.OverlapCollider(cf, ret);
+                
                 for(int i=0; i<ret.Length; i++)
                 {
-
+                    //print(i);
                     if (ret[i] == null)
                     {
                         break;
