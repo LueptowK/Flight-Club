@@ -81,7 +81,7 @@ public class HitboxProperties : MonoBehaviour
             if (transform.parent.tag == "Finisher")
             {
                 int str = transform.parent.GetComponent<AttackActive>().comboStrength;
-                float strength = str / 5f * 4f;
+                float strength = str / 5f * 4f * .8f;
                 playerCol.GetComponent<PlayerMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength), atk);
             }
             else
