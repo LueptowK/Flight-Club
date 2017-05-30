@@ -22,6 +22,7 @@ public class PlayerMover : Mover {
     public GameObject PhaseUpPre;
     public GameObject PhaseTintPre;
     public AudioClip[] getHitSounds;
+    public AudioClip[] wallBounceSounds;
 
     private AudioSource source;
 
@@ -545,13 +546,14 @@ public class PlayerMover : Mover {
                             hitVector = new Vector2(-rb.velocity.x, rb.velocity.y);
                             calculateDI();
                             rb.velocity = hitVector;
-
+                            source.PlayOneShot(wallBounceSounds[UnityEngine.Random.Range(0, 3)], 0.3f);
                         }
                         else if (OnLeftWall && rb.velocity.x < 0)
                         {
                             hitVector = new Vector2(-rb.velocity.x, rb.velocity.y);
                             calculateDI();
                             rb.velocity = hitVector;
+                            source.PlayOneShot(wallBounceSounds[UnityEngine.Random.Range(0, 3)], 0.3f);
                         }
 
                     }
@@ -561,6 +563,7 @@ public class PlayerMover : Mover {
                         hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
                         calculateDI();
                         rb.velocity = hitVector;
+                        source.PlayOneShot(wallBounceSounds[UnityEngine.Random.Range(0, 3)], 0.3f);
                     }
                     if (rb.velocity.magnitude > 1.5 * moveSpeed && current.delay < 50)
                     {
@@ -831,7 +834,7 @@ public class PlayerMover : Mover {
     }
     public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage, Attack a)
     {
-        source.PlayOneShot(getHitSounds[UnityEngine.Random.Range(0, 6)], (.1f+(damage/50f)));
+        source.PlayOneShot(getHitSounds[UnityEngine.Random.Range(0, 3)], (.1f+(damage/50f)));
         if (!dead)
         {
             //print(knockback + " ---- " + hitLag+" ---- " + hitStun);
