@@ -8,6 +8,7 @@ public class HitboxProperties : MonoBehaviour
     public int hitstun;
     public int hitlag;
     public int damage;
+    private float finisherBossReduction = .5f;
     [HideInInspector]
     public List<GameObject> hitPlayers;
 
@@ -67,6 +68,28 @@ public class HitboxProperties : MonoBehaviour
         {
             knockback = new Vector2(hitboxVector.x * transform.right.x, hitboxVector.y);
             playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
+        }
+        else if (playerCol.CompareTag("Boss"))
+        {
+            if (transform.parent.parent.localScale.y < 0)
+            {
+                knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * -transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * -transform.up.y);
+
+            }
+            else
+            {
+                knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * transform.up.y);
+            }
+            if (transform.parent.tag == "Finisher")
+            {
+                int str = transform.parent.GetComponent<AttackActive>().comboStrength;
+                float strength = str / 5f * 4f * .8f;
+                playerCol.GetComponent<BossMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength * finisherBossReduction));
+            }
+            else
+            {
+                playerCol.GetComponent<BossMover>().getHit(knockback, hitlag, hitstun, damage);
+            }
         }
         else
         {
