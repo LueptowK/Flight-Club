@@ -127,47 +127,47 @@ public class AttackManager : MonoBehaviour {
         {
             case AtkType.DownAir:
                 currentAttack = Instantiate(DownAir, transform,false);
-                source.PlayOneShot(DownAir.GetComponent<Attack>().attackSound);
+                source.PlayOneShot(DownAir.GetComponent<Attack>().attackSound, 0.3f);
                 break;
             case AtkType.NeutralAir:
                 currentAttack = Instantiate(NeutralAir, transform, false);
-                source.PlayOneShot(NeutralAir.GetComponent<Attack>().attackSound);
+                source.PlayOneShot(NeutralAir.GetComponent<Attack>().attackSound, 0.3f);
                 break;
             case AtkType.UpAir:
                 currentAttack = Instantiate(UpAir, transform, false);
-                source.PlayOneShot(UpAir.GetComponent<Attack>().attackSound);
+                source.PlayOneShot(UpAir.GetComponent<Attack>().attackSound, 0.3f);
                 break;
             case AtkType.ForwardAir:
                 currentAttack = Instantiate(ForwardAir, transform, false);
-                source.PlayOneShot(ForwardAir.GetComponent<Attack>().attackSound);
+                source.PlayOneShot(ForwardAir.GetComponent<Attack>().attackSound, 0.3f);
                 break;
             case AtkType.BackAir:
                 currentAttack = Instantiate(BackAir, transform, false);
-                source.PlayOneShot(BackAir.GetComponent<Attack>().attackSound);
+                source.PlayOneShot(BackAir.GetComponent<Attack>().attackSound, 0.3f);
                 break;
             case AtkType.DownGround:
                 currentAttack = Instantiate(DownGround, transform, false);
-                source.PlayOneShot(DownGround.GetComponent<Attack>().attackSound);
+                source.PlayOneShot(DownGround.GetComponent<Attack>().attackSound, 0.3f);
                 break;
             case AtkType.UpGround:
                 currentAttack = Instantiate(UpGround, transform, false);
-                source.PlayOneShot(UpGround.GetComponent<Attack>().attackSound);
+                source.PlayOneShot(UpGround.GetComponent<Attack>().attackSound, 0.3f);
                 break;
             case AtkType.BackGround:
                 currentAttack = Instantiate(BackGround, transform, false);
-                source.PlayOneShot(BackGround.GetComponent<Attack>().attackSound);
+                source.PlayOneShot(BackGround.GetComponent<Attack>().attackSound, 0.3f);
                 break;
             case AtkType.ForwardGround:
                 currentAttack = Instantiate(ForwardGround, transform, false);
-                source.PlayOneShot(ForwardGround.GetComponent<Attack>().attackSound);
+                source.PlayOneShot(ForwardGround.GetComponent<Attack>().attackSound, 0.3f);
                 break;
             case AtkType.NeutralGround:
                 currentAttack = Instantiate(NeutralGround, transform, false);
-                source.PlayOneShot(NeutralGround.GetComponent<Attack>().attackSound);
+                source.PlayOneShot(NeutralGround.GetComponent<Attack>().attackSound, 0.3f);
                 break;
             case AtkType.Finisher:
                 currentAttack = Instantiate(Finisher, transform, false);
-                source.PlayOneShot(Finisher.GetComponent<Attack>().attackSound);
+                source.PlayOneShot(Finisher.GetComponent<Attack>().attackSound, 0.5f);
                 ComboCounter c = GetComponent<ComboCounter>();
                 currentAttack.GetComponent<AttackActive>().comboStrength = c.currentCombo;
                 c.reset();

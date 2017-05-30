@@ -726,6 +726,10 @@ public class PlayerMover : Mover {
                     case ExecState.Jump:
                         Vector2 ogVel = (rb.velocity * (Mathf.Pow(1f / 0.8f, jumpSquatFrames)));
                         rb.velocity = new Vector2(ci.move.x * 0.5f * ogVel.x * Mathf.Sign(ogVel.x) + ogVel.x * 0.5f, jumpVel);
+                        if (this.GetComponentInParent<PlatformMov>() != null)
+                        {
+                            rb.velocity += this.GetComponentInParent<PlatformMov>().speed;
+                        }
                         //states.Enqueue(new StatePair(PState.Air, 0));
                         break;
                     case ExecState.hitLag:

@@ -79,6 +79,11 @@ public abstract class BehaviorTreeNode : ScriptableObject
             Player = GameObject.FindWithTag("Player").transform;
        // Debug.Log(Player);
     }
+
+    public void ReEnable()
+    {
+        OnEnable();
+    }
     #endregion
 
     #region Static utilities used elsewhere

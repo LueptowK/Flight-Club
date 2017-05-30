@@ -55,6 +55,7 @@ public class AIInput : MonoBehaviour {
 	void Start () {
         ctrl = new aiMove(Vector2.zero);
         pm = GetComponent<PlayerMover>();
+        tree.ReEnable();
 	}
 	
 	// Update is called once per frame
