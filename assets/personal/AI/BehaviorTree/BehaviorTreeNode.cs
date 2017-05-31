@@ -73,7 +73,7 @@ public abstract class BehaviorTreeNode : ScriptableObject
     /// Just here to make sure the Player global is initialized.
     /// </summary>
     PlayerMover pm;
-    internal virtual void OnEnable()
+    internal virtual void Enable()
     {
         if (Player == null)
             Player = GameObject.FindWithTag("Player").transform;
@@ -82,7 +82,7 @@ public abstract class BehaviorTreeNode : ScriptableObject
 
     public void ReEnable()
     {
-        OnEnable();
+        Enable();
     }
     #endregion
 
