@@ -96,6 +96,7 @@
      <Compile Include="Assets\Personal\Map\PlatformMov.cs" />
      <Compile Include="Assets\Personal\Map\PlatformScaffold.cs" />
      <Compile Include="Assets\Personal\Map\SpawnPoint.cs" />
+     <Compile Include="Assets\Personal\Map\StoryLevelManager.cs" />
      <Compile Include="Assets\Personal\Map\TimeTrialFinishLine.cs" />
      <Compile Include="Assets\Personal\Map\TimeTrialManager.cs" />
      <Compile Include="Assets\Personal\Map\TutorialManager.cs" />
