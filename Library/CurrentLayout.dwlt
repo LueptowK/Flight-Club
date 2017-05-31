@@ -109,7 +109,7 @@ MonoBehaviour:
   m_MinSize: {x: 683, y: 495}
   m_MaxSize: {x: 14004, y: 14045}
   vertical: 0
-  controlID: 13843
+  controlID: 27408
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 495}
   m_MaxSize: {x: 10002, y: 14045}
   vertical: 1
-  controlID: 13844
+  controlID: 27409
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 224}
   m_MaxSize: {x: 8006, y: 4024}
   vertical: 0
-  controlID: 13845
+  controlID: 27410
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -366,10 +366,10 @@ MonoBehaviour:
     width: 225
     height: 327
   m_TreeViewState:
-    scrollPos: {x: 0, y: 32}
-    m_SelectedIDs: 
-    m_LastClickedID: 0
-    m_ExpandedIDs: 3c32ffff8a39ffffb43bffffb68affffbe8bffff3a8fffff4c92ffff1a94ffff9a95ffffc497ffff9299ffff32afffffc4b7ffff42eeffffdafbffff00000000
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 70970000
+    m_LastClickedID: 38768
+    m_ExpandedIDs: 74aefeff28befeffe4c6feff34cefeff362cffff5634ffff9844ffff6e62ffff5c66ffffa2faffffe4fbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -424,9 +424,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 25.807274, y: 8.657703, z: 0}
+    m_Target: {x: 108.31322, y: -18.711502, z: 0}
     speed: 2
-    m_Value: {x: 25.807274, y: 8.657703, z: 0}
+    m_Value: {x: 108.31322, y: -18.711502, z: 0}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -453,9 +453,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 35.132908
+    m_Target: 134.81651
     speed: 2
-    m_Value: 35.132908
+    m_Value: 134.81651
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -547,7 +547,7 @@ MonoBehaviour:
     width: 1036
     height: 250
   m_SearchFilter:
-    m_NameFilter: danger
+    m_NameFilter: 
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -557,19 +557,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets
+    - Assets/Personal/Actor scripts
   m_ViewMode: 1
   m_StartGridSize: 60
   m_LastFolders:
-  - Assets
+  - Assets/Personal/Actor scripts
   m_LastFoldersGridSize: 60
   m_LastProjectPath: C:\Users\Kurt\Documents\EECS\FlightClub\30May17\Flight-Club
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 95}
-    m_SelectedIDs: 
-    m_LastClickedID: 0
-    m_ExpandedIDs: 0000000092250000042600001c26000000ca9a3bffffff7f
+    m_SelectedIDs: f4300000
+    m_LastClickedID: 12532
+    m_ExpandedIDs: 000000006c250000de250000f625000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -597,7 +597,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: b4050000
     m_LastClickedID: 1460
-    m_ExpandedIDs: 0000000092250000042600001c26000000ca9a3bffffff7f
+    m_ExpandedIDs: 000000006c250000de250000f625000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
