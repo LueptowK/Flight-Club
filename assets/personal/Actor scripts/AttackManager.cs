@@ -89,9 +89,10 @@ public class AttackManager : MonoBehaviour {
         {
             a += 180;
         }
-        rot = Quaternion.Euler(0, 0, a);
+        rot = Quaternion.Euler(0, a, 0);
         GameObject m = Instantiate(RangedAttack, GetComponent<PlayerAnimator>().ShootPos(backwards), rot);
         Projectile p = m.GetComponent<Projectile>();
+        m.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
         p.hitPlayers.Add(gameObject);
         p.setMngr(this);
         if (combo)

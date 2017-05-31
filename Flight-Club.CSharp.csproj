@@ -93,6 +93,7 @@
     <Compile Include="Assets\Personal\AI\BehaviorTree\TurnTowards.cs" />
     <Compile Include="Assets\Personal\AI\BehaviorTree\Waiter.cs" />
     <Compile Include="Assets\Personal\AI\Waypoint.cs" />
+    <Compile Include="Assets\Personal\Actor scripts\ActorSounds.cs" />
     <Compile Include="Assets\Personal\Actor scripts\AttackManager.cs" />
     <Compile Include="Assets\Personal\Actor scripts\ComboCounter.cs" />
     <Compile Include="Assets\Personal\Actor scripts\Health.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Assets\Personal\Actor scripts\Mover.cs" />
     <Compile Include="Assets\Personal\Actor scripts\PlayerAnimator.cs" />
     <Compile Include="Assets\Personal\Actor scripts\PlayerHealth.cs" />
+    <Compile Include="Assets\Personal\Actor scripts\PlayerMover.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\Attack.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\AttackActive.cs" />
     <Compile Include="Assets\Personal\Attack Prefabs\HitboxProperties.cs" />
@@ -129,11 +131,13 @@
     <Compile Include="Assets\Personal\Map\PlatformMov.cs" />
     <Compile Include="Assets\Personal\Map\PlatformScaffold.cs" />
     <Compile Include="Assets\Personal\Map\SpawnPoint.cs" />
+    <Compile Include="Assets\Personal\Map\StoryLevelManager.cs" />
     <Compile Include="Assets\Personal\Map\TimeTrialFinishLine.cs" />
     <Compile Include="Assets\Personal\Map\TimeTrialManager.cs" />
     <Compile Include="Assets\Personal\Map\TutorialManager.cs" />
     <Compile Include="Assets\Personal\Map\powerup\Powerup.cs" />
     <Compile Include="Assets\Personal\Map\powerup\RestoreHP.cs" />
+    <Compile Include="Assets\Personal\Sound\Voiceover\PlayVoiceover.cs" />
     <Compile Include="Assets\Personal\StatCard.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\CharacterItem.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\DetectPlayer.cs" />
