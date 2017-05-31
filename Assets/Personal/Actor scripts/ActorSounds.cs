@@ -26,6 +26,6 @@ public class ActorSounds : MonoBehaviour
 
     public void getHit(int damage)
     {
-        source.PlayOneShot(getHitSounds[UnityEngine.Random.Range(0, getHitSounds.Length)], (.1f + (damage / 50f)));
+        source.PlayOneShot(getHitSounds[UnityEngine.Random.Range(0, getHitSounds.Length)], (.2f + (damage / 60f)));
     }
 }
