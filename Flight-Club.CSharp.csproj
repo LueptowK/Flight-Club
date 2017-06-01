@@ -81,12 +81,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Flight-Club.CSharp.Plugins.csproj">
-      <Project>{2908EABB-35E3-285E-5C73-261A18F9417A}</Project>
-      <Name>Flight-Club.CSharp.Plugins</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Personal\AI\AIInput.cs" />
     <Compile Include="Assets\Personal\AI\BehaviorTree\AtkFG.cs" />
     <Compile Include="Assets\Personal\AI\BehaviorTree\BehaviorTreeNode.cs" />
@@ -137,6 +131,7 @@
     <Compile Include="Assets\Personal\Map\PlatformMov.cs" />
     <Compile Include="Assets\Personal\Map\PlatformScaffold.cs" />
     <Compile Include="Assets\Personal\Map\SpawnPoint.cs" />
+    <Compile Include="Assets\Personal\Map\StoryFinishLine.cs" />
     <Compile Include="Assets\Personal\Map\StoryLevelManager.cs" />
     <Compile Include="Assets\Personal\Map\TimeTrialFinishLine.cs" />
     <Compile Include="Assets\Personal\Map\TimeTrialManager.cs" />
@@ -160,24 +155,6 @@
     <Compile Include="Assets\Xinputdotnet\Examples\XInputTestCS.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Standard Assets\Effects\AmbientOcclusion\Resources\AmbientOcclusion.cginc" />
-    <None Include="Assets\Standard Assets\Effects\AmbientOcclusion\Resources\AmbientOcclusion.shader" />
-    <None Include="Assets\Standard Assets\Effects\AntiAliasing\FXAA\Resources\FXAA.shader" />
-    <None Include="Assets\Standard Assets\Effects\AntiAliasing\FXAA\Resources\FXAA3.cginc" />
-    <None Include="Assets\Standard Assets\Effects\AntiAliasing\SMAA\Resources\SMAA.cginc" />
-    <None Include="Assets\Standard Assets\Effects\AntiAliasing\SMAA\Resources\SMAA.shader" />
-    <None Include="Assets\Standard Assets\Effects\Bloom\Resources\Bloom.cginc" />
-    <None Include="Assets\Standard Assets\Effects\Bloom\Resources\Bloom.shader" />
-    <None Include="Assets\Standard Assets\Effects\DepthOfField\Resources\BokehSplatting.shader" />
-    <None Include="Assets\Standard Assets\Effects\DepthOfField\Resources\DepthOfField.shader" />
-    <None Include="Assets\Standard Assets\Effects\DepthOfField\Resources\MedianFilter.shader" />
-    <None Include="Assets\Standard Assets\Effects\LensAberrations\Resources\LensAberrations.shader" />
-    <None Include="Assets\Standard Assets\Effects\ScreenSpaceReflection\Resources\ScreenSpaceRaytrace.cginc" />
-    <None Include="Assets\Standard Assets\Effects\ScreenSpaceReflection\Resources\ScreenSpaceReflection.shader" />
-    <None Include="Assets\Standard Assets\Effects\TonemappingColorGrading\Resources\HistogramCompute.compute" />
-    <None Include="Assets\Standard Assets\Effects\TonemappingColorGrading\Resources\HistogramRender.shader" />
-    <None Include="Assets\Standard Assets\Effects\TonemappingColorGrading\Resources\TonemappingColorGrading.cginc" />
-    <None Include="Assets\Standard Assets\Effects\TonemappingColorGrading\Resources\TonemappingColorGrading.shader" />
     <None Include="Assets\Xinputdotnet\MITLicense.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

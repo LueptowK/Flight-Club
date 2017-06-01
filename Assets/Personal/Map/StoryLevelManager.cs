@@ -17,6 +17,8 @@ public class StoryLevelManager : Manager
     bool paused;
     int deathCounter;
     int startTimer;
+
+    Canvas c;
     // Use this for initialization
     void Start()
     {
@@ -26,6 +28,7 @@ public class StoryLevelManager : Manager
         deathCounter = 0;
         //currentSpawn = spawn1;
         Player.GetComponent<PlayerMover>().TutorialStart();
+        c = ((Canvas)FindObjectOfType(typeof(Canvas)));
     }
 
     // Update is called once per frame
@@ -99,6 +102,11 @@ public class StoryLevelManager : Manager
     public override void Quit()
     {
         SceneManager.LoadScene(7);
+    }
+    public void finish()
+    {
+        c.transform.Find("Complete").gameObject.SetActive(true);
+        finished = true;
     }
 }
 
