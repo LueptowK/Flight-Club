@@ -90,6 +90,7 @@ public class HitboxProperties : MonoBehaviour
             {
                 playerCol.GetComponent<BossMover>().getHit(knockback, hitlag, hitstun, damage);
             }
+            atk.addHit(playerCol.gameObject, hitlag);
         }
         else
         {

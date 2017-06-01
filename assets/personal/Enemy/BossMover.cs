@@ -13,12 +13,16 @@ public class BossMover : Mover {
     Interpreter ci;
     Rigidbody2D rb;
     Vector2 knockback;
+    ActorSounds sounds;
     bool inHitstun;
+    bool inHitlag;
     int hitstunCounter;
+    int hitlagCounter;
     // Use this for initialization
     void Start () {
         ci = GetComponent<Interpreter>();
         rb = GetComponent<Rigidbody2D>();
+        sounds = GetComponent<ActorSounds>();
         inHitstun = false;
         hitstunCounter = 0;
 	}
@@ -33,6 +37,16 @@ public class BossMover : Mover {
             if (hitstunCounter == 0)
             {
                 inHitstun = false;
+            }
+        }
+        else if (inHitlag)
+        {
+            rb.velocity = Vector2.zero;
+            hitlagCounter--;
+            if (hitlagCounter == 0)
+            {
+                inHitlag = false;
+                inHitstun = true;
             }
         }
         else
@@ -61,6 +75,8 @@ public class BossMover : Mover {
     {
         knockback = kb*.8f;
         hitstunCounter = hitStun;
-        inHitstun = true;
+        hitlagCounter = hitLag;
+        inHitlag = true;
+        sounds.getHit(damage);
     }
 }
