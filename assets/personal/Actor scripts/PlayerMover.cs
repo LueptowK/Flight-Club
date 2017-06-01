@@ -917,6 +917,7 @@ public class PlayerMover : Mover {
             //calcDashVel();
             dashesAvailable--;
             states.Enqueue(new StatePair(PState.Dash, dashTime));
+            sounds.dash();
             return true;
         }
         return false;
