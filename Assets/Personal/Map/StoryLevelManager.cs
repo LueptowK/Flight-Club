@@ -12,6 +12,7 @@ public class StoryLevelManager : Manager
     public GameObject startSpawn;
     private Vector2 currentSpawn;
     public Checkpointer finalPoint;
+    public int nextScene;
     bool dead;
     bool finished;
     bool paused;
@@ -46,7 +47,7 @@ public class StoryLevelManager : Manager
                 endCounter--;
                 if (endCounter <= 0)
                 {
-                    Quit();
+                    win();
                 }
             }
             if (dead)
@@ -107,6 +108,11 @@ public class StoryLevelManager : Manager
     {
         c.transform.Find("Complete").gameObject.SetActive(true);
         finished = true;
+    }
+
+    public void win()
+    {
+        SceneManager.LoadScene(nextScene);
     }
 }
 
