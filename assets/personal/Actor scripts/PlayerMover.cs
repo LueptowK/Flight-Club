@@ -862,7 +862,8 @@ public class PlayerMover : Mover {
                     grabAtk = a;
                     grabHitstun = hitStun;
                     //grabDif = transform.position - a.transform.position;
-                    grabDif = a.transform.up * 1f;
+                    //grabDif = a.transform.up * 1f;
+                    grabDif = Vector2.zero;
                     states.Enqueue(new StatePair(PState.Delay, 0, ExecState.Grabbed));
                 }
                 else
@@ -1529,6 +1530,10 @@ public class PlayerMover : Mover {
             hittingLag = false;
         }
         
+    }
+    public void clearHitlagVelocity()
+    {
+        hittingLagVel = Vector2.zero;
     }
 
     public void phaseUp()

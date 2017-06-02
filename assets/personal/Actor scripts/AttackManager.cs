@@ -188,6 +188,8 @@ public class AttackManager : MonoBehaviour {
     }
     public int stopAttack()
     {
+        pm.clearHitlagVelocity();
+        lag(false);
         if (currentTouchAttack)
         {
             Destroy(currentTouchAttack);
@@ -195,10 +197,10 @@ public class AttackManager : MonoBehaviour {
         }
         if (currentAttack) {
             int frames = currentAttack.GetComponent<AttackActive>().ending();
-            if (currentAttack.GetComponent<AttackActive>().inHitlag)
-            {
-                lag(false);
-            }
+            //if (currentAttack.GetComponent<AttackActive>().inHitlag)
+            //{
+            //    lag(false);
+            //}
             Destroy(currentAttack);
             return frames;
         }
@@ -210,21 +212,7 @@ public class AttackManager : MonoBehaviour {
 
         Destroy(currentAttack);
     }
-    public void currentAttackHitStart()
-    {
-        if(currentAttack.tag == "FinisherSlash")
-        {
-            
-            float angleDiff = Vector2.Angle(ci.move, new Vector2(1, 0));
-            
-            if (Vector3.Cross(new Vector3(ci.move.x, ci.move.y, 0), new Vector3(1, 0, 0)).z > 0)
-            {
-                angleDiff = -angleDiff;
-            }
-
-            currentAttack.transform.rotation = Quaternion.Euler(0f, 0f, angleDiff);
-        }
-    }
+    
     public MovePhysics.AtkMotion getMotion(Vector2 inp)
     {
         

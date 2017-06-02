@@ -167,10 +167,7 @@ public class AttackActive : Attack {
                 }
                 else
                 {
-                    if (frameNum == windup)
-                    {
-                        transform.parent.GetComponent<AttackManager>().currentAttackHitStart();
-                    }
+                    
                 }
             }
 

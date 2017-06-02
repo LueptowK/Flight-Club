@@ -17,8 +17,8 @@ public class CameraController : MonoBehaviour
 
     public float minCamZoom = 6;
     public float maxCamSoftZoom = 8f;
-    public float SoftZoomMult = 0.35f;
-    public float camDivider = 3.8f;
+    
+    public float camDivider = 4.2f;
 
     public bool lookDown = false;
     public GameObject camBaseObj;
@@ -129,15 +129,23 @@ public class CameraController : MonoBehaviour
         if (size > cam.orthographicSize)
         {
             cam.orthographicSize = size;
+            
         }
         else
         {
-            size *= 1.2f;
-            if(size> maxCamSoftZoom)
+            float bonus = 0.2f;
+            
+            
+            if (size> maxCamSoftZoom)
             {
-                size = maxCamSoftZoom + (size - maxCamSoftZoom) * SoftZoomMult;
+               bonus*=(size - maxCamSoftZoom)/maxCamSoftZoom;
             }
+            bonus += 1;
+            size *= bonus;
+            
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, size, zoomSmoothing);
+            
+            
         }
         
     }
