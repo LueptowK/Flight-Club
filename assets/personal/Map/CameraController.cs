@@ -103,7 +103,7 @@ public class CameraController : MonoBehaviour
         }
         if (camTop)
         {
-            maxY = Mathf.Max(maxY, camTop.transform.position.y);
+            maxY = camTop.transform.position.y;
         }
 
 

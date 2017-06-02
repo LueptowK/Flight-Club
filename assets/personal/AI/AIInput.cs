@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -89,7 +89,7 @@ public class AIInput : MonoBehaviour {
     {
         setCtrl(new AIInput.aiMove(target - transform.position));
     }
-    public GameObject pickPoint()
+    public void pickPoint()
     {
         points.Remove(lastPoint);
         GameObject p = points[Mathf.FloorToInt(Random.value * points.Count)];
@@ -99,7 +99,14 @@ public class AIInput : MonoBehaviour {
         }
 
         lastPoint = p;
-        return p;
+
+    }
+    public GameObject point
+    {
+        get
+        {
+            return lastPoint;
+        }
     }
     public void jump()
     {

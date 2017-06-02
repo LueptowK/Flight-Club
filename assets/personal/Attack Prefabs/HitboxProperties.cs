@@ -26,15 +26,30 @@ public class HitboxProperties : MonoBehaviour
         {
             Vector2 knockback = new Vector2(hitboxVector.x * transform.right.x, hitboxVector.y);
             int d = damage;
-            if (!(playerCol.GetComponent<IFrames>().invincible()))
+            if (playerCol.tag == "Boss")
             {
-
-                d = 0;
-                
-                
-                   
+                playerCol.GetComponent<BossMover>().getHit(knockback, hitlag, hitstun, damage);
             }
-            playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage);
+            else 
+            {
+                IFrames i = playerCol.GetComponent<IFrames>();
+                if (i && i.invincible())
+                {
+
+                    d = 0;
+
+
+
+                }
+                PlayerMover pm = playerCol.GetComponent<PlayerMover>();
+                if (pm)
+                {
+                    pm.getHit(knockback, hitlag, hitstun, damage);
+                }
+               
+            }
+            
+            
         }
         else if (playerCol.gameObject.CompareTag("Target"))
         {

@@ -5,21 +5,27 @@ using UnityEngine;
 public class PointMover : BehaviorTreeNode {
     
 
-    Vector3 selected;
+    
     float range = 1f;
     
 
     public override void Activate(AIInput g)
     {
-        selected = g.pickPoint().transform.position;
+        g.pickPoint();
         //Debug.Log(arrivalTime+ "here");
     }
 
     public override bool Tick(AIInput g)
     {
-
+        Vector3 selected;
+        if (!g.point)
+        {
+            return false;
+        }
         
-            g.move(selected);
+        selected = g.point.transform.position;
+        //Debug.Log(selected);
+        g.move(selected);
             if ((g.transform.position - selected).magnitude <= range)
             {
                 return false;

@@ -11,6 +11,7 @@ public enum DeciderType
     LineOfSight,
 
     FacingTarget,
+    Half,
 
     Threat0
 
@@ -50,6 +51,9 @@ public static class DeciderImplementation
                 Vector3 vec= g.threat[0];
                 bool r = Vec3.lessThan(Vec3.Abs(direction), vec);
                 return r;
+            case DeciderType.Half:
+                Health h = g.GetComponent<Health>();
+                return (float)(h.currentHealth) / h.maxHealth > 0.5f;
 
             default:
                 throw new ArgumentException("Unknown Decider: " + d);

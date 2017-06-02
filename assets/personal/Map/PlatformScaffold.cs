@@ -15,39 +15,12 @@ public class PlatformScaffold : MonoBehaviour {
     Vector2 nextPlt;
     bool wall, pos;
     int spawnCoolDown=0;
+
+    bool paused = false;
 	// Use this for initialization
 	void Start () {
         Platforms = new List<GameObject>();
-        if (Mathf.Abs(speed.x) > Mathf.Abs(speed.y))
-        {
-            wall = true;
-        }
-        else
-        {
-            wall = false;
-        }
-        if (wall)
-        {
-            if (speed.x < 0)
-            {
-                pos = true;
-            }
-            else
-            {
-                pos = false;
-            }
-        }
-        else
-        {
-            if (speed.y < 0)
-            {
-                pos = true;
-            }
-            else
-            {
-                pos = false;
-            }
-        }
+        calcSide();
         setNextPlat();
         spawnPlat();
 	}
@@ -62,8 +35,12 @@ public class PlatformScaffold : MonoBehaviour {
             Platforms.Remove(g);
             Destroy(g);
         }
+
+        if (!paused)
+        {
+            spawnCoolDown--;
+        }
         
-        spawnCoolDown--;
         if (spawnCoolDown<=0){
             spawnPlat();
 
@@ -101,5 +78,64 @@ public class PlatformScaffold : MonoBehaviour {
             }
         }
         nextPlt = new Vector2(x, y);
+    }
+    public void pause()
+    {
+        foreach(GameObject p in Platforms)
+        {
+            p.GetComponent<PlatformMov>().speed = Vector2.zero;
+        }
+        paused = true;
+    }
+    public void unpause()
+    {
+        foreach (GameObject p in Platforms)
+        {
+            p.GetComponent<PlatformMov>().speed = speed;
+        }
+        paused = false;
+    }
+    public void changeSpeed(Vector2 newSpeed)
+    {
+        speed = newSpeed;
+        calcSide();
+        setNextPlat();
+    }
+    public void reverse()
+    {
+        Platforms.Reverse();
+    }
+    void calcSide()
+    {
+        if (Mathf.Abs(speed.x) > Mathf.Abs(speed.y))
+        {
+            wall = true;
+        }
+        else
+        {
+            wall = false;
+        }
+        if (wall)
+        {
+            if (speed.x < 0)
+            {
+                pos = true;
+            }
+            else
+            {
+                pos = false;
+            }
+        }
+        else
+        {
+            if (speed.y < 0)
+            {
+                pos = true;
+            }
+            else
+            {
+                pos = false;
+            }
+        }
     }
 }

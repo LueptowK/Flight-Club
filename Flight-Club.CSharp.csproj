@@ -133,10 +133,12 @@
     <Compile Include="Assets\Personal\Map\FalPlat.cs" />
     <Compile Include="Assets\Personal\Map\LevelManager.cs" />
     <Compile Include="Assets\Personal\Map\LoadSceneOnClick.cs" />
+    <Compile Include="Assets\Personal\Map\Locker.cs" />
     <Compile Include="Assets\Personal\Map\Manager.cs" />
     <Compile Include="Assets\Personal\Map\MapManager.cs" />
     <Compile Include="Assets\Personal\Map\PlatformMov.cs" />
     <Compile Include="Assets\Personal\Map\PlatformScaffold.cs" />
+    <Compile Include="Assets\Personal\Map\Scaffoldcont.cs" />
     <Compile Include="Assets\Personal\Map\SpawnPoint.cs" />
     <Compile Include="Assets\Personal\Map\StoryFinishLine.cs" />
     <Compile Include="Assets\Personal\Map\StoryLevelManager.cs" />

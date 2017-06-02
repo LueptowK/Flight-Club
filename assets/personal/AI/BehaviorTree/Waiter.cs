@@ -16,7 +16,7 @@ public class Waiter : BehaviorTreeNode
 
         g.setCtrl(new AIInput.aiMove(Vector2.zero));
         g.stall();
-
+        //Debug.Log("Waiting");
         if (g.waiting)
         {
             return true;
