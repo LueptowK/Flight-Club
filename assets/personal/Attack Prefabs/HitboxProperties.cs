@@ -32,9 +32,11 @@ public class HitboxProperties : MonoBehaviour
             }
             else 
             {
+
                 IFrames i = playerCol.GetComponent<IFrames>();
                 if (i && i.invincible())
                 {
+                    
 
                     d = 0;
 
@@ -44,7 +46,7 @@ public class HitboxProperties : MonoBehaviour
                 PlayerMover pm = playerCol.GetComponent<PlayerMover>();
                 if (pm)
                 {
-                    pm.getHit(knockback, hitlag, hitstun, damage);
+                    pm.getHit(knockback, hitlag, hitstun, d);
                 }
                
             }

@@ -38,6 +38,7 @@ public class IFrames : MonoBehaviour {
                     if (!atk||!atk.hit.Contains(gameObject))
                     {
                         h.collidePlayer(col);
+                       
                     }
                     
                         
