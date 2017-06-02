@@ -27,6 +27,8 @@ public class BossMover : Mover {
     SpriteRenderer sprite;
     EnemyHealth hp;
     Animator ani;
+    public GameObject jumper;
+    public GameObject spawner;
     bool inHitstun;
     bool inHitlag;
     int hitstunCounter;
@@ -42,6 +44,7 @@ public class BossMover : Mover {
     float length = 0.6f;
     int shootCD= 50;
     int currentCD = 0;
+    int spawnCD = 0;
 
     int deathCount = 120;
     bool dying = false;
@@ -67,8 +70,24 @@ public class BossMover : Mover {
 	// Update is called once per frame
 	void FixedUpdate () {
         sprite.color = Color.white;
+
         if (!dying)
         {
+            if (spawnCD <= 0)
+            {
+                if(Mathf.Pow(UnityEngine.Random.Range(0f,1f),4) > hp.currentHealth / hp.maxHealth)
+                {
+                    print("spawn");
+                    spawnJumper();
+                }
+            }
+            else
+            {
+                spawnCD--;
+            }
+
+
+
             if (inHitlag)
             {
                 rb.velocity = Vector2.zero;
@@ -147,6 +166,7 @@ public class BossMover : Mover {
         }
         else
         {
+            rb.velocity = Vector2.zero;
             deathCount--;
             if (deathCount == 0)
             {
@@ -168,5 +188,12 @@ public class BossMover : Mover {
         inHitlag = true;
         sounds.getHit(damage);
         hp.takeDamage(damage);
+    }
+
+    void spawnJumper()
+    {
+        GameObject jumpy = Instantiate(jumper);
+        jumpy.transform.position = spawner.transform.position;
+        spawnCD = 60 + hp.currentHealth * 2;
     }
 }
