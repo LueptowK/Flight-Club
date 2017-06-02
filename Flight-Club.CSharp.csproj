@@ -140,6 +140,7 @@
     <Compile Include="Assets\Personal\Map\PlatformScaffold.cs" />
     <Compile Include="Assets\Personal\Map\Scaffoldcont.cs" />
     <Compile Include="Assets\Personal\Map\SpawnPoint.cs" />
+    <Compile Include="Assets\Personal\Map\StoryDestroy.cs" />
     <Compile Include="Assets\Personal\Map\StoryFinishLine.cs" />
     <Compile Include="Assets\Personal\Map\StoryLevelManager.cs" />
     <Compile Include="Assets\Personal\Map\TimeTrialFinishLine.cs" />

@@ -12,7 +12,7 @@ public class Scaffoldcont : MonoBehaviour {
 	void Start () {
 		
 	}
-    void OnDestroy()
+    public void end()
     {
         swap(true);
     }
