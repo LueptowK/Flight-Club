@@ -114,9 +114,9 @@ public class AttackManager : MonoBehaviour {
     {
         alreadyHitByType.Add(player);
     }
-    public void lag(bool hitLagState)
+    public void lag(bool hitLagState, bool useVel = true)
     {
-        pm.hitting(hitLagState);
+        pm.hitting(hitLagState, useVel);
     }
     public void resetHitList()
     {
@@ -188,8 +188,8 @@ public class AttackManager : MonoBehaviour {
     }
     public int stopAttack()
     {
-        pm.clearHitlagVelocity();
-        lag(false);
+        
+        lag(false, false);
         if (currentTouchAttack)
         {
             Destroy(currentTouchAttack);

@@ -201,6 +201,7 @@ public class PlayerMover : Mover {
     }
     // Update is called once per frame
     void FixedUpdate() {
+        
         if (!paused)
         {
             resetLayer();
@@ -480,8 +481,8 @@ public class PlayerMover : Mover {
                             break;
                         case ExecState.Grabbed:
                             rb.velocity = Vector2.zero;
-                            
-                            
+
+                           
                             if (!grabAtk)
                             {
                                 states.Enqueue(new StatePair(PState.Delay, 0, ExecState.Normal));
@@ -535,8 +536,10 @@ public class PlayerMover : Mover {
                     {
                         hitVector = new Vector2(rb.velocity.x, -rb.velocity.y);
                         calculateDI();
+                        
                         rb.velocity = hitVector;
                     }
+                    
                     if (nearWall) //WALL - NEAR
                     {
                         restoreTools();
@@ -557,6 +560,7 @@ public class PlayerMover : Mover {
                         }
 
                     }
+                   
                     if (onCeiling && rb.velocity.y > 0)
                     {
                         dashesAvailable = maxDashes;
@@ -569,7 +573,7 @@ public class PlayerMover : Mover {
                     {
                         rb.velocity = rb.velocity * hitstunFriction;
                     }
-
+                    
                     rb.velocity += new Vector2(0, -gravity * 9.8f * Time.fixedDeltaTime);
                     break;
                 #endregion
@@ -830,6 +834,7 @@ public class PlayerMover : Mover {
     }
     public void grabFin()
     {
+        
         takeDamage(grabDamage, 0, grabHitstun);
     }
     public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage)
@@ -1287,6 +1292,7 @@ public class PlayerMover : Mover {
                     {
                         hitVector = new Vector2(hitVector.x, -hitVector.y);
                     }
+
                     rb.velocity = hitVector;
                     break;
                 case PState.Delay:
@@ -1352,10 +1358,12 @@ public class PlayerMover : Mover {
     }
     void calculateDI()
     {
+        
         if (ci.move == Vector2.zero)
         {
             return;
         }
+       
         Vector2 angle = ci.move;
         float angleDiff = Vector2.Angle(hitVector, angle);
 
@@ -1515,8 +1523,8 @@ public class PlayerMover : Mover {
             */
         }
     }
-    
-    public void hitting(bool isHitting)
+
+    public void hitting(bool isHitting, bool useVel = true)
     {
         if (isHitting)
         {
@@ -1526,15 +1534,16 @@ public class PlayerMover : Mover {
         }
         else
         {
-            rb.velocity = hittingLagVel;
+            if (useVel)
+            {
+                rb.velocity = hittingLagVel;
+            }
+            
             hittingLag = false;
         }
         
     }
-    public void clearHitlagVelocity()
-    {
-        hittingLagVel = Vector2.zero;
-    }
+    
 
     public void phaseUp()
     {
@@ -1609,4 +1618,5 @@ public class PlayerMover : Mover {
             gameObject.layer = PLAYER_LAYER;
         }
     }
+    
 }
