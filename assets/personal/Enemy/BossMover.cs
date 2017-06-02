@@ -134,7 +134,7 @@ public class BossMover : Mover {
                 else
                 {
 
-                    if ((float)(hp.currentHealth) / hp.maxHealth < 0.65f)
+                    if ((float)(hp.currentHealth) / hp.maxHealth < 0.75f)
                     {
                         enraged = true;
                     }
