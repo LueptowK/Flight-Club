@@ -153,7 +153,7 @@ public class BossMover : Mover {
                 else
                 {
 
-                    if ((float)(hp.currentHealth) / hp.maxHealth < 0.75f)
+                    if ((float)(hp.currentHealth) / hp.maxHealth < 0.65f)
                     {
                         enraged = true;
                     }
@@ -194,6 +194,6 @@ public class BossMover : Mover {
     {
         GameObject jumpy = Instantiate(jumper);
         jumpy.transform.position = spawner.transform.position;
-        spawnCD = 60 + hp.currentHealth * 2;
+        spawnCD = 150 + hp.currentHealth * 4;
     }
 }

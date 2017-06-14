@@ -88,26 +88,29 @@ public class HitboxProperties : MonoBehaviour
         }
         else if (playerCol.CompareTag("Boss"))
         {
-            if (transform.parent.parent.localScale.y < 0)
+            if (atk.isActive)
             {
-                knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * -transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * -transform.up.y);
+                if (transform.parent.parent.localScale.y < 0)
+                {
+                    knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * -transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * -transform.up.y);
 
+                }
+                else
+                {
+                    knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * transform.up.y);
+                }
+                if (transform.parent.tag == "Finisher")
+                {
+                    int str = transform.parent.GetComponent<AttackActive>().comboStrength;
+                    float strength = str / 5f * 4f * .8f;
+                    playerCol.GetComponent<BossMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength * finisherBossReduction));
+                }
+                else
+                {
+                    playerCol.GetComponent<BossMover>().getHit(knockback, hitlag, hitstun, damage);
+                }
+                atk.addHit(playerCol.gameObject, hitlag);
             }
-            else
-            {
-                knockback = new Vector2(hitboxVector.x * transform.right.x + hitboxVector.y * transform.up.x, hitboxVector.x * transform.right.y + hitboxVector.y * transform.up.y);
-            }
-            if (transform.parent.tag == "Finisher")
-            {
-                int str = transform.parent.GetComponent<AttackActive>().comboStrength;
-                float strength = str / 5f * 4f * .8f;
-                playerCol.GetComponent<BossMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength * finisherBossReduction));
-            }
-            else
-            {
-                playerCol.GetComponent<BossMover>().getHit(knockback, hitlag, hitstun, damage);
-            }
-            atk.addHit(playerCol.gameObject, hitlag);
         }
         else
         {

@@ -32,8 +32,8 @@ public class CameraController : MonoBehaviour
     {
         actualPosition = transform.position;
         cam = GetComponent<Camera>();
-        aspect = cam.aspect;
-
+        
+        
         if (camBaseObj)
         {
 
@@ -60,6 +60,8 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        aspect = cam.aspect;
+        //print(aspect);
         players = GameObject.FindGameObjectsWithTag("Player");
         numPlayers = players.Length;
         MoveCamera();
@@ -122,7 +124,6 @@ public class CameraController : MonoBehaviour
         {
             size = minCamZoom;
         }
-
         
         Vector3 desiredCenter= new Vector3(middle.x, middle.y + Bottom, this.transform.position.z);
         actualPosition = Vector3.Lerp(desiredCenter, actualPosition, PanSmoothing);
@@ -138,8 +139,9 @@ public class CameraController : MonoBehaviour
             
             if (size> maxCamSoftZoom)
             {
-               bonus*=(size - maxCamSoftZoom)/maxCamSoftZoom;
+               bonus=bonus-bonus*((size - maxCamSoftZoom)/maxCamSoftZoom);
             }
+            
             bonus += 1;
             size *= bonus;
             
