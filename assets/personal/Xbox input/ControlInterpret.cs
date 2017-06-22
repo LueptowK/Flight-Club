@@ -191,7 +191,7 @@ public class ControlInterpret : Interpreter {
             ShootDown = 0;
         }
         Quads.RemoveAt(1);
-        Quads.Insert(0, AttackQuad);
+        Quads.Insert(0, AQuad);
 
     }
     void Update()
@@ -346,13 +346,21 @@ public class ControlInterpret : Interpreter {
             return StickFixer.fixStick(new Vector2(control.AtkHor, control.AtkVer), AxisAdjust);
         }
     }
+    StickQuadrant AQuad
+    {
+        get
+        {
+            return getQuad(AttackStick);
+        }
+    }
     public override StickQuadrant AttackQuad
     {
         get
         {
             //print("get");
-            return getQuad( AttackStick);
-           
+            return Quads[0];
+            
+
         }
     }
     public override bool Attack{
