@@ -233,9 +233,17 @@ public class PlayerAnimator : MonoBehaviour {
     public void ReadState()
     {
         PlayerMover.StatePair c = pm.currentState;
-        if (c.state == PlayerMover.PState.Ground)
+        if (c.state == PlayerMover.PState.Free)
         {
-            ani.SetInteger("State", (int)AnimationState.Ground);
+            if (pm.grounded)
+            {
+                ani.SetInteger("State", (int)AnimationState.Ground);
+            }
+            else
+            {
+                ani.SetInteger("State", (int)AnimationState.Air);
+            }
+            
         }
         else if (c.state == PlayerMover.PState.Delay)
         {
@@ -267,10 +275,6 @@ public class PlayerAnimator : MonoBehaviour {
             {
                 ani.SetInteger("State", (int)AnimationState.Unknown);
             }
-        }
-        else if (c.state == PlayerMover.PState.Air)
-        {
-            ani.SetInteger("State", (int)AnimationState.Air);
         }
         else if (c.state == PlayerMover.PState.CeilingHold)
         {

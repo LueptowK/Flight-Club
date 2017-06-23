@@ -37,8 +37,7 @@ public class PlayerMover : Mover {
 
     public enum PState
     {
-        Air,
-        Ground,
+        Free,
         Dash,
         Stall,
         Hitstun,
@@ -93,7 +92,7 @@ public class PlayerMover : Mover {
         }
     }
 
-    StatePair current = new StatePair(PState.Air, 0);
+    StatePair current = new StatePair(PState.Free, 0);
     Queue<StatePair> states = new Queue<StatePair>();
 
     Vector2 dashVel = Vector2.zero;
@@ -231,168 +230,165 @@ public class PlayerMover : Mover {
             Vector2 vel;
             switch (current.state)
             {
-                #region Ground State
-                case PState.Ground:
-                    {
-                        desired.x = move.x * moveSpeed;
-                        desired.y = rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime;
-                        //flip sprite direction to movement direction on ground
-                        if (desired.x < 0) { FacingLeft = true; }
-                        else if (desired.x > 0) { FacingLeft = false; }
-                        falling = false;
-
-                        restoreTools();
-                        changeLayer(ci.move);
-                        if (ci.Jump)
-                        {
-                            states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
-                        }
-                        if (ci.move.y >= 0)
-                        {
-                            tryDash();
-                        }
-                        if (states.Count < 1)
-                        {
-                            if (!tryAttack())
-                            {
-                                if (!tryFinisher())
-                                {
-                                    tryShoot();
-                                }
-                            }
-                        }
-                        if (ci.TauntDown && desired.x == 0)
-                        {
-                            pani.TauntD();
-
-                            states.Enqueue(new StatePair(PState.Delay, 45));
-                        }
-                        tryDodge();
-                        if (nearWall)
-                        {
-                            if ((desired.x > 0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
-                            {
-                                desired.x = 0;
-                            }
-                        }
-                        if (!grounded)
-                        {
-                            states.Enqueue(new StatePair(PState.Air, 0));
-                            break;
-                        }
-
-                        rb.velocity = desired;
-                        break;
-                    }
-                #endregion
-                #region Air State
-                case PState.Air:
+                #region Free State
+                case PState.Free:
                     {
                         if (grounded)
                         {
-                            states.Enqueue(new StatePair(PState.Ground, 0));
-                        }
-                        desired = AirControl(move);
-                        if (!tryDash())
-                        {
-                            tryStall();
-                        }
-                        if (states.Count < 1)
-                        {
-                            if (!tryAttack())
-                            {
-                                if (!tryFinisher())
-                                {
-                                    tryShoot();
-                                }
-                            }
-                        }
-
-
-                        if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
-                        {
-                            falling = true;
-                        }
-                        #region wall
-                        if (nearWall) //WALL - NEAR
-                        {
+                            #region ground
+                            desired.x = move.x * moveSpeed;
+                            desired.y = rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime;
+                            //flip sprite direction to movement direction on ground
+                            if (desired.x < 0) { FacingLeft = true; }
+                            else if (desired.x > 0) { FacingLeft = false; }
+                            falling = false;
 
                             restoreTools();
-
-                            if (onWall) //WALL - HANG
+                            changeLayer(ci.move);
+                            if (ci.Jump)
                             {
-                                falling = false;
-                                desired.y += applyFriction(rb.velocity.y);
-
-
-                                if (rb.velocity.y < -3)
+                                states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
+                            }
+                            if (ci.move.y >= 0)
+                            {
+                                tryDash();
+                            }
+                            if (states.Count < 1)
+                            {
+                                if (!tryAttack())
                                 {
-                                    rb.velocity = new Vector2(0, -3);
+                                    if (!tryFinisher())
+                                    {
+                                        tryShoot();
+                                    }
                                 }
+                            }
+                            if (ci.TauntDown && desired.x == 0)
+                            {
+                                pani.TauntD();
 
-
-
-                                if (OnRightWall)
+                                states.Enqueue(new StatePair(PState.Delay, 45));
+                            }
+                            tryDodge();
+                            if (nearWall)
+                            {
+                                if ((desired.x > 0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
                                 {
-                                    FacingLeft = false;
-                                    RaycastHit2D r = wallCast(false);
-                                    transform.position = new Vector3(r.point.x - col.bounds.extents.x, transform.position.y, 0);
-                                    rb.velocity = new Vector2(0, rb.velocity.y);
+                                    desired.x = 0;
                                 }
-                                else
-                                {
-                                    RaycastHit2D r = wallCast(true);
-                                    transform.position = new Vector3(r.point.x + col.bounds.extents.x, transform.position.y, 0);
-                                    rb.velocity = new Vector2(0, rb.velocity.y);
-                                    FacingLeft = true;
-                                }
-
-
-                                //tempGrav = 0.3f;
                             }
 
 
-
-                            if (ci.Jump) // WALLJUMP
+                            rb.velocity = desired;
+                            break;
+                            #endregion
+                        }
+                        else
+                        {
+                            #region air
+                            desired = AirControl(move);
+                            if (!tryDash())
                             {
-                                falling = false;
-                                rb.velocity = Vector2.zero;
-
-                                pani.jump();
-
-
-
-                                if (OnRightWall)
+                                tryStall();
+                            }
+                            if (states.Count < 1)
+                            {
+                                if (!tryAttack())
                                 {
-                                    desired = new Vector2(-wallJumpXVel, wallJumpYVel);
-                                    FacingLeft = true;
-                                }
-                                else
-                                {
-                                    desired = new Vector2(wallJumpXVel, wallJumpYVel);
-                                    FacingLeft = false;
+                                    if (!tryFinisher())
+                                    {
+                                        tryShoot();
+                                    }
                                 }
                             }
 
+
+                            if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
+                            {
+                                falling = true;
+                            }
+                            #region wall
+                            if (nearWall) //WALL - NEAR
+                            {
+
+                                restoreTools();
+
+                                if (onWall) //WALL - HANG
+                                {
+                                    falling = false;
+                                    desired.y += applyFriction(rb.velocity.y);
+
+
+                                    if (rb.velocity.y < -3)
+                                    {
+                                        rb.velocity = new Vector2(0, -3);
+                                    }
+
+
+
+                                    if (OnRightWall)
+                                    {
+                                        FacingLeft = false;
+                                        RaycastHit2D r = wallCast(false);
+                                        transform.position = new Vector3(r.point.x - col.bounds.extents.x, transform.position.y, 0);
+                                        rb.velocity = new Vector2(0, rb.velocity.y);
+                                    }
+                                    else
+                                    {
+                                        RaycastHit2D r = wallCast(true);
+                                        transform.position = new Vector3(r.point.x + col.bounds.extents.x, transform.position.y, 0);
+                                        rb.velocity = new Vector2(0, rb.velocity.y);
+                                        FacingLeft = true;
+                                    }
+
+
+                                    //tempGrav = 0.3f;
+                                }
+
+
+
+                                if (ci.Jump) // WALLJUMP
+                                {
+                                    falling = false;
+                                    rb.velocity = Vector2.zero;
+
+                                    pani.jump();
+
+
+
+                                    if (OnRightWall)
+                                    {
+                                        desired = new Vector2(-wallJumpXVel, wallJumpYVel);
+                                        FacingLeft = true;
+                                    }
+                                    else
+                                    {
+                                        desired = new Vector2(wallJumpXVel, wallJumpYVel);
+                                        FacingLeft = false;
+                                    }
+                                }
+
+                            }
+                            #endregion
+                            else if (onCeiling && ci.move.y > 0 && ceilingAvaliable)
+                            {
+                                states.Enqueue(new StatePair(PState.CeilingHold, 30));
+                                ceilingAvaliable = false;
+                                dashesAvailable = maxDashes;
+                            }
+
+
+                        }
+                        if (falling)
+                        {
+                            tempGrav *= 5;
+                        }
+                        rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+                        if (rb.velocity.y < -maxFallSpeed)
+                        {
+                            rb.velocity = desired + new Vector2(0, -maxFallSpeed);
                         }
                         #endregion
-                        else if (onCeiling && ci.move.y > 0 && ceilingAvaliable)
-                        {
-                            states.Enqueue(new StatePair(PState.CeilingHold, 30));
-                            ceilingAvaliable = false;
-                            dashesAvailable = maxDashes;
-                        }
-
-
-                    }
-                    if (falling)
-                    {
-                        tempGrav *= 5;
-                    }
-                    rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
-                    if (rb.velocity.y < -maxFallSpeed)
-                    {
-                        rb.velocity = desired + new Vector2(0, -maxFallSpeed);
                     }
                     break;
                 #endregion
@@ -508,7 +504,7 @@ public class PlayerMover : Mover {
                     if (ci.Jump)
                     {
                         rb.velocity += new Vector2(0, -maxFallSpeed);
-                        states.Enqueue(new StatePair(PState.Air, 0));
+                        states.Enqueue(new StatePair(PState.Free, 0));
                     }
                     if (states.Count < 1)
                     {
@@ -519,7 +515,7 @@ public class PlayerMover : Mover {
                     }
                     if ((states.Count < 1 && ci.move.y < 0) || !onCeiling)
                     {
-                        states.Enqueue(new StatePair(PState.Air, 0));
+                        states.Enqueue(new StatePair(PState.Free, 0));
                     }
 
                     if (states.Count > 0)
@@ -1222,19 +1218,16 @@ public class PlayerMover : Mover {
             {
                 pani.StateChange(false);
             }
-            else if ((current.state != PState.Ground) && (current.state != PState.Air))
+            else if ((current.state != PState.Free))
             {
+                current = new StatePair(PState.Free, 0);
                 if (grounded)
                 {
-                    current = new StatePair(PState.Ground, 0);
                     alignGround();
                     rb.velocity = new Vector2(rb.velocity.x, 0);
 
                 }
-                else
-                {
-                    current = new StatePair(PState.Air, 0);
-                }
+                
                 pani.StateChange(true);
             }
             else
@@ -1273,7 +1266,7 @@ public class PlayerMover : Mover {
                     
                     if (!calcDashVel())
                     {
-                        current = new StatePair(PState.Air, 0);
+                        current = new StatePair(PState.Free, 0);
                     }
                     break;
                 case PState.CeilingHold:
@@ -1316,14 +1309,15 @@ public class PlayerMover : Mover {
         }
         else
         {
-            if (grounded)
-            {
-                states.Enqueue(new StatePair(PState.Ground, 0));
-            }
-            else
-            {
-                states.Enqueue(new StatePair(PState.Air, 0));
-            }
+            //if (grounded)
+            //{
+            //    states.Enqueue(new StatePair(PState.Ground, 0));
+            //}
+            //else
+            //{
+            //    states.Enqueue(new StatePair(PState.Air, 0));
+            //}
+            states.Enqueue(new StatePair(PState.Free, 0));
         }
         
     }
@@ -1492,7 +1486,7 @@ public class PlayerMover : Mover {
         states = new Queue<StatePair>();
         health.currentHealth = health.maxHealth;
         dead = false;
-        current = new StatePair(PState.Air, 1);
+        current = new StatePair(PState.Free, 1);
     }
 
     public void pause(bool pausing)
