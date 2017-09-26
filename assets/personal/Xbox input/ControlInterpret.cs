@@ -140,7 +140,7 @@ public class ControlInterpret : Interpreter {
         inputHistory.Insert(0, i);
         #endregion
 
-        if (control.Jump > 0.55f)
+        if (control.Jump > 0.55f || control.MoveVer > 0.55f)
         {
             JumpDown += 1;
         }
