@@ -29,6 +29,10 @@ public abstract class Interpreter : MonoBehaviour {
     {
         get;
         }
+    public abstract bool TapJump
+    {
+        get;
+        }
     public abstract bool Dash
     {
         get;

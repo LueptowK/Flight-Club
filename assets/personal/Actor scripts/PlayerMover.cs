@@ -245,7 +245,7 @@ public class PlayerMover : Mover {
 
                             restoreTools();
                             changeLayer(ci.move);
-                            if (ci.Jump)
+                            if (ci.Jump || ci.TapJump)
                             {
                                 states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
                             }

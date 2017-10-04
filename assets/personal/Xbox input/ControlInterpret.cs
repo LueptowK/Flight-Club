@@ -7,6 +7,7 @@ public class ControlInterpret : Interpreter {
 
     private PlayerInput control;
     private int JumpDown;
+    private int JumpTap;
     private int DashDown;
     private int AttackDown;
     private int SlashDown;
@@ -148,6 +149,15 @@ public class ControlInterpret : Interpreter {
         {
             JumpDown = 0;
         }
+
+        if (control.MoveVer > 0.55f)
+        {
+            JumpTap += 1;
+        }
+        else
+        {
+            JumpTap = 0;
+        }
         //print(JumpDown);
         if (control.Dash > 0.55f)
         {
@@ -254,6 +264,17 @@ public class ControlInterpret : Interpreter {
         get
         {
             if (JumpDown == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+    public override bool TapJump
+    {
+        get
+        {
+            if (JumpTap == 1)
             {
                 return true;
             }
