@@ -74,6 +74,14 @@ public class AIInterpreter : Interpreter
         }
     }
 
+    public override bool TapJump
+    {
+        get
+        {
+            return false;
+        }
+    }
+
     public override Vector2 move
     {
         get
