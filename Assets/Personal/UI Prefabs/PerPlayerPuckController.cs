@@ -68,6 +68,7 @@ public class PerPlayerPuckController : MonoBehaviour
                 else if (selected.name == "space")
                 {
                     nameTag.text += " ";
+                    aPressCooldown = 30;
                 }
                 else if (selected.name == "123")
                 {
