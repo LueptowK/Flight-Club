@@ -129,6 +129,8 @@ public class PlayerMover : Mover {
     float ceilingBooster = 0f;
     bool hittingLag = false;
     Vector2 hittingLagVel;
+    Vector3 actualPosition;
+    float hitlagShake = 0.5f;
 
 
     Vector2 resumeVelocity;
@@ -447,6 +449,7 @@ public class PlayerMover : Mover {
                             break;
                         case ExecState.hitLag:
                             rb.velocity = Vector2.zero;
+                            transform.position = actualPosition + new Vector3(UnityEngine.Random.Range(-hitlagShake, hitlagShake), UnityEngine.Random.Range(-hitlagShake, hitlagShake), 0);
                             break;
                         case ExecState.mapStart:
                             rb.velocity = new Vector2(0, rb.velocity.y - 9.8f * Time.fixedDeltaTime);
@@ -737,6 +740,7 @@ public class PlayerMover : Mover {
                         {
                             calculateDI();
                         }
+                        transform.position = actualPosition;
                         rb.velocity = hitVector;
                         break;
                     case ExecState.Death:
@@ -906,6 +910,7 @@ public class PlayerMover : Mover {
             states.Enqueue(new StatePair(PState.Burnout, Mathf.Max(40, hitStun))); 
             iframes.SetFrames(Mathf.Max(90, hitStun) + 25);
         }
+        actualPosition = transform.position;
         cam.screenShake = (float)damage;
     }
 
