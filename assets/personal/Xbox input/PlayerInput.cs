@@ -8,8 +8,14 @@ public class PlayerInput : MonoBehaviour {
 
     private GamePadState state;
     
+    void Start()
+    {
+        state = GamePad.GetState((PlayerIndex)PlayerNumber);
+        
+    }
     void FixedUpdate()
     {
+        
         state = GamePad.GetState((PlayerIndex)PlayerNumber);
     }
     void Update()
@@ -77,6 +83,7 @@ public class PlayerInput : MonoBehaviour {
     {
         get
         {
+           
             return state.DPad.Down==ButtonState.Pressed;
         }
     }

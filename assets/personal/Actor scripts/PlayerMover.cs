@@ -1243,7 +1243,7 @@ public class PlayerMover : Mover {
         else
         {
             current = states.Dequeue();
-
+            //print(current.action);
             int frames;
             switch (current.state)
             {
