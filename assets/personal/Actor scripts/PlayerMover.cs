@@ -130,7 +130,7 @@ public class PlayerMover : Mover {
     bool hittingLag = false;
     Vector2 hittingLagVel;
     Vector3 actualPosition;
-    float hitlagShake = 0.5f;
+    float hitlagShake = 0.2f;
 
 
     Vector2 resumeVelocity;
