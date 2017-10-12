@@ -20,7 +20,7 @@ public class AttackActive : Attack {
     List<List<GameObject>> frameByFrame;
 
     int currentHitlag=0;
-
+    int grabHitlagPending = 0;
     [HideInInspector]
     public int comboStrength = 0;
 
@@ -185,8 +185,17 @@ public class AttackActive : Attack {
                 {
                     g.GetComponent<PlayerMover>().grabFin();
                 }
+                
             }
         }
+        if (alreadyHit.Count > 1)
+        {
+            currentHitlag = grabHitlagPending;
+            mngr.lag(true);
+        }
+        
+            
+        
     }
     public void windDown()
     {
@@ -213,10 +222,18 @@ public class AttackActive : Attack {
         }
         
 
-        if(type!= AttackManager.AtkType.Finisher && hitLag>0)
+        if(type!= AttackManager.AtkType.Finisher && hitLag>0 /*<- safety*/)
         {
-            currentHitlag = hitLag;
-            mngr.lag(true);
+            if (isGrab)
+            {
+
+                grabHitlagPending = hitLag;
+            }
+            else {
+                currentHitlag = hitLag;
+                mngr.lag(true);
+            }
+            
         }
 
     }

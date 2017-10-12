@@ -140,6 +140,7 @@ public class PlayerMover : Mover {
 
     int grabDamage;
     int grabHitstun;
+    int grabHitlag;
     Attack grabAtk;
     Vector3 grabDif;
 
@@ -842,7 +843,7 @@ public class PlayerMover : Mover {
     public void grabFin()
     {
         
-        takeDamage(grabDamage, 0, grabHitstun);
+        takeDamage(grabDamage, grabHitlag, grabHitstun);
     }
     public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage)
     {
@@ -873,6 +874,7 @@ public class PlayerMover : Mover {
                     grabDamage = damage;
                     grabAtk = a;
                     grabHitstun = hitStun;
+                    grabHitlag = hitLag;
                     //grabDif = transform.position - a.transform.position;
                     //grabDif = a.transform.up * 1f;
                     grabDif = Vector2.zero;
