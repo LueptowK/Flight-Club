@@ -12,7 +12,6 @@ public class PerPlayerPuckController : MonoBehaviour
     public GameObject selected;
     public GameObject nameBox;
     public GameObject keyboard;
-    public GameObject keyboardUI;
     public GameObject nameString;
     private string name = "";
     private string lastKey = "";
@@ -60,12 +59,12 @@ public class PerPlayerPuckController : MonoBehaviour
         {
             if (keyboardActive && selected.transform.parent.gameObject == keyboard && g.Buttons.A == ButtonState.Pressed)
             {
-                if (selected.name == "DEL" && nameTag.text.Length > 0 && aPressCooldown < 15)
+                if (selected.name == "DEL" && nameTag.text.Length > 0 && aPressCooldown < 20)
                 {
                     nameTag.text = nameTag.text.Substring(0, (nameTag.text.Length - 1));
                     aPressCooldown = 30;
                 }
-                else if (selected.name == "space")
+                else if (selected.name == "space" && aPressCooldown < 15 && nameTag.text.Length < 6)
                 {
                     nameTag.text += " ";
                     aPressCooldown = 30;
@@ -193,7 +192,6 @@ public class PerPlayerPuckController : MonoBehaviour
     public void setKeyboardActive(bool active)
     {
         keyboard.SetActive(active);
-        keyboardUI.SetActive(active);
         keyboardActive = active;
     }
 
