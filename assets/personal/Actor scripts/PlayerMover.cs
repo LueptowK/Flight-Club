@@ -613,6 +613,13 @@ public class PlayerMover : Mover {
                         }
                         
                     }
+                    else
+                    {
+                        if (ci.Stall)
+                        {
+                            hittingLagVel = Vector2.zero;
+                        }
+                    }
                     break;
                 #endregion
                 #region GroundAttack State
@@ -1527,7 +1534,14 @@ public class PlayerMover : Mover {
     {
         if (isHitting)
         {
-            hittingLagVel = rb.velocity;
+            if (ci.Stall)
+            {
+                hittingLagVel = Vector2.zero;
+            }
+            else
+            {
+                hittingLagVel = rb.velocity;
+            }
             rb.velocity = Vector2.zero;
             hittingLag = true;
         }
