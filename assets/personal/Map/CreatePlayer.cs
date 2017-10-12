@@ -15,10 +15,7 @@ public class CreatePlayer : MonoBehaviour
     public GameObject portraitSlot2;
     public GameObject portraitSlot3;
     public GameObject portraitSlot4;
-    public GameObject[] keyboards;
-    public GameObject[] keyboardsUI;
     public GameObject[] nametags;
-    private string[] names = new string[4];
     private Shader shaderGUItext;
     private Shader shaderSpritesDefault;
     private playerColor[][] Colors = new playerColor[2][];
