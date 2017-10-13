@@ -82,11 +82,13 @@ public class PerPlayerPuckController : MonoBehaviour
                     if(nameTag.text != "")
                     {
                         name = nameTag.text;
+                        creator.assignName(playerNum, name);
                     }
                     else
                     {
                         nameTag.text = "Player " + (playerNum + 1).ToString();
                         name = "";
+                        creator.assignName(playerNum, null);
                     }
                     setKeyboardActive(false);
                 }
@@ -94,6 +96,7 @@ public class PerPlayerPuckController : MonoBehaviour
                 {
                     nameTag.text = "Player " + (playerNum+1).ToString();
                     name = "";
+                    creator.assignName(playerNum, null);
                     setKeyboardActive(false);
                 }
                 else

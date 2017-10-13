@@ -44,7 +44,7 @@ public class MapManager : Manager {
             player.GetComponent<PlayerMover>().mapStart();
         }
 
-        c = ((Canvas)FindObjectOfType(typeof(Canvas)));
+        c = GameObject.Find("UI").GetComponent<Canvas>();
         c.transform.Find("3").gameObject.SetActive(true);
         c.transform.Find("HealthUI").gameObject.SetActive(true);
 

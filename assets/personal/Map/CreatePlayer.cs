@@ -24,6 +24,7 @@ public class CreatePlayer : MonoBehaviour
     playerColor[] waltColors;
     playerInfo[] players;
     GameObject[] CharSelectPortraits;
+    private string[] names;
 
     int numCharacters;
     
@@ -60,6 +61,7 @@ public class CreatePlayer : MonoBehaviour
             Destroy(gameObject);
         }
 
+        names = new string[4];
         keithColors = new playerColor[6];
         keithColors[0] = new playerColor(Color.white);
         keithColors[1] = new playerColor(new Color(1f,.2f,.2f,1f));
@@ -88,6 +90,11 @@ public class CreatePlayer : MonoBehaviour
 
         active = new bool[4];
         players = new playerInfo[4];
+    }
+
+    public void assignName(int player, string name)
+    {
+        names[player] = name;
     }
 
     public void changeColor(int player, bool inArray)
@@ -250,6 +257,16 @@ public class CreatePlayer : MonoBehaviour
                 DontDestroyOnLoad(p);
                 p.GetComponent<ComboCounter>().reset();
                 p.GetComponent<SpriteRenderer>().enabled = false;
+
+                if (names[j] != null)
+                {
+                    p.GetComponentInChildren<Text>().text = names[j];
+                    //p.GetComponent<Canvas>().GetComponent<Text>().text = names[j];
+                }
+                else
+                {
+                    p.GetComponentInChildren<Canvas>().gameObject.SetActive(false);
+                }
             }
         }
     }
@@ -264,7 +281,7 @@ public class CreatePlayer : MonoBehaviour
 
     public void reset()
     {
-        Canvas = GameObject.Find("Canvas");
+        Canvas = GameObject.Find("UI");
         portraitSlot1 = GameObject.Find("CharSelectPlayer");
         portraitSlot2 = GameObject.Find("CharSelectPlayer (1)");
         portraitSlot3 = GameObject.Find("CharSelectPlayer (2)");
