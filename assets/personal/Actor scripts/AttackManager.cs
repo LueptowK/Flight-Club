@@ -90,7 +90,7 @@ public class AttackManager : MonoBehaviour {
             a += 180;
         }
         rot = Quaternion.Euler(0, a, 0);
-        GameObject m = Instantiate(RangedAttack, GetComponent<PlayerAnimator>().ShootPos(backwards), rot);
+        GameObject m = Instantiate(RangedAttack, ShootPos(backwards), rot);
         Projectile p = m.GetComponent<Projectile>();
         m.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
         p.hitPlayers.Add(gameObject);
@@ -101,6 +101,20 @@ public class AttackManager : MonoBehaviour {
             combo.resetComboTime();
         }
         
+    }
+
+    Vector3 ShootPos(bool backwards)
+    {
+        Vector3 xComp = transform.right;
+        float mod = GetComponent<PlayerAnimator>().playerScale * 0.5f;
+        Vector3 offset = Vector3.zero;
+        if (backwards)
+        {
+            xComp *= -1;
+        }
+        offset = xComp + Vector3.up;
+        print(offset);
+        return transform.position + offset * mod;
     }
     public void updateLastAttack(AtkType t)
     {

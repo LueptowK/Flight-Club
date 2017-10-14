@@ -684,7 +684,7 @@ public class PlayerMover : Mover {
                     vel.y += -gravity * 9.8f * Time.fixedDeltaTime;
                     rb.velocity = vel;
 
-                    if (current.action == ExecState.Shoot)
+                    if (current.action == ExecState.Shoot&& current.delay!=1)
                     {
                         if (ci.move.x < 0) { FacingLeft = true; }
                         else if (ci.move.x > 0) { FacingLeft = false; }

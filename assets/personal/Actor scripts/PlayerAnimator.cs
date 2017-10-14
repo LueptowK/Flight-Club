@@ -27,23 +27,7 @@ public class PlayerAnimator : MonoBehaviour {
         transform.localScale = realScale;
 
     }
-    public Vector3 ShootPos(bool backwards)
-    {
-        Vector3 xComp = transform.right * playerScale * 0.5f;
-        if (backwards)
-        {
-            xComp *= -1;
-        }
-        if (pm.FacingLeft)
-        {
-            return transform.position + xComp + -transform.up * playerScale * 0.5f;
-        }
-        else
-        {
-            return transform.position + xComp + transform.up * playerScale * 0.5f;
-        }
-            
-    }
+    
     // Update is called once per frame
     float animSpd = 0.2f;
     private AnimatorStateInfo currentBaseState;
