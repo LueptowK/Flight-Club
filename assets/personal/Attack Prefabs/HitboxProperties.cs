@@ -133,7 +133,16 @@ public class HitboxProperties : MonoBehaviour
             }
             else
             {
-                playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage, atk);
+                if (gameObject.GetComponentInParent<AttackManager>().gameObject.GetComponent<PlayerMover>().isPhase2())
+                {
+                    playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage/2, atk);
+                    gameObject.GetComponentInParent<AttackManager>().gameObject.GetComponentInParent<PlayerHealth>().charge(damage/2);
+                }
+                else
+                {
+                    playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage, atk);
+
+                }
             }
             
             

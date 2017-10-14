@@ -12,6 +12,8 @@ public class PlayerHealth : Health {
     public Image shieldImg;
     public float recharge;
     bool recharging;
+    public int segments = 2;
+    int currentSegment;
 
     public float outOfCombat = -1;
     float lastHit =0;
@@ -27,6 +29,7 @@ public class PlayerHealth : Health {
         currentShield = maxShield;
         //pm = (PlayerMover)mover;
         pm = (PlayerMover)mover;
+        currentSegment = 1;
         
     }
     void FixedUpdate()
@@ -55,13 +58,13 @@ public class PlayerHealth : Health {
             setShield();
         }
     }
-    public void charge(float percent)
+    public void charge(int charge) //previously a percentage
     {
 
         if (recharging && maxShield > 0)
         {
 
-            currentShield += maxShield*percent;
+            currentShield += charge;
             if (currentShield >= maxShield)
             {
                 currentShield = maxShield;
@@ -103,6 +106,17 @@ public class PlayerHealth : Health {
         else
         {
             currentHealth -= damage;
+            if ((currentHealth <= (maxHealth / segments)*(segments - currentSegment))&&currentHealth>0)
+            {
+                currentHealth = maxHealth / 2;
+                currentShield = maxShield;
+                recharging = false;
+                //TRANSITION -- FALSE
+                shieldImg.transform.SetAsLastSibling();
+                pm.phaseUp();
+                setShield();
+                currentSegment++;
+            }
             img.fillAmount = (float)currentHealth / maxHealth;
             return 0;
         }

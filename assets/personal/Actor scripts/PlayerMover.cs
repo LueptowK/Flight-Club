@@ -858,7 +858,7 @@ public class PlayerMover : Mover {
             if(current.state== PState.Parry&& (!a || a.tag!= "Finisher"))
             {
                 iframes.SetFrames(60);
-                ((PlayerHealth)health).charge(0.15f);
+                //((PlayerHealth)health).charge(0.15f);
             }
             else
             {
@@ -1035,13 +1035,13 @@ public class PlayerMover : Mover {
         if (ci.Attack)
         {
             attkQuad = ci.AttackQuad;
-            if (phase2)
-            {
-                if(attkQuad!= ControlInterpret.StickQuadrant.Neutral || grounded)
-                {
-                    return false;
-                }
-            }
+            //if (phase2)
+            //{
+            //    if(attkQuad!= ControlInterpret.StickQuadrant.Neutral || grounded)
+            //    {
+            //        return false;
+            //    }
+            //}
             states.Enqueue(new StatePair(PState.Attack, 0));
             return true;
         }
@@ -1087,21 +1087,21 @@ public class PlayerMover : Mover {
         return false;
         */
         #endregion
-        if (ci.Dodge && states.Count < 1&& phase2)
-        {
-            states.Enqueue(new StatePair(PState.Delay, 1));
-            states.Enqueue(new StatePair(PState.Parry, 10 ));
-            states.Enqueue(new StatePair(PState.Delay, 30));
-            return true;
-        }
+        //if (ci.Dodge && states.Count < 1&& phase2)
+        //{
+        //    states.Enqueue(new StatePair(PState.Delay, 1));
+        //    states.Enqueue(new StatePair(PState.Parry, 10 ));
+        //    states.Enqueue(new StatePair(PState.Delay, 30));
+        //    return true;
+        //}
         return false;
 
     }
     bool tryShoot()
     {
-        if (ci.Shoot&&(!combo||combo.currentCombo>0)&&shootCooldownCurrent<0&&!phase2)
+        if (ci.Shoot&&!phase2)
         {
-
+            health.takeDamage(5);
             if (onWall && !grounded)
             {
                 states.Enqueue(new StatePair(PState.ShootWall, 2, ExecState.Shoot));
@@ -1563,14 +1563,14 @@ public class PlayerMover : Mover {
     public void phaseUp()
     {
         phase2 = false;
-        loadCard(cardOne);
+        //loadCard(cardOne);
         Instantiate(PhaseUpPre, transform);
         Destroy(PhaseTint);
     }
     public void phaseDown()
     {
         phase2 = true;
-        loadCard(cardTwo);
+        //loadCard(cardTwo);
         PhaseTint = Instantiate(PhaseTintPre, transform);
     }
     public bool actionable
@@ -1632,6 +1632,11 @@ public class PlayerMover : Mover {
         {
             gameObject.layer = PLAYER_LAYER;
         }
+    }
+
+    public bool isPhase2()
+    {
+        return phase2;
     }
     
 }
