@@ -123,6 +123,21 @@ public class PlayerHealth : Health {
         
         
     }
+
+    public bool drainShield(int drain)
+    {
+        if (currentShield >= drain)
+        {
+            currentShield -= drain;
+            setShield();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     new public void reset()
     {
         base.reset();

@@ -211,7 +211,7 @@ public class AttackActive : Attack {
         ComboCounter c = GetComponentInParent<ComboCounter>();
         if (c)
         {
-            if (type != AttackManager.AtkType.Finisher && !mngr.alreadyHitByType.Contains(h))
+            if (type != AttackManager.AtkType.Finisher && !mngr.alreadyHitByType.Contains(h) && !GetComponentInParent<PlayerMover>().isPhase2())
             {
                 c.incrementCombo(1);
             }

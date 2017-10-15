@@ -614,13 +614,6 @@ public class PlayerMover : Mover {
                         }
                         
                     }
-                    else
-                    {
-                        if (ci.Stall)
-                        {
-                            hittingLagVel = Vector2.zero;
-                        }
-                    }
                     break;
                 #endregion
                 #region GroundAttack State
@@ -915,15 +908,19 @@ public class PlayerMover : Mover {
         }
         else //result is 1
         {
-            states.Enqueue(new StatePair(PState.Delay, 30, ExecState.hitLag));
-            states.Enqueue(new StatePair(PState.Burnout, Mathf.Max(40, hitStun))); 
-            iframes.SetFrames(Mathf.Max(90, hitStun) + 25);
+            phaseDownState(hitStun);
         }
         actualPosition = transform.position;
         cam.screenShake = (float)damage;
     }
 
-
+    void phaseDownState(int hitStun)
+    {
+        states.Enqueue(new StatePair(PState.Delay, 30, ExecState.hitLag));
+        states.Enqueue(new StatePair(PState.Burnout, Mathf.Max(40, hitStun)));
+        iframes.SetFrames(Mathf.Max(90, hitStun) + 25);
+        combo.reset();
+    }
 
     #region try moves
     bool tryDash()
@@ -1097,23 +1094,32 @@ public class PlayerMover : Mover {
         return false;
 
     }
+
+    bool trySpecialDamage(int damage)
+    {
+        return ((PlayerHealth)health).drainShield(damage);
+    }
+
     bool tryShoot()
     {
-        if (ci.Shoot&&!phase2)
+        if (ci.Shoot&&!phase2&&shootCooldownCurrent<=0)
         {
-            health.takeDamage(5);
-            if (onWall && !grounded)
+            if (trySpecialDamage(5))
             {
-                states.Enqueue(new StatePair(PState.ShootWall, 2, ExecState.Shoot));
-                states.Enqueue(new StatePair(PState.ShootWall, 5));
-            }
-            else
-            {
-                states.Enqueue(new StatePair(PState.Shoot, 2, ExecState.Shoot));
-                states.Enqueue(new StatePair(PState.Shoot, 5));
-            }
+                if (onWall && !grounded)
+                {
+                    states.Enqueue(new StatePair(PState.ShootWall, 2, ExecState.Shoot));
+                    states.Enqueue(new StatePair(PState.ShootWall, 5));
+                }
+                else
+                {
+                    states.Enqueue(new StatePair(PState.Shoot, 2, ExecState.Shoot));
+                    states.Enqueue(new StatePair(PState.Shoot, 5));
+                }
 
-            shootCooldownCurrent = shootCooldown;
+                shootCooldownCurrent = shootCooldown;
+            }
+            
 
 
 
@@ -1536,7 +1542,7 @@ public class PlayerMover : Mover {
     {
         if (isHitting)
         {
-            if (ci.Stall)
+            if (ci.Stall && !phase2 && trySpecialDamage(2))
             {
                 hittingLagVel = Vector2.zero;
             }
@@ -1565,6 +1571,7 @@ public class PlayerMover : Mover {
         phase2 = false;
         //loadCard(cardOne);
         Instantiate(PhaseUpPre, transform);
+        loadCard(cardOne);
         Destroy(PhaseTint);
     }
     public void phaseDown()
@@ -1572,6 +1579,7 @@ public class PlayerMover : Mover {
         phase2 = true;
         //loadCard(cardTwo);
         PhaseTint = Instantiate(PhaseTintPre, transform);
+        //maxDashes = 0;
     }
     public bool actionable
     {

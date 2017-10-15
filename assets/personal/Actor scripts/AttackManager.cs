@@ -95,11 +95,11 @@ public class AttackManager : MonoBehaviour {
         m.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
         p.hitPlayers.Add(gameObject);
         p.setMngr(this);
-        if (combo)
-        {
-            combo.incrementCombo(-1);
-            combo.resetComboTime();
-        }
+        //if (combo)
+        //{
+        //    combo.incrementCombo(-1);
+        //    combo.resetComboTime();
+        //}
         
     }
 
@@ -113,7 +113,6 @@ public class AttackManager : MonoBehaviour {
             xComp *= -1;
         }
         offset = xComp + Vector3.up;
-        print(offset);
         return transform.position + offset * mod;
     }
     public void updateLastAttack(AtkType t)
