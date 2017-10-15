@@ -110,7 +110,7 @@ public class CreatePlayerOld : MonoBehaviour {
                         //reset(players[i]);
                     }
                 }
-                Destroy(Canvas.transform.FindChild("TutorialText").gameObject);
+                Destroy(Canvas.transform.Find("TutorialText").gameObject);
                 SceneManager.LoadScene(2); //UPDATE TO MAP SELECT SCREEN WHEN THAT EXISTS
             }
 

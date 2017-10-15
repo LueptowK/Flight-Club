@@ -229,6 +229,10 @@ public class PlayerMover : Mover {
                     nextState();
                     safety--;
                 }
+                if(current.action== ExecState.Grabbed)
+                {
+                    registerHit = false;
+                }
             }
             Vector2 vel;
             switch (current.state)
@@ -594,9 +598,11 @@ public class PlayerMover : Mover {
                         if (m.use)
                         {
                             rb.velocity = m.motion;
+                            
                         }
                         else
                         {
+                            
                             desired = AirControl(move);
                             if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
                             {
@@ -628,6 +634,7 @@ public class PlayerMover : Mover {
                         }
                         else
                         {
+                            
                             rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x, 5f), rb.velocity.y);
                         }
                         
@@ -642,6 +649,7 @@ public class PlayerMover : Mover {
                 #region Finisher State
                 case PState.Finisher:
                     atk.NestedUpdate();
+                    
                     rb.velocity = atk.getMotion(ci.move).motion;
                     break;
                 #endregion

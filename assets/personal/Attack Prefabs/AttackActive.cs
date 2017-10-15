@@ -88,6 +88,7 @@ public class AttackActive : Attack {
 	public void NestedUpdate () {
         if (currentHitlag > 0)
         {
+            
             currentHitlag--;
             if (currentHitlag == 0)
             {
@@ -124,6 +125,7 @@ public class AttackActive : Attack {
                 {
                     if (isGrab)
                     {
+                        
                         grabDamage();
                     }
                     if (isBasic)
@@ -188,7 +190,7 @@ public class AttackActive : Attack {
                 
             }
         }
-        if (alreadyHit.Count > 1)
+        if (alreadyHit.Count > 1&& grabHitlagPending!=0)
         {
             currentHitlag = grabHitlagPending;
             mngr.lag(true);

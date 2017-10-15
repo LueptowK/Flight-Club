@@ -164,7 +164,7 @@ public class CreatePlayer : MonoBehaviour
             }
             else
             {
-                CharSelectPortraits[playerNum].transform.FindChild("PlayerSlotRandom").GetComponent<SpriteRenderer>().enabled = true;
+                CharSelectPortraits[playerNum].transform.Find("PlayerSlotRandom").GetComponent<SpriteRenderer>().enabled = true;
             }
             changeColor(playerNum, false);
             
@@ -188,7 +188,7 @@ public class CreatePlayer : MonoBehaviour
         }
         else
         {
-            CharSelectPortraits[playerNum].transform.FindChild("PlayerSlotRandom").GetComponent<SpriteRenderer>().enabled = false;
+            CharSelectPortraits[playerNum].transform.Find("PlayerSlotRandom").GetComponent<SpriteRenderer>().enabled = false;
         }    
 
         activeCount--;
@@ -303,7 +303,7 @@ public class CreatePlayer : MonoBehaviour
                 }
                 else
                 {
-                    CharSelectPortraits[i].transform.FindChild("PlayerSlotRandom").GetComponent<SpriteRenderer>().enabled = true;
+                    CharSelectPortraits[i].transform.Find("PlayerSlotRandom").GetComponent<SpriteRenderer>().enabled = true;
                 }
             }
         }
