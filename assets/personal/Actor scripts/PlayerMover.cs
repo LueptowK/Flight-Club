@@ -568,6 +568,11 @@ public class PlayerMover : Mover {
                     if (grounded)
                     {
                         int lag =atk.stopAttack();
+                        if (lag < 0)
+                        {
+                            lag = 0; //safety 
+                        }
+                        current.delay = 0;
                         states.Enqueue(new StatePair(PState.Delay, lag, ExecState.LandLag));
                         // vv was used for old attack states
                         // current.delay = 0;
@@ -623,6 +628,7 @@ public class PlayerMover : Mover {
                     if (!grounded)
                     {
                         int lag = atk.stopAttack();
+                        current.delay = 0;
                         states.Enqueue(new StatePair(PState.Delay, lag, ExecState.LandLag));
                     }
                     break;
@@ -713,7 +719,7 @@ public class PlayerMover : Mover {
                 current.delay -= 1;
             }
             
-            if (current.delay <= 0)
+            if (current.delay == 0)
             {
                 
                 nextState();
@@ -879,13 +885,7 @@ public class PlayerMover : Mover {
 
         if (states.Count == 0)
         {
-            if (current.delay == -1)
-            {
-
-                pani.StateChange(false);
-
-            }
-            else if ((current.state != PState.Free))
+            if ((current.state != PState.Free))
             {
                 leaveState();
                 current = new StatePair(PState.Free, 0);
@@ -1333,18 +1333,7 @@ public class PlayerMover : Mover {
         {
             states.Enqueue(new StatePair(PState.Burnout, 110));
         }
-        else
-        {
-            //if (grounded)
-            //{
-            //    states.Enqueue(new StatePair(PState.Ground, 0));
-            //}
-            //else
-            //{
-            //    states.Enqueue(new StatePair(PState.Air, 0));
-            //}
-            states.Enqueue(new StatePair(PState.Free, 0));
-        }
+        current.delay = 0;
         
     }
     void alignGround()

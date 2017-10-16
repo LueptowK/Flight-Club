@@ -106,7 +106,7 @@ public class PlayerHealth : Health {
         else
         {
             currentHealth -= damage;
-            if ((currentHealth <= (maxHealth / segments)*(segments - currentSegment))&&currentHealth>0)
+            if ((currentHealth <= (maxHealth / segments)*(segments - currentSegment))&&segments!=currentSegment)
             {
                 currentHealth = maxHealth / 2;
                 currentShield = maxShield;
