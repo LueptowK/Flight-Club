@@ -59,14 +59,9 @@ public class PlayerMover : Mover {
         None,
         Jump,
         hitLag,
-        AttackAir,
-        AttackGround,
         Death,
         Destroy,
         mapStart,
-        Dodge,
-        Flip,
-        Normal,
         Shoot,
         LandLag,
         Grabbed
@@ -228,10 +223,6 @@ public class PlayerMover : Mover {
                 {
                     nextState();
                     safety--;
-                }
-                if(current.action== ExecState.Grabbed)
-                {
-                    registerHit = false;
                 }
             }
             Vector2 vel;
@@ -443,7 +434,7 @@ public class PlayerMover : Mover {
                     switch (current.action)
                     {
                         case ExecState.Jump:
-                            rb.velocity *= 0.80f;
+                            //rb.velocity *= 0.80f;
                             if (states.Count < 1)
                             {
                                 if (!tryDash())
@@ -459,18 +450,8 @@ public class PlayerMover : Mover {
                         case ExecState.mapStart:
                             rb.velocity = new Vector2(0, rb.velocity.y - 9.8f * Time.fixedDeltaTime);
                             break;
-                        case ExecState.Flip:
-                            rb.velocity = Vector2.zero;
-                            break;
                         case ExecState.None:
                             rb.velocity = Vector2.zero;
-                            break;
-                        case ExecState.Normal:
-                            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 9.8f *tempGrav * Time.fixedDeltaTime);
-                            if (grounded)
-                            {
-                                alignGround();
-                            }
                             break;
                         case ExecState.LandLag:
                             float tempX = rb.velocity.x;
@@ -489,7 +470,7 @@ public class PlayerMover : Mover {
                            
                             if (!grabAtk)
                             {
-                                states.Enqueue(new StatePair(PState.Delay, 0, ExecState.Normal));
+                                states.Enqueue(new StatePair(PState.Free, 0));
                                 break;
                             }
                             else
@@ -657,23 +638,7 @@ public class PlayerMover : Mover {
                 case PState.Burnout:
                     rb.velocity += new Vector2(0, -gravity * 9.8f * Time.fixedDeltaTime);
                     break;
-                #endregion
-                #region Flip State
-                case PState.Flip:
-                    tempGrav *= 2f;
-                    float velx = rb.velocity.x;
-                    if (grounded)
-                    {
-                        velx = 0;
-                        alignGround();
-                        if (states.Count < 1)
-                        {
-                            tryAttack();
-                        }
-                    }
-                    rb.velocity = new Vector2(velx, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
-                    break;
-                #endregion
+                #endregion              
                 #region Shoot State
                 case PState.Shoot:
                     vel = rb.velocity;
@@ -713,6 +678,22 @@ public class PlayerMover : Mover {
                     break;
                     #endregion
 
+                #region Flip State (OLD)
+                    //case PState.Flip:
+                    //    tempGrav *= 2f;
+                    //    float velx = rb.velocity.x;
+                    //    if (grounded)
+                    //    {
+                    //        velx = 0;
+                    //        alignGround();
+                    //        if (states.Count < 1)
+                    //        {
+                    //            tryAttack();
+                    //        }
+                    //    }
+                    //    rb.velocity = new Vector2(velx, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+                    //    break;
+                    #endregion
             }
 
 
@@ -727,85 +708,14 @@ public class PlayerMover : Mover {
             }
             #endregion
 
-            current.delay -= 1;
+            if (current.delay > 0)
+            {
+                current.delay -= 1;
+            }
+            
             if (current.delay <= 0)
             {
-                #region Exec States
-                switch (current.action)
-                {
-                    case ExecState.None:
-                        break;
-                    case ExecState.Jump:
-                        Vector2 ogVel = (rb.velocity * (Mathf.Pow(1f / 0.8f, jumpSquatFrames)));
-                        rb.velocity = new Vector2(ci.move.x * 0.5f * ogVel.x * Mathf.Sign(ogVel.x) + ogVel.x * 0.5f, jumpVel);
-                        if (this.GetComponentInParent<PlatformMov>() != null)
-                        {
-                            rb.velocity += this.GetComponentInParent<PlatformMov>().speed;
-                        }
-                        //states.Enqueue(new StatePair(PState.Air, 0));
-                        break;
-                    case ExecState.hitLag:
-                        if (ci.move != Vector2.zero)
-                        {
-                            calculateDI();
-                        }
-                        transform.position = actualPosition;
-                        rb.velocity = hitVector;
-                        break;
-                    case ExecState.Death:
-                        pani.Die();
-                        break;
-                    case ExecState.Destroy:
-                        gameObject.SetActive(false);
-                        //Debug.Break();
-                        break;
-                    case ExecState.Dodge:
-                        iframes.SetFrames(20);
-                        break;
-                    case ExecState.Flip:
-                        vel = new Vector2();
-                        vel += Vector2.up * 8f;
-                        float velx = 20f;
-                        if (FlipBack)
-                        {
-                            if (FacingLeft)
-                            {
-                                vel += Vector2.right * velx;
-                            }
-                            else
-                            {
-                                vel += Vector2.left * velx;
-                            }
-
-                        }
-                        else
-                        {
-                            if (FacingLeft)
-                            {
-                                vel += Vector2.left * velx;
-                            }
-                            else
-                            {
-                                vel += Vector2.right * velx;
-                            }
-                        }
-                        rb.velocity = vel;
-                        iframes.SetFrames(24);
-                        break;
-                    case ExecState.Shoot:
-                        if (current.state == PState.Shoot)
-                        {
-                            atk.shoot(false);
-                        }
-                        else
-                        {
-                            atk.shoot(true);
-                        }
-
-                        break;
-
-                }
-                #endregion
+                
                 nextState();
 
             }
@@ -815,6 +725,7 @@ public class PlayerMover : Mover {
             }
             else
             {
+                pani.StateChange(true);
                 registerHit = false;
             }
 
@@ -822,6 +733,190 @@ public class PlayerMover : Mover {
         }
         
     }
+    #region State Changes
+    void leaveState()
+    {
+        switch (current.action)
+        {
+            case ExecState.None:
+                break;
+            case ExecState.Jump:
+                Vector2 ogVel = (rb.velocity *(1f / 0.6f));
+                rb.velocity = new Vector2(ci.move.x * 0.5f * ogVel.x * Mathf.Sign(ogVel.x) + ogVel.x * 0.5f, jumpVel);
+                if (this.GetComponentInParent<PlatformMov>() != null)
+                {
+                    rb.velocity += this.GetComponentInParent<PlatformMov>().speed;
+                }
+                //states.Enqueue(new StatePair(PState.Air, 0));
+                break;
+            case ExecState.Death:
+                pani.Die();
+                break;
+            case ExecState.Destroy:
+                gameObject.SetActive(false);
+                //Debug.Break();
+                break;
+            #region OLD DODGE
+            /* 
+        case ExecState.Dodge:
+            iframes.SetFrames(20);
+            break;
+        case ExecState.Flip:
+            vel = new Vector2();
+            vel += Vector2.up * 8f;
+            float velx = 20f;
+            if (FlipBack)
+            {
+                if (FacingLeft)
+                {
+                    vel += Vector2.right * velx;
+                }
+                else
+                {
+                    vel += Vector2.left * velx;
+                }
+
+            }
+            else
+            {
+                if (FacingLeft)
+                {
+                    vel += Vector2.left * velx;
+                }
+                else
+                {
+                    vel += Vector2.right * velx;
+                }
+            }
+            rb.velocity = vel;
+            iframes.SetFrames(24);
+            break; */
+            #endregion
+            case ExecState.Shoot:
+                if (current.state == PState.Shoot)
+                {
+                    atk.shoot(false);
+                }
+                else
+                {
+                    atk.shoot(true);
+                }
+
+                break;
+
+        }
+    }
+    void enterState()
+    {
+        switch (current.state)
+        {
+
+            case PState.Finisher:
+                atk.makeAttack(AttackManager.AtkType.Finisher);
+                //current.delay = frames;
+
+                //states.Enqueue(new StatePair(PState.Ground,0));
+                break;
+            case PState.Attack:
+                if (grounded)
+                {
+                    atk.makeAttack(QuadToTypeGround(attkQuad));
+                    current = new StatePair(PState.GroundAttack, -1);
+                    //states.Enqueue(new StatePair(PState.Ground, 0));
+                }
+                else
+                {
+                    atk.makeAttack(QuadToTypeAir(attkQuad));
+                    current = new StatePair(PState.AirAttack, -1);
+                }
+                break;
+            case PState.Dash:
+
+                if (!calcDashVel())
+                {
+                    current = new StatePair(PState.Free, 0);
+                }
+                break;
+            case PState.CeilingHold:
+                RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.up, 2.0f, 1 << 10);
+                transform.position = new Vector3(transform.position.x, r.point.y - col.bounds.extents.y, 0);
+                break;
+            case PState.Burnout:
+                rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(8f, rb.velocity.y));
+                break;
+            case PState.Hitstun:
+                if ((OnLeftWall && hitVector.x < 0) || (OnRightWall && hitVector.x > 0))
+                {
+                    hitVector = new Vector2(-hitVector.x, hitVector.y);
+                }
+                if ((onCeiling && hitVector.y > 0) || (grounded && hitVector.y < 0))
+                {
+                    hitVector = new Vector2(hitVector.x, -hitVector.y);
+                }
+
+                if (ci.move != Vector2.zero)
+                {
+                    calculateDI();
+                }
+
+                transform.position = actualPosition;
+                rb.velocity = hitVector;
+                break;
+            case PState.Delay:
+                if(current.action == ExecState.Jump)
+                {
+                    rb.velocity *= 0.6f;
+                }
+                else if (current.action == ExecState.Death)
+                {
+                    atk.stopAttack();
+                }
+                break;
+        }
+    }
+    void nextState()
+    {
+
+        if (states.Count == 0)
+        {
+            if (current.delay == -1)
+            {
+
+                pani.StateChange(false);
+
+            }
+            else if ((current.state != PState.Free))
+            {
+                leaveState();
+                current = new StatePair(PState.Free, 0);
+                if (grounded)
+                {
+                    alignGround();
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+
+                }
+
+                pani.StateChange(true);
+            }
+            else
+            {
+                pani.StateChange(false);
+            }
+        }
+        else
+        {
+            leaveState();
+            current = states.Dequeue();
+            //print(current.action);
+
+            enterState();
+            pani.StateChange(true);
+        }
+
+
+
+    }
+    #endregion
     void Update()
     {
         if (man != null)
@@ -841,6 +936,7 @@ public class PlayerMover : Mover {
             }
         }
     }
+    #region Getting Hit On
     public void grabFin()
     {
         
@@ -879,7 +975,7 @@ public class PlayerMover : Mover {
                     //grabDif = transform.position - a.transform.position;
                     //grabDif = a.transform.up * 1f;
                     grabDif = Vector2.zero;
-                    states.Enqueue(new StatePair(PState.Delay, 0, ExecState.Grabbed));
+                    states.Enqueue(new StatePair(PState.Delay, -1, ExecState.Grabbed));
                 }
                 else
                 {
@@ -929,7 +1025,7 @@ public class PlayerMover : Mover {
         iframes.SetFrames(Mathf.Max(90, hitStun) + 25);
         combo.reset();
     }
-
+    #endregion
     #region try moves
     bool tryDash()
     {
@@ -1030,7 +1126,7 @@ public class PlayerMover : Mover {
     {
         if (ci.Slash && combo.currentCombo > 0&& !phase2)
         {
-            states.Enqueue(new StatePair(PState.Finisher, 0));
+            states.Enqueue(new StatePair(PState.Finisher, -1));
             return true;
         }
         return false;
@@ -1230,105 +1326,7 @@ public class PlayerMover : Mover {
 
     }
     #endregion
-    void nextState()
-    {
-
-        if (states.Count == 0)
-        {
-            if(current.state == PState.Delay && current.action == ExecState.Grabbed)
-            {
-                if (current.delay < -2)
-                {
-                    pani.StateChange(false);
-                }            
-            }
-            else if (current.state == PState.GroundAttack || current.state == PState.AirAttack|| current.state == PState.Finisher)
-            {
-                pani.StateChange(false);
-            }
-            else if ((current.state != PState.Free))
-            {
-                current = new StatePair(PState.Free, 0);
-                if (grounded)
-                {
-                    alignGround();
-                    rb.velocity = new Vector2(rb.velocity.x, 0);
-
-                }
-                
-                pani.StateChange(true);
-            }
-            else
-            {
-                pani.StateChange(false);
-            }
-        }
-        else
-        {
-            current = states.Dequeue();
-            //print(current.action);
-            int frames;
-            switch (current.state)
-            {
-
-                case PState.Finisher:
-                    frames = atk.makeAttack(AttackManager.AtkType.Finisher);
-                    //current.delay = frames;
-                    
-                    //states.Enqueue(new StatePair(PState.Ground,0));
-                    break;
-                case PState.Attack:
-                    if (grounded)
-                    {
-                        frames = atk.makeAttack(QuadToTypeGround(attkQuad));
-                        current = new StatePair(PState.GroundAttack, -1);
-                        //states.Enqueue(new StatePair(PState.Ground, 0));
-                    }
-                    else
-                    {
-                        frames = atk.makeAttack(QuadToTypeAir(attkQuad));
-                        current = new StatePair(PState.AirAttack, -1);
-                    }
-                    break;
-                case PState.Dash:
-                    
-                    if (!calcDashVel())
-                    {
-                        current = new StatePair(PState.Free, 0);
-                    }
-                    break;
-                case PState.CeilingHold:
-                    RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.up, 2.0f, 1<<10);
-                    transform.position = new Vector3(transform.position.x, r.point.y -col.bounds.extents.y, 0);
-                    break;
-                case PState.Burnout:
-                    rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(8f, rb.velocity.y));
-                    break;
-                case PState.Hitstun:
-                    if ((OnLeftWall && hitVector.x < 0) || (OnRightWall && hitVector.x > 0))
-                    {
-                        hitVector = new Vector2(-hitVector.x, hitVector.y);
-                    }
-                    if ((onCeiling && hitVector.y > 0) || (grounded && hitVector.y < 0))
-                    {
-                        hitVector = new Vector2(hitVector.x, -hitVector.y);
-                    }
-
-                    rb.velocity = hitVector;
-                    break;
-                case PState.Delay:
-                    if(current.action == ExecState.Death)
-                    {
-                        atk.stopAttack();
-                    }
-                    break;
-            }
-            pani.StateChange(true);
-        }
-
-
-        
-    }
+    
     public void atkFinished(bool burnout)
     {
         if (burnout)
@@ -1514,7 +1512,7 @@ public class PlayerMover : Mover {
         states = new Queue<StatePair>();
         health.currentHealth = health.maxHealth;
         dead = false;
-        current = new StatePair(PState.Free, 1);
+        current = new StatePair(PState.Free, 0);
     }
 
     public void pause(bool pausing)
