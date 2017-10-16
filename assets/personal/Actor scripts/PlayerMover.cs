@@ -89,6 +89,7 @@ public class PlayerMover : Mover {
 
     StatePair current = new StatePair(PState.Free, 0);
     Queue<StatePair> states = new Queue<StatePair>();
+    Queue<input> inputQueue = new Queue<input>();
 
     Vector2 dashVel = Vector2.zero;
     Vector2 hitVector;
@@ -121,6 +122,7 @@ public class PlayerMover : Mover {
     int stallCooldownCurrent = 0;
     int shootCooldown;
     int shootCooldownCurrent = 0;
+    bool hitStall = false;
     float ceilingBooster = 0f;
     bool hittingLag = false;
     Vector2 hittingLagVel;
@@ -225,6 +227,8 @@ public class PlayerMover : Mover {
                     safety--;
                 }
             }
+            tryInput();
+
             Vector2 vel;
             switch (current.state)
             {
@@ -243,31 +247,33 @@ public class PlayerMover : Mover {
 
                             restoreTools();
                             changeLayer(ci.move);
-                            if (ci.Jump || ci.TapJump)
+                            //if (ci.Jump || ci.TapJump)
+                            if(inputQueue.Count >0&& inputQueue.Peek()==input.Jump)
                             {
+                                digestInput(input.Jump);
                                 states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
                             }
-                            if (ci.move.y >= 0)
-                            {
-                                tryDash();
-                            }
-                            if (states.Count < 1)
-                            {
-                                if (!tryAttack())
-                                {
-                                    if (!tryFinisher())
-                                    {
-                                        tryShoot();
-                                    }
-                                }
-                            }
+                            //if (ci.move.y >= 0)
+                            //{
+                            //    tryDash();
+                            //}
+                            //if (states.Count < 1)
+                            //{
+                            //    if (!tryAttack())
+                            //    {
+                            //        if (!tryFinisher())
+                            //        {
+                            //            tryShoot();
+                            //        }
+                            //    }
+                            //}
                             if (ci.TauntDown && desired.x == 0)
                             {
                                 pani.TauntD();
 
                                 states.Enqueue(new StatePair(PState.Delay, 45));
                             }
-                            tryDodge();
+                            
                             if (nearWall)
                             {
                                 if ((desired.x > 0f && OnRightWall) || (desired.x < 0f && OnLeftWall))
@@ -287,18 +293,18 @@ public class PlayerMover : Mover {
                             desired = AirControl(move);
                             if (!tryDash())
                             {
-                                tryStall();
+                                tryStall(false);
                             }
-                            if (states.Count < 1)
-                            {
-                                if (!tryAttack())
-                                {
-                                    if (!tryFinisher())
-                                    {
-                                        tryShoot();
-                                    }
-                                }
-                            }
+                            //if (states.Count < 1)
+                            //{
+                            //    if (!tryAttack())
+                            //    {
+                            //        if (!tryFinisher())
+                            //        {
+                            //            tryShoot();
+                            //        }
+                            //    }
+                            //}
 
 
                             if (rb.velocity.y <= 1.5f && ci.fall) //FAST FALL
@@ -397,19 +403,19 @@ public class PlayerMover : Mover {
                     setLayer(true);
                     if (current.delay == 2) { dashVel *= dashEndMomentum; }
                     if (grounded) { dashVel.y = 0; }
-                    if (states.Count < 1)
-                    {
-                        if (!tryStall())
-                        {
-                            if (!tryDash())
-                            {
-                                if (!tryAttack())
-                                {
-                                    tryFinisher();
-                                }
-                            }
-                        }
-                    }
+                    //if (states.Count < 1)
+                    //{
+                    //    if (!tryStall(false))
+                    //    {
+                    //        if (!tryDash())
+                    //        {
+                    //            if (!tryAttack())
+                    //            {
+                    //                tryFinisher();
+                    //            }
+                    //        }
+                    //    }
+                    //}
 
                     break;
                 #endregion
@@ -420,13 +426,13 @@ public class PlayerMover : Mover {
                     if (ci.move.x < 0) { FacingLeft = true; }
                     else if (ci.move.x > 0) { FacingLeft = false; }
                     if (current.delay == stallTime) { stallCooldownCurrent = stallCooldown; }
-                    if (current.delay < stallTime && states.Count < 1)
-                    {
-                        if (!tryDash())
-                        {
-                            tryAttack();
-                        }
-                    }
+                    //if (current.delay < stallTime && states.Count < 1)
+                    //{
+                    //    if (!tryDash())
+                    //    {
+                    //        tryAttack();
+                    //    }
+                    //}
                     break;
                 #endregion
                 #region Delay State
@@ -435,13 +441,13 @@ public class PlayerMover : Mover {
                     {
                         case ExecState.Jump:
                             //rb.velocity *= 0.80f;
-                            if (states.Count < 1)
-                            {
-                                if (!tryDash())
-                                {
-                                    tryAttack();
-                                }
-                            }
+                            //if (states.Count < 1)
+                            //{
+                            //    if (!tryDash())
+                            //    {
+                            //        tryAttack();
+                            //    }
+                            //}
                             break;
                         case ExecState.hitLag:
                             rb.velocity = Vector2.zero;
@@ -490,18 +496,19 @@ public class PlayerMover : Mover {
                 case PState.CeilingHold:
                     rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x), 0f);
 
-                    if (ci.Jump)
+                    if (inputQueue.Count > 0 && inputQueue.Peek() == input.Jump)
                     {
+                        digestInput(input.Jump);
                         rb.velocity += new Vector2(0, -maxFallSpeed);
                         states.Enqueue(new StatePair(PState.Free, 0));
                     }
-                    if (states.Count < 1)
-                    {
-                        if (!tryDash())
-                        {
-                            tryStall();
-                        }
-                    }
+                    //if (states.Count < 1)
+                    //{
+                    //    if (!tryDash())
+                    //    {
+                    //        tryStall(false);
+                    //    }
+                    //}
                     if ((states.Count < 1 && ci.move.y < 0) || !onCeiling)
                     {
                         states.Enqueue(new StatePair(PState.Free, 0));
@@ -509,7 +516,7 @@ public class PlayerMover : Mover {
 
                     if (states.Count > 0)
                     {
-                        current.delay = 1;
+                        current.delay = 0;
                     }
                     break;
                 #endregion
@@ -818,12 +825,15 @@ public class PlayerMover : Mover {
         {
 
             case PState.Finisher:
+                digestInput(input.Finisher);
                 atk.makeAttack(AttackManager.AtkType.Finisher);
                 //current.delay = frames;
 
                 //states.Enqueue(new StatePair(PState.Ground,0));
                 break;
             case PState.Attack:
+                hitStall = false;
+                digestInput(input.Attack);
                 if (grounded)
                 {
                     atk.makeAttack(QuadToTypeGround(attkQuad));
@@ -837,11 +847,16 @@ public class PlayerMover : Mover {
                 }
                 break;
             case PState.Dash:
-
+                digestInput(input.Dash);
                 if (!calcDashVel())
                 {
                     current = new StatePair(PState.Free, 0);
                 }
+                dashesAvailable--;
+                sounds.dash();
+                break;
+            case PState.Stall:
+                digestInput(input.Stall);
                 break;
             case PState.CeilingHold:
                 RaycastHit2D r = Physics2D.Raycast(transform.position, Vector3.up, 2.0f, 1 << 10);
@@ -876,6 +891,14 @@ public class PlayerMover : Mover {
                 else if (current.action == ExecState.Death)
                 {
                     atk.stopAttack();
+                }
+                break;
+            case PState.Shoot:
+            case PState.ShootWall: 
+                if (current.action == ExecState.Shoot)
+                {
+                    shootCooldownCurrent = shootCooldown;
+                    digestInput(input.Shoot);
                 }
                 break;
         }
@@ -963,7 +986,8 @@ public class PlayerMover : Mover {
                 registerHit = true;
                 rb.velocity = Vector2.zero;
                 states = new Queue<StatePair>();
-
+                inputQueue = new Queue<input>();
+                
                 
 
                 if (a!=null && a.isActive &&((AttackActive)a).isGrab)
@@ -1027,14 +1051,204 @@ public class PlayerMover : Mover {
     }
     #endregion
     #region try moves
+    enum input
+    {
+        Dash,
+        Stall,
+        Jump,
+        Finisher,
+        Attack,
+        Shoot
+    }
+
+    void tryInput()
+    {
+        switch (current.state)
+        {
+            case PState.Free:               
+                if (!grounded)
+                {
+                    tryDash();
+                    tryStall(false);
+                }
+                else
+                {
+                    if(ci.move.y >= 0)
+                    {
+                        tryDash();
+                    }
+                    if (!(inputQueue.Contains(input.Dash)))
+                    {
+                        tryJump(true);
+                    }
+                }
+                tryShoot();
+                tryFinisher();
+                tryAttack();
+                
+                break;
+            case PState.Dash:
+                if (!(inputQueue.Contains(input.Attack) || inputQueue.Contains(input.Finisher)))
+                {
+                    tryStall(false);
+                }
+                tryFinisher();
+                tryAttack();
+                if (current.delay < dashTime / 2)
+                {
+                    //tryJump(false);
+                    tryShoot();
+                    tryDash();
+                }  
+                break;
+            case PState.Stall:
+                if (!(inputQueue.Contains(input.Attack) || inputQueue.Contains(input.Finisher)))
+                {
+                    tryDash();
+                    tryShoot();
+                }
+                tryFinisher();
+                tryAttack();
+                break;
+            case PState.Delay:
+                switch(current.action)
+                {
+                    
+                    case ExecState.Jump:
+                        if (!(inputQueue.Contains(input.Attack) || inputQueue.Contains(input.Finisher)))
+                        {
+                            tryDash();
+                            tryShoot();
+                        }
+                        tryAttack();
+                        break;
+                    case ExecState.LandLag:
+                        if (!(inputQueue.Contains(input.Attack) || inputQueue.Contains(input.Finisher)))
+                        {
+                            tryDash();
+                            if (grounded&& !(inputQueue.Contains(input.Dash)))
+                            {
+                                tryJump(true);
+                            } 
+                            tryShoot();
+                        }
+                        tryAttack();
+                        break;
+                    
+                }
+                break;
+            case PState.Hitstun:
+            case PState.Burnout:
+                if (current.delay <= 15)
+                {
+                    if (!(inputQueue.Contains(input.Attack) || inputQueue.Contains(input.Finisher)))
+                    {
+                        tryDash();
+                        tryStall(false);
+                        tryShoot();
+                    }
+                    tryFinisher();
+                    tryAttack();
+                }
+                break;
+            case PState.CeilingHold:
+                tryDash();
+                tryStall(false);
+                tryJump(false);
+                tryShoot();
+                tryFinisher();
+                tryAttack();
+                break;
+            case PState.AirAttack:
+            case PState.GroundAttack:
+                AttackActive cur = atk.getAttack();
+                if (cur.released)
+                {
+                    if (!(inputQueue.Contains(input.Attack) || inputQueue.Contains(input.Finisher)))
+                    {
+                        tryDash();
+                        if (grounded)
+                        {
+                            tryJump(true);
+                        }
+                        tryShoot();
+                    }
+                    tryFinisher();
+                    //tryAttack(!cur.endlag);
+                    tryAttack(true);
+                    if (cur.endlag)
+                    {
+                        tryStall(false);
+                        
+                    }
+                    else
+                    {
+                        tryStall(true);
+                    }
+
+                }
+                break;
+            case PState.Shoot:
+            case PState.ShootWall:
+                if (!(inputQueue.Contains(input.Attack) || inputQueue.Contains(input.Finisher)))
+                {
+                    tryDash();
+                    tryStall(false);
+                }
+                tryFinisher();
+                tryAttack();
+                break;
+
+        }
+        
+    }
+    void digestInput(input i)
+    {
+        if (inputQueue.Count > 0)
+        {
+            input j = inputQueue.Peek();
+            if (i == j)
+            {
+                inputQueue.Dequeue();
+            }
+            else
+            {
+                inputQueue.Dequeue();
+                if (j == input.Jump&& i == input.Dash)
+                {
+                    if (inputQueue.Count > 0 &&inputQueue.Peek()==input.Dash)
+                    {
+                        inputQueue.Dequeue();
+                        print("Jump surpassed");
+                    }
+                    else
+                    {
+                        print("Fucked up");
+                    }
+                }
+                else
+                {
+                    print("fucked up -- Queue wants " + inputQueue.Peek() + " while states want " + i);
+                }
+                
+                
+            }
+        }
+        else
+        {
+            print("fucked up -- Queue has nothing while states want " + i);
+            
+        }
+
+    }
     bool tryDash()
     {
-        if (ci.Dash && (dashesAvailable > 0)) // DASH
+        if (ci.Dash && (dashesAvailable > 0)&&!inputQueue.Contains(input.Dash)) // DASH
         {
             //calcDashVel();
-            dashesAvailable--;
+            inputQueue.Enqueue(input.Dash);
             states.Enqueue(new StatePair(PState.Dash, dashTime));
-            sounds.dash();
+            
             return true;
         }
         return false;
@@ -1111,11 +1325,21 @@ public class PlayerMover : Mover {
         return true;
     }
 
-    bool tryStall()
+    bool tryStall(bool hitstallB)
     {
-        if (ci.Stall && stallCooldownCurrent<= 0)
+        if (ci.Stall && stallCooldownCurrent<= 0 && !inputQueue.Contains(input.Stall))
         {
-            states.Enqueue(new StatePair(PState.Stall, stallTime));
+            
+            if (hitstallB && !phase2&&trySpecialDamage(2))
+            {
+                hitStall = true;
+            }
+            else
+            {
+                inputQueue.Enqueue(input.Stall);
+                states.Enqueue(new StatePair(PState.Stall, stallTime));
+            }
+            
             return true;
         }
         return false;
@@ -1124,17 +1348,22 @@ public class PlayerMover : Mover {
 
     bool tryFinisher()
     {
-        if (ci.Slash && combo.currentCombo > 0&& !phase2)
+        if (ci.Slash && combo.currentCombo > 0&& !phase2 && !inputQueue.Contains(input.Finisher) && !inputQueue.Contains(input.Attack))
         {
+            inputQueue.Enqueue(input.Finisher);
             states.Enqueue(new StatePair(PState.Finisher, -1));
             return true;
         }
         return false;
     }
-    bool tryAttack()
+    bool tryAttack(bool ignoreSame = false)
     {
-        if (ci.Attack)
+        if (ci.Attack && !inputQueue.Contains(input.Attack) && !inputQueue.Contains(input.Finisher))
         {
+            if(ignoreSame && ci.AttackQuad == attkQuad)
+            {
+                return false;
+            }
             attkQuad = ci.AttackQuad;
             //if (phase2)
             //{
@@ -1143,6 +1372,8 @@ public class PlayerMover : Mover {
             //        return false;
             //    }
             //}
+            
+            inputQueue.Enqueue(input.Attack);
             states.Enqueue(new StatePair(PState.Attack, 0));
             return true;
         }
@@ -1206,8 +1437,9 @@ public class PlayerMover : Mover {
 
     bool tryShoot()
     {
-        if (ci.Shoot&&!phase2&&shootCooldownCurrent<=0)
+        if (ci.Shoot&&!phase2&&shootCooldownCurrent<=0 && !inputQueue.Contains(input.Shoot))
         {
+            inputQueue.Enqueue(input.Shoot);
             if (trySpecialDamage(5))
             {
                 if (onWall && !grounded)
@@ -1221,7 +1453,7 @@ public class PlayerMover : Mover {
                     states.Enqueue(new StatePair(PState.Shoot, 5));
                 }
 
-                shootCooldownCurrent = shootCooldown;
+                
             }
             
 
@@ -1230,6 +1462,24 @@ public class PlayerMover : Mover {
             return true;
         }
         return false;
+    }
+    void tryJump(bool tap)
+    {
+        if (tap)
+        {
+            if ((ci.Jump||ci.TapJump) && !inputQueue.Contains(input.Jump))
+            {
+                inputQueue.Enqueue(input.Jump);
+            }
+        }
+        else
+        {
+            if (ci.Jump && !inputQueue.Contains(input.Jump))
+            {
+                inputQueue.Enqueue(input.Jump);
+            }
+        }
+        
     }
     #endregion
     public void changeFace()
@@ -1537,9 +1787,12 @@ public class PlayerMover : Mover {
     {
         if (isHitting)
         {
-            if (ci.Stall && !phase2 && trySpecialDamage(2))
+            //if (ci.Stall && !phase2 && trySpecialDamage(2))
+            if(ci.Stall&&hitStall)
             {
                 hittingLagVel = Vector2.zero;
+                hitStall = false;
+                digestInput(input.Stall);
             }
             else
             {

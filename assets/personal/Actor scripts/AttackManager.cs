@@ -29,6 +29,8 @@ public class AttackManager : MonoBehaviour {
     [HideInInspector]
     public AtkType lastAttack;
     [HideInInspector]
+    public AtkType currentAtkType;
+    [HideInInspector]
     public List<GameObject> alreadyHitByType;
     public enum AtkType
     {
@@ -53,6 +55,7 @@ public class AttackManager : MonoBehaviour {
         pm = GetComponent<PlayerMover>();
         source = GetComponent<AudioSource>();
         lastAttack = AtkType.None;
+        currentAtkType = AtkType.None;
         if (TouchAttack)
         {
             currentTouchAttack = Instantiate(TouchAttack, transform);
@@ -76,6 +79,14 @@ public class AttackManager : MonoBehaviour {
         {
             currentAttack.GetComponent<AttackActive>().NestedUpdate();
         }
+    }
+    public AttackActive getAttack()
+    {
+        if (currentAttack)
+        {
+            return currentAttack.GetComponent<AttackActive>();
+        }
+        return null;
     }
     public void shoot(bool backwards)
     {
@@ -196,6 +207,7 @@ public class AttackManager : MonoBehaviour {
 
         }
         currentAttack.GetComponent<AttackActive>().setType(a);
+        currentAtkType = a;
         mf = currentAttack.GetComponent<MovePhysics>();
         return currentAttack.GetComponent<AttackActive>().atkFrames;
     }

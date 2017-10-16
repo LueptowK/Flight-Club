@@ -72,6 +72,13 @@ public class AttackActive : Attack {
             return frameNum > windup && frameNum <= windup + atkTime;
         }
     }
+    public bool endlag
+    {
+        get
+        {
+            return frameNum > windup + atkTime;
+        }
+    }
     public void setType(AttackManager.AtkType t)
     {
         type = t;
