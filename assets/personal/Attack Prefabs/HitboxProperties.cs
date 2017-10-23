@@ -13,10 +13,12 @@ public class HitboxProperties : MonoBehaviour
     public List<GameObject> hitPlayers;
 
     Attack atk;
+    StatTracker tracker;
     // Use this for initialization
     public void setAtk()
     {
         atk = GetComponentInParent<Attack>();
+        tracker = GetComponentInParent<StatTracker>();
         //print(atk);
     }
     void OnTriggerEnter2D(Collider2D playerCol)
@@ -130,16 +132,20 @@ public class HitboxProperties : MonoBehaviour
                 int str = transform.parent.GetComponent<AttackActive>().comboStrength;
                 float strength = str / 5f * 4f * .8f;
                 playerCol.GetComponent<PlayerMover>().getHit(knockback * strength / 2, hitlag, hitstun, (int)(damage * strength), atk);
+                tracker.dealFinisher((int)(damage * strength));
             }
             else
             {
                 if (gameObject.GetComponentInParent<AttackManager>().gameObject.GetComponent<PlayerMover>().isPhase2())
                 {
+                    tracker.dealDamage(damage / 2);
+                    tracker.stealShield(damage / 2);
                     playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage/2, atk);
                     gameObject.GetComponentInParent<AttackManager>().gameObject.GetComponentInParent<PlayerHealth>().charge(damage/2);
                 }
                 else
                 {
+                    tracker.dealDamage(damage);
                     playerCol.GetComponent<PlayerMover>().getHit(knockback, hitlag, hitstun, damage, atk);
 
                 }

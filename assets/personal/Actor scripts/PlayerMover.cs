@@ -16,6 +16,7 @@ public class PlayerMover : Mover {
     IFrames iframes;
     Manager man;
     ActorSounds sounds;
+    StatTracker tracker;
 
 
     public PhysicsMaterial2D neutral;//unused
@@ -156,6 +157,7 @@ public class PlayerMover : Mover {
         combo = GetComponent<ComboCounter>();
         iframes = GetComponent<IFrames>();
         sounds = GetComponent<ActorSounds>();
+        tracker = GetComponent<StatTracker>();
         dashVel = Vector2.zero;
         restoreTools();
         dead = false;
@@ -999,7 +1001,7 @@ public class PlayerMover : Mover {
     }
     void takeDamage(int damage, int hitLag, int hitStun)
     {
-
+        tracker.takeDamage(damage);
         int result = health.takeDamage(damage);
         if (result == 0)
         {
@@ -1035,6 +1037,7 @@ public class PlayerMover : Mover {
             dashesAvailable--;
             states.Enqueue(new StatePair(PState.Dash, dashTime));
             sounds.dash();
+            tracker.dash();
             return true;
         }
         return false;
@@ -1116,6 +1119,7 @@ public class PlayerMover : Mover {
         if (ci.Stall && stallCooldownCurrent<= 0)
         {
             states.Enqueue(new StatePair(PState.Stall, stallTime));
+            tracker.Stall();
             return true;
         }
         return false;
@@ -1127,6 +1131,7 @@ public class PlayerMover : Mover {
         if (ci.Slash && combo.currentCombo > 0&& !phase2)
         {
             states.Enqueue(new StatePair(PState.Finisher, -1));
+            tracker.finisherAttempt();
             return true;
         }
         return false;
@@ -1144,6 +1149,7 @@ public class PlayerMover : Mover {
             //    }
             //}
             states.Enqueue(new StatePair(PState.Attack, 0));
+            tracker.hitAttempt();
             return true;
         }
         return false;
@@ -1223,10 +1229,10 @@ public class PlayerMover : Mover {
 
                 shootCooldownCurrent = shootCooldown;
             }
-            
 
 
 
+            tracker.projectile();
             return true;
         }
         return false;
@@ -1540,6 +1546,7 @@ public class PlayerMover : Mover {
             if (ci.Stall && !phase2 && trySpecialDamage(2))
             {
                 hittingLagVel = Vector2.zero;
+                tracker.hitStall();
             }
             else
             {

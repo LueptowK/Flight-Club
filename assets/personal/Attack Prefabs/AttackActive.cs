@@ -144,6 +144,11 @@ public class AttackActive : Attack {
                     if (alreadyHit.Count > 1)
                     {
                         endLag -= attackReduction;
+                        gameObject.GetComponentInParent<StatTracker>().successfulHit();
+                        if (type == AttackManager.AtkType.Finisher)
+                        {
+                            gameObject.GetComponentInParent<StatTracker>().successfulFinisher();
+                        }
                     }
                 }
 
