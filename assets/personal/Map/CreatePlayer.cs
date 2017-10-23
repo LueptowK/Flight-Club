@@ -279,6 +279,11 @@ public class CreatePlayer : MonoBehaviour
         }
     }
 
+    public string getName(int playerNum)
+    {
+        return names[playerNum];
+    }
+
     public void reset()
     {
         Canvas = GameObject.Find("UI");
@@ -290,6 +295,8 @@ public class CreatePlayer : MonoBehaviour
         CharSelectPortraits[1] = portraitSlot2;
         CharSelectPortraits[2] = portraitSlot3;
         CharSelectPortraits[3] = portraitSlot4;
+        //GameObject WorldCanvas = GameObject.Find("WorldSpaceCanvas");
+        //WorldCanvas.Find("PlayerName").GetComponent<Text>().text = names[]
 
         for (int i=0; i<4; i++)
         {
