@@ -77,7 +77,7 @@ public class BossMover : Mover {
             {
                 if(Mathf.Pow(UnityEngine.Random.Range(0f,1f),4) > hp.currentHealth / hp.maxHealth)
                 {
-                    print("spawn");
+                    //print("spawn");
                     spawnJumper();
                 }
             }

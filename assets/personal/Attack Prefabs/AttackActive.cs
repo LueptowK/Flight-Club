@@ -62,7 +62,7 @@ public class AttackActive : Attack {
     public bool released
     {
         get{
-            return frameNum > windup + atkTime;
+            return frameNum > windup;
         }
     }
     public bool attacking

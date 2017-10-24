@@ -14,6 +14,7 @@ public class ControlInterpret : Interpreter {
     private int DodgeDown;
     private int PauseDown;
     int ShootDown;
+    int stallDown;
 
     private List<inputItem> inputHistory;
     List<StickQuadrant> Quads;
@@ -59,14 +60,14 @@ public class ControlInterpret : Interpreter {
     private bool outer = false;
     public bool tap()
     {
-        float buffer = 0.02f;
+        float buffer = 0.04f;
         float threshholdHigh = 0.75f;
         //float thresholdLow = 0.55f;
         //float angleDev = 10f;
 
         Vector2 current = inputHistory[0].dir;
         //Debug.Log(current.magnitude);
-        if (current.magnitude > 0.98f)
+        if (current.magnitude > 0.90f)
         {
 
             bool overcome = false;
@@ -200,6 +201,14 @@ public class ControlInterpret : Interpreter {
         {
             ShootDown = 0;
         }
+        if (control.Stall)
+        {
+            stallDown += 1;
+        }
+        else
+        {
+            stallDown = 0;
+        }
         Quads.RemoveAt(1);
         Quads.Insert(0, AQuad);
 
@@ -296,7 +305,7 @@ public class ControlInterpret : Interpreter {
     {
         get
         {
-            return control.Stall;
+            return stallDown==1;
         }
     }
     public override bool Slash

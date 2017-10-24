@@ -962,7 +962,7 @@ public class PlayerMover : Mover {
     #region Getting Hit On
     public void grabFin()
     {
-        
+        current.delay = 0;
         takeDamage(grabDamage, grabHitlag, grabHitstun);
     }
     public void getHit(Vector2 knockback, int hitLag, int hitStun, int damage)
@@ -1183,6 +1183,7 @@ public class PlayerMover : Mover {
                     }
                     else
                     {
+                        //print("HS");
                         tryStall(true);
                     }
 
@@ -1213,22 +1214,24 @@ public class PlayerMover : Mover {
             }
             else
             {
-                inputQueue.Dequeue();
-                if (j == input.Jump&& i == input.Dash)
+                
+                if (j == input.Jump&& (i == input.Dash||i==input.Attack))
                 {
-                    if (inputQueue.Count > 0 &&inputQueue.Peek()==input.Dash)
+                    inputQueue.Dequeue();
+                    if (inputQueue.Count > 0 &&inputQueue.Peek()==i)
                     {
                         inputQueue.Dequeue();
                         print("Jump surpassed");
                     }
                     else
                     {
-                        print("Fucked up");
+                        print("Fucked up -- Jump in queue but "+i+" was not the next state");
                     }
                 }
                 else
                 {
                     print("fucked up -- Queue wants " + inputQueue.Peek() + " while states want " + i);
+                    inputQueue.Dequeue();
                 }
                 
                 
@@ -1330,9 +1333,14 @@ public class PlayerMover : Mover {
         if (ci.Stall && stallCooldownCurrent<= 0 && !inputQueue.Contains(input.Stall))
         {
             
-            if (hitstallB && !phase2&&trySpecialDamage(2))
+            if (hitstallB)
             {
-                hitStall = true;
+                if (!phase2 && trySpecialDamage(2))
+                {
+                    hitStall = true;
+                    inputQueue.Enqueue(input.Stall);
+                }
+                
             }
             else
             {
