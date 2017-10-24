@@ -122,6 +122,8 @@ public class PlayerMover : Mover {
     int stallCooldownCurrent = 0;
     int shootCooldown;
     int shootCooldownCurrent = 0;
+    int groundDashCooldown;
+    int groundDashCooldownCurrent = 0;
     float ceilingBooster = 0f;
     bool hittingLag = false;
     Vector2 hittingLagVel;
@@ -192,6 +194,7 @@ public class PlayerMover : Mover {
         jumpSquatFrames = card.jumpSquatFrames;
         stallCooldown = card.stallCooldown;
         shootCooldown = card.shootCooldown;
+        groundDashCooldown = card.groundDashCooldown;
     }
     public void restoreTools()
     {
@@ -215,6 +218,7 @@ public class PlayerMover : Mover {
             float tempGrav = gravity;
             stallCooldownCurrent--;
             shootCooldownCurrent--;
+            groundDashCooldownCurrent--;
 
             if (registerHit) // hit in the queue
             {
@@ -249,9 +253,12 @@ public class PlayerMover : Mover {
                             {
                                 states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
                             }
-                            if (ci.move.y >= 0)
+                            if (ci.move.y >= 0 && groundDashCooldownCurrent <= 0)
                             {
-                                tryDash();
+                                if (tryDash())
+                                {
+                                    groundDashCooldownCurrent = groundDashCooldown;
+                                }
                             }
                             if (states.Count < 1)
                             {

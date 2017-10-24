@@ -25,5 +25,6 @@ public class StatCard : ScriptableObject {
     public int jumpSquatFrames=4;
     public int stallCooldown=40;
     public int shootCooldown=30;
+    public int groundDashCooldown = 30;
     public int shotCost;
 }
