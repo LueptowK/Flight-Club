@@ -16,6 +16,7 @@ public class CreatePlayer : MonoBehaviour
     public GameObject portraitSlot3;
     public GameObject portraitSlot4;
     public GameObject[] nametags;
+    public StatTracker[] stats;
     private Shader shaderGUItext;
     private Shader shaderSpritesDefault;
     private playerColor[][] Colors = new playerColor[2][];
@@ -60,7 +61,7 @@ public class CreatePlayer : MonoBehaviour
             }
             Destroy(gameObject);
         }
-
+        stats = new StatTracker[4];
         names = new string[4];
         keithColors = new playerColor[6];
         keithColors[0] = new playerColor(Color.white);
@@ -242,7 +243,7 @@ public class CreatePlayer : MonoBehaviour
                     print("fuck");
                     return;
                 }
-
+                p.GetComponent<PlayerMover>().playerNum = j;
                 GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
                 p.GetComponent<PlayerInput>().PlayerNumber = j;
                 p.GetComponent<PlayerHealth>().img = h.transform.Find("BarFill").gameObject.GetComponent<Image>();
@@ -316,5 +317,10 @@ public class CreatePlayer : MonoBehaviour
         }
 
         
+    }
+
+    public void holdStats(int playerNum, StatTracker playerStats)
+    {
+        stats[playerNum] = playerStats;
     }
 }

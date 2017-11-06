@@ -93,6 +93,10 @@ public class MapManager : Manager {
 
         if (removed.Count >= Players.Length - 1 && !gameOver)
         {
+            foreach (GameObject player in Players)
+            {
+                GameObject.Find("PlayerCreator").GetComponent<CreatePlayer>().holdStats(player.GetComponent<PlayerMover>().playerNum, player.GetComponent<StatTracker>());
+            }
             c.transform.Find("GAME").gameObject.SetActive(true);
             gameOver = true;
         }

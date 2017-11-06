@@ -23,6 +23,7 @@ public class PlayerMover : Mover {
     public PhysicsMaterial2D bounce; //unused
     public GameObject PhaseUpPre;
     public GameObject PhaseTintPre;
+    public int playerNum;
     
 
     //private AudioSource source;
