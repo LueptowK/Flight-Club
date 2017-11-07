@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StatTracker : MonoBehaviour {
-    private int attemptedAttacks;
-    private int successfulHits;
-    private int damageDealt;
-    private int damageTaken;
-    private int finishers;
-    private int successfulFinishers;
-    private int finisherDamage;
-    private int maxFinisher;
-    private int shieldStolen;
-    private int timesDashed;
-    private int hitStalls;
-    private int stalls;
-    private int projectilesFired;
-    private int[] timesSegmented;
-    private int[] segmentsTaken;
-    private bool dead;
+    public int attemptedAttacks;
+    public int successfulHits;
+    public int damageDealt;
+    public int damageTaken;
+    public int finishers;
+    public int successfulFinishers;
+    public int finisherDamage;
+    public int maxFinisher;
+    public int shieldStolen;
+    public int timesDashed;
+    public int hitStalls;
+    public int stalls;
+    public int projectilesFired;
+    public int[] timesSegmented;
+    public int[] segmentsTaken;
+    public bool dead;
 	// Use this for initialization
 
     public void copyStats(StatTracker tracker)
@@ -116,4 +116,6 @@ public class StatTracker : MonoBehaviour {
     {
         shieldStolen += damage;
     }
+
+    
 }

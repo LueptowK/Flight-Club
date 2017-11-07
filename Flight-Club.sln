@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flight-Club.CSharp.Plugins", "Flight-Club.CSharp.Plugins.csproj", "{2908EABB-35E3-285E-5C73-261A18F9417A}"
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flight-Club.Plugins", "Flight-Club.Plugins.csproj", "{D2114951-8CE8-E958-0F6B-A9D51B46BB2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flight-Club.CSharp", "Flight-Club.CSharp.csproj", "{5027E84C-679F-97B3-F098-ED6DF33050A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flight-Club", "Flight-Club.csproj", "{8D51BAED-4ADD-7C67-070A-C6E46F516B65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flight-Club.CSharp.Editor.Plugins", "Flight-Club.CSharp.Editor.Plugins.csproj", "{6EFAC8BC-2EC6-8C5E-5D59-181467DDE0FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flight-Club.Editor.Plugins", "Flight-Club.Editor.Plugins.csproj", "{FA54FA7C-17CD-AB19-64F8-461C7CA41851}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flight-Club.CSharp.Editor", "Flight-Club.CSharp.Editor.csproj", "{FA3C93B5-D63B-6054-DD1D-7462B56AE9B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flight-Club.Editor", "Flight-Club.Editor.csproj", "{4570F2FA-EB2E-875C-D098-AC4C125B64BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,22 +15,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2908EABB-35E3-285E-5C73-261A18F9417A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2908EABB-35E3-285E-5C73-261A18F9417A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2908EABB-35E3-285E-5C73-261A18F9417A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2908EABB-35E3-285E-5C73-261A18F9417A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5027E84C-679F-97B3-F098-ED6DF33050A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5027E84C-679F-97B3-F098-ED6DF33050A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5027E84C-679F-97B3-F098-ED6DF33050A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5027E84C-679F-97B3-F098-ED6DF33050A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6EFAC8BC-2EC6-8C5E-5D59-181467DDE0FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EFAC8BC-2EC6-8C5E-5D59-181467DDE0FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EFAC8BC-2EC6-8C5E-5D59-181467DDE0FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EFAC8BC-2EC6-8C5E-5D59-181467DDE0FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA3C93B5-D63B-6054-DD1D-7462B56AE9B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA3C93B5-D63B-6054-DD1D-7462B56AE9B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA3C93B5-D63B-6054-DD1D-7462B56AE9B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA3C93B5-D63B-6054-DD1D-7462B56AE9B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2114951-8CE8-E958-0F6B-A9D51B46BB2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2114951-8CE8-E958-0F6B-A9D51B46BB2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2114951-8CE8-E958-0F6B-A9D51B46BB2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2114951-8CE8-E958-0F6B-A9D51B46BB2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D51BAED-4ADD-7C67-070A-C6E46F516B65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D51BAED-4ADD-7C67-070A-C6E46F516B65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D51BAED-4ADD-7C67-070A-C6E46F516B65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D51BAED-4ADD-7C67-070A-C6E46F516B65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA54FA7C-17CD-AB19-64F8-461C7CA41851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA54FA7C-17CD-AB19-64F8-461C7CA41851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA54FA7C-17CD-AB19-64F8-461C7CA41851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA54FA7C-17CD-AB19-64F8-461C7CA41851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4570F2FA-EB2E-875C-D098-AC4C125B64BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4570F2FA-EB2E-875C-D098-AC4C125B64BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4570F2FA-EB2E-875C-D098-AC4C125B64BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4570F2FA-EB2E-875C-D098-AC4C125B64BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
