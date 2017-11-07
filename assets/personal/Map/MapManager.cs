@@ -93,10 +93,6 @@ public class MapManager : Manager {
 
         if (removed.Count >= Players.Length - 1 && !gameOver)
         {
-            foreach (GameObject player in Players)
-            {
-                GameObject.Find("PlayerCreator").GetComponent<CreatePlayer>().holdStats(player.GetComponent<PlayerMover>().playerNum, player.GetComponent<StatTracker>());
-            }
             c.transform.Find("GAME").gameObject.SetActive(true);
             gameOver = true;
         }
@@ -141,12 +137,16 @@ public class MapManager : Manager {
 
     public override void Quit()
     {
-        Destroy(c.gameObject);
+
+        CreatePlayer creator = GameObject.Find("PlayerCreator").GetComponent<CreatePlayer>();
+        Debug.Log(creator);
         foreach (GameObject player in Players)
         {
+            creator.holdStats(player.GetComponent<PlayerMover>().playerNum, player.GetComponent<StatTracker>());
             Destroy(player);
         }
-        SceneManager.LoadScene(1);
+        Destroy(c.gameObject);
+        SceneManager.LoadScene(18);
     }
 
     public override void checkpoint(int checkNum, Vector2 position)

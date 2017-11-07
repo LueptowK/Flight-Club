@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StatTracker : MonoBehaviour {
-    private PlayerMover mover;
     private int attemptedAttacks;
     private int successfulHits;
     private int damageDealt;
@@ -19,9 +18,31 @@ public class StatTracker : MonoBehaviour {
     private int projectilesFired;
     private int[] timesSegmented;
     private int[] segmentsTaken;
+    private bool dead;
 	// Use this for initialization
+
+    public void copyStats(StatTracker tracker)
+    {
+        attemptedAttacks = tracker.attemptedAttacks;
+        successfulHits = tracker.successfulHits;
+        damageDealt = tracker.damageDealt;
+        damageTaken = tracker.damageTaken;
+        finishers = tracker.finishers;
+        successfulFinishers = tracker.successfulFinishers;
+        finisherDamage = tracker.finisherDamage;
+        maxFinisher = tracker.maxFinisher;
+        shieldStolen = tracker.shieldStolen;
+        timesDashed = tracker.timesDashed;
+        hitStalls = tracker.hitStalls;
+        stalls = tracker.stalls;
+        projectilesFired = tracker.projectilesFired;
+        timesSegmented = tracker.timesSegmented;
+        segmentsTaken = tracker.segmentsTaken;
+        dead = tracker.dead;
+
+}
+
 	void Start () {
-        mover = GetComponentInParent<PlayerMover>();
         timesSegmented = new int[4];
         segmentsTaken = new int[4];
 	}
@@ -29,6 +50,11 @@ public class StatTracker : MonoBehaviour {
     public void hitAttempt()
     {
         attemptedAttacks++;
+    }
+
+    public void die()
+    {
+        dead = true;
     }
 
     public void hitStall()

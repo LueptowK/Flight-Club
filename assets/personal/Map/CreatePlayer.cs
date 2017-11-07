@@ -61,7 +61,6 @@ public class CreatePlayer : MonoBehaviour
             }
             Destroy(gameObject);
         }
-        stats = new StatTracker[4];
         names = new string[4];
         keithColors = new playerColor[6];
         keithColors[0] = new playerColor(Color.white);
@@ -321,6 +320,21 @@ public class CreatePlayer : MonoBehaviour
 
     public void holdStats(int playerNum, StatTracker playerStats)
     {
-        stats[playerNum] = playerStats;
+        Debug.Log("storing stats");
+        Debug.Log(playerStats);
+        stats[playerNum].copyStats(playerStats);
+    }
+
+    public StatTracker[] getStats()
+    {
+        StatTracker[] finalStats = new StatTracker[4];
+        for(int i = 0; i < 4; i++)
+        {
+            if (active[i])
+            {
+                finalStats[i] = stats[i];
+            }
+        }
+        return finalStats;
     }
 }
