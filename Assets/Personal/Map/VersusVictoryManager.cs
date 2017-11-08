@@ -10,8 +10,10 @@ public class VersusVictoryManager : MonoBehaviour {
     public StatTracker[] stats;
     private bool[] Ready;
     private CreatePlayer creator;
+    private int delay;
 	// Use this for initialization
 	void Start () {
+        delay = 30;
         Ready = new bool[4];
         creator = GameObject.Find("PlayerCreator").GetComponent<CreatePlayer>();
         stats = creator.getStats();
@@ -33,10 +35,12 @@ public class VersusVictoryManager : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (delay > 0) { delay--; }
+
         for (int i = 0; i < 4; i++)
         {
             GamePadState g = GamePad.GetState((PlayerIndex)i);
-            if (g.Buttons.A == ButtonState.Pressed || g.Buttons.Start == ButtonState.Pressed)
+            if ((g.Buttons.A == ButtonState.Pressed || g.Buttons.Start == ButtonState.Pressed) && delay <= 0)
             {
                 if (!Ready[i])
                 {
@@ -60,6 +64,7 @@ public class VersusVictoryManager : MonoBehaviour {
             if (g.DPad.Up == ButtonState.Pressed && i == 0)
             {
                 Ready[1] = true;
+                PlayerBox[1].SetActive(false);
             }
         }
         bool advance = true;
@@ -87,7 +92,7 @@ public class VersusVictoryManager : MonoBehaviour {
         c.transform.Find("Attacks").GetComponent<Text>().text = stat.attemptedAttacks.ToString();
         if (stat.attemptedAttacks != 0)
         {
-            c.transform.Find("Accuracy").GetComponent<Text>().text = (stat.successfulHits / stat.attemptedAttacks).ToString();
+            c.transform.Find("Accuracy").GetComponent<Text>().text = (((float)stat.successfulHits / (float)stat.attemptedAttacks)*100).ToString() + "%";
         }
         else
         {
