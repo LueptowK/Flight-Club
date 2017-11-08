@@ -42,6 +42,7 @@ public class VersusVictoryManager : MonoBehaviour {
                 {
                     Ready[i] = true;
                     //visual indicator of readiness?
+                    PlayerBox[i].SetActive(false);
                 }
             }
             if(g.Buttons.B == ButtonState.Pressed)
@@ -50,6 +51,7 @@ public class VersusVictoryManager : MonoBehaviour {
                 {
                     Ready[i] = false;
                     //visual indicator of unreadiness?
+                    PlayerBox[i].SetActive(true);
                 }
             }
 
