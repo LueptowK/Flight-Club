@@ -1184,15 +1184,17 @@ public class PlayerMover : Mover {
                     tryFinisher();
                     //tryAttack(!cur.endlag);
                     tryAttack(true);
-                    if (cur.endlag)
-                    {
-                        tryStall(false);
-                        
-                    }
-                    else
-                    {
-                        //print("HS");
-                        tryStall(true);
+                    if (!grounded) { 
+                        if (cur.endlag)
+                        {
+                            tryStall(false);
+
+                        }
+                        else
+                        {
+                            //print("HS");
+                            tryStall(true);
+                        }
                     }
 
                 }
@@ -1254,7 +1256,7 @@ public class PlayerMover : Mover {
     }
     bool tryDash()
     {
-        if (ci.Dash && (dashesAvailable > 0)&&!inputQueue.Contains(input.Dash) && (groundDashCooldownCurrent <= 0 || !grounded)) // DASH
+        if (ci.Dash && (dashesAvailable > 0)&&!inputQueue.Contains(input.Dash) && groundDashCooldownCurrent <= 0) // DASH
         {
             //calcDashVel();
             groundDashCooldownCurrent = groundDashCooldown;
@@ -1343,10 +1345,10 @@ public class PlayerMover : Mover {
         {
             if (hitstallB)
             {
-                if (!phase2 && trySpecialDamage(2))
+                if (!phase2 && !hitStall && trySpecialDamage(2))
                 {
                     hitStall = true;
-                    inputQueue.Enqueue(input.Stall);
+                    //inputQueue.Enqueue(input.Stall);
                 }
                 
             }
@@ -1605,7 +1607,7 @@ public class PlayerMover : Mover {
         if (hitStall)
         {
             hitStall = false;
-            digestInput(input.Stall);
+            //digestInput(input.Stall);
         }
     }
     void alignGround()
@@ -1824,7 +1826,7 @@ public class PlayerMover : Mover {
                 {
                     
                     hitStall = false;
-                    digestInput(input.Stall);
+                    //digestInput(input.Stall);
                     tracker.hitStall();
                 }
                 else
