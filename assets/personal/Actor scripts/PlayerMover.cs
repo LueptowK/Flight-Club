@@ -1254,7 +1254,7 @@ public class PlayerMover : Mover {
     }
     bool tryDash()
     {
-        if (ci.Dash && (dashesAvailable > 0)&&!inputQueue.Contains(input.Dash) && (groundDashCooldownCurrent <= 0 || !grounded)) // DASH
+        if (ci.Dash && (dashesAvailable > 0)&&!inputQueue.Contains(input.Dash) && groundDashCooldownCurrent <= 0) // DASH
         {
             //calcDashVel();
             groundDashCooldownCurrent = groundDashCooldown;
@@ -1602,7 +1602,11 @@ public class PlayerMover : Mover {
             states.Enqueue(new StatePair(PState.Burnout, 110));
         }
         current.delay = 0;
-        
+        if (hitStall)
+        {
+            hitStall = false;
+            digestInput(input.Stall);
+        }
     }
     void alignGround()
     {
@@ -1806,17 +1810,9 @@ public class PlayerMover : Mover {
         if (isHitting)
         {
             //if (ci.Stall && !phase2 && trySpecialDamage(2))
-            if(ci.Stall&&hitStall)
-            {
-                hittingLagVel = Vector2.zero;
-                hitStall = false;
-                digestInput(input.Stall);
-                tracker.hitStall();
-            }
-            else
-            {
-                hittingLagVel = rb.velocity;
-            }
+            
+            hittingLagVel = rb.velocity;
+            
             rb.velocity = Vector2.zero;
             hittingLag = true;
         }
@@ -1824,7 +1820,17 @@ public class PlayerMover : Mover {
         {
             if (useVel)
             {
-                rb.velocity = hittingLagVel;
+                if (hitStall)
+                {
+                    
+                    hitStall = false;
+                    digestInput(input.Stall);
+                    tracker.hitStall();
+                }
+                else
+                {
+                    rb.velocity = hittingLagVel;
+                }
             }
             
             hittingLag = false;
