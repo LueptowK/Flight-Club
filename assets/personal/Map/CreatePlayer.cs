@@ -16,6 +16,7 @@ public class CreatePlayer : MonoBehaviour
     public GameObject portraitSlot3;
     public GameObject portraitSlot4;
     public GameObject[] nametags;
+    public StatTracker[] stats;
     private Shader shaderGUItext;
     private Shader shaderSpritesDefault;
     private playerColor[][] Colors = new playerColor[2][];
@@ -60,7 +61,6 @@ public class CreatePlayer : MonoBehaviour
             }
             Destroy(gameObject);
         }
-
         names = new string[4];
         keithColors = new playerColor[6];
         keithColors[0] = new playerColor(Color.white);
@@ -242,7 +242,7 @@ public class CreatePlayer : MonoBehaviour
                     print("fuck");
                     return;
                 }
-
+                p.GetComponent<PlayerMover>().playerNum = j;
                 GameObject h = Instantiate(HealthBar, Canvas.transform.Find("HealthUI").transform);
                 p.GetComponent<PlayerInput>().PlayerNumber = j;
                 p.GetComponent<PlayerHealth>().img = h.transform.Find("BarFill").gameObject.GetComponent<Image>();
@@ -279,6 +279,11 @@ public class CreatePlayer : MonoBehaviour
         }
     }
 
+    public string getName(int playerNum)
+    {
+        return names[playerNum];
+    }
+
     public void reset()
     {
         Canvas = GameObject.Find("UI");
@@ -290,6 +295,8 @@ public class CreatePlayer : MonoBehaviour
         CharSelectPortraits[1] = portraitSlot2;
         CharSelectPortraits[2] = portraitSlot3;
         CharSelectPortraits[3] = portraitSlot4;
+        //GameObject WorldCanvas = GameObject.Find("WorldSpaceCanvas");
+        //WorldCanvas.Find("PlayerName").GetComponent<Text>().text = names[]
 
         for (int i=0; i<4; i++)
         {
@@ -309,5 +316,25 @@ public class CreatePlayer : MonoBehaviour
         }
 
         
+    }
+
+    public void holdStats(int playerNum, StatTracker playerStats)
+    {
+        Debug.Log("storing stats");
+        Debug.Log(playerStats);
+        stats[playerNum].copyStats(playerStats);
+    }
+
+    public StatTracker[] getStats()
+    {
+        StatTracker[] finalStats = new StatTracker[4];
+        for(int i = 0; i < 4; i++)
+        {
+            if (active[i])
+            {
+                finalStats[i] = stats[i];
+            }
+        }
+        return finalStats;
     }
 }

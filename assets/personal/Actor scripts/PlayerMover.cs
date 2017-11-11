@@ -16,12 +16,14 @@ public class PlayerMover : Mover {
     IFrames iframes;
     Manager man;
     ActorSounds sounds;
+    StatTracker tracker;
 
 
     public PhysicsMaterial2D neutral;//unused
     public PhysicsMaterial2D bounce; //unused
     public GameObject PhaseUpPre;
     public GameObject PhaseTintPre;
+    public int playerNum;
     
 
     //private AudioSource source;
@@ -123,6 +125,8 @@ public class PlayerMover : Mover {
     int shootCooldown;
     int shootCooldownCurrent = 0;
     bool hitStall = false;
+    int groundDashCooldown;
+    int groundDashCooldownCurrent = 0;
     float ceilingBooster = 0f;
     bool hittingLag = false;
     Vector2 hittingLagVel;
@@ -158,6 +162,7 @@ public class PlayerMover : Mover {
         combo = GetComponent<ComboCounter>();
         iframes = GetComponent<IFrames>();
         sounds = GetComponent<ActorSounds>();
+        tracker = GetComponent<StatTracker>();
         dashVel = Vector2.zero;
         restoreTools();
         dead = false;
@@ -192,6 +197,7 @@ public class PlayerMover : Mover {
         jumpSquatFrames = card.jumpSquatFrames;
         stallCooldown = card.stallCooldown;
         shootCooldown = card.shootCooldown;
+        groundDashCooldown = card.groundDashCooldown;
     }
     public void restoreTools()
     {
@@ -215,6 +221,7 @@ public class PlayerMover : Mover {
             float tempGrav = gravity;
             stallCooldownCurrent--;
             shootCooldownCurrent--;
+            groundDashCooldownCurrent--;
 
             if (registerHit) // hit in the queue
             {
@@ -1023,7 +1030,7 @@ public class PlayerMover : Mover {
     }
     void takeDamage(int damage, int hitLag, int hitStun)
     {
-
+        tracker.takeDamage(damage);
         int result = health.takeDamage(damage);
         if (result == 0)
         {
@@ -1251,7 +1258,7 @@ public class PlayerMover : Mover {
             //calcDashVel();
             inputQueue.Enqueue(input.Dash);
             states.Enqueue(new StatePair(PState.Dash, dashTime));
-            
+            tracker.dash();
             return true;
         }
         return false;
@@ -1332,7 +1339,6 @@ public class PlayerMover : Mover {
     {
         if (ci.Stall && stallCooldownCurrent<= 0 && !inputQueue.Contains(input.Stall))
         {
-            
             if (hitstallB)
             {
                 if (!phase2 && trySpecialDamage(2))
@@ -1346,8 +1352,8 @@ public class PlayerMover : Mover {
             {
                 inputQueue.Enqueue(input.Stall);
                 states.Enqueue(new StatePair(PState.Stall, stallTime));
+                tracker.Stall();
             }
-            
             return true;
         }
         return false;
@@ -1360,6 +1366,7 @@ public class PlayerMover : Mover {
         {
             inputQueue.Enqueue(input.Finisher);
             states.Enqueue(new StatePair(PState.Finisher, -1));
+            tracker.finisherAttempt();
             return true;
         }
         return false;
@@ -1383,6 +1390,7 @@ public class PlayerMover : Mover {
             
             inputQueue.Enqueue(input.Attack);
             states.Enqueue(new StatePair(PState.Attack, 0));
+            tracker.hitAttempt();
             return true;
         }
         return false;
@@ -1463,10 +1471,10 @@ public class PlayerMover : Mover {
 
                 
             }
-            
 
 
 
+            tracker.projectile();
             return true;
         }
         return false;
@@ -1801,6 +1809,7 @@ public class PlayerMover : Mover {
                 hittingLagVel = Vector2.zero;
                 hitStall = false;
                 digestInput(input.Stall);
+                tracker.hitStall();
             }
             else
             {

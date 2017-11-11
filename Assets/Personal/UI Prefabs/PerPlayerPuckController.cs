@@ -13,7 +13,7 @@ public class PerPlayerPuckController : MonoBehaviour
     public GameObject nameBox;
     public GameObject keyboard;
     public GameObject nameString;
-    private string name = "";
+    private string name;
     private string lastKey = "";
     int keyPresses = 0;
     int aPressCooldown;
@@ -33,6 +33,11 @@ public class PerPlayerPuckController : MonoBehaviour
         creator = GameObject.Find("PlayerCreator").GetComponent<CreatePlayer>();
         characterSelected = creator.active[playerNum];
         nameTag = nameString.GetComponent<Text>();
+        name = creator.getName(playerNum);
+        if (name != null)
+        {
+            nameTag.text = name;
+        }
     }
 
     // Update is called once per frame

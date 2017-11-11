@@ -137,12 +137,16 @@ public class MapManager : Manager {
 
     public override void Quit()
     {
-        Destroy(c.gameObject);
+
+        CreatePlayer creator = GameObject.Find("PlayerCreator").GetComponent<CreatePlayer>();
+        Debug.Log(creator);
         foreach (GameObject player in Players)
         {
+            creator.holdStats(player.GetComponent<PlayerMover>().playerNum, player.GetComponent<StatTracker>());
             Destroy(player);
         }
-        SceneManager.LoadScene(1);
+        Destroy(c.gameObject);
+        SceneManager.LoadScene(18);
     }
 
     public override void checkpoint(int checkNum, Vector2 position)
