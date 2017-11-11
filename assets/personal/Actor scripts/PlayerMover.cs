@@ -861,6 +861,7 @@ public class PlayerMover : Mover {
                 }
                 dashesAvailable--;
                 sounds.dash();
+                tracker.dash();
                 break;
             case PState.Stall:
                 digestInput(input.Stall);
@@ -1253,9 +1254,10 @@ public class PlayerMover : Mover {
     }
     bool tryDash()
     {
-        if (ci.Dash && (dashesAvailable > 0)&&!inputQueue.Contains(input.Dash)) // DASH
+        if (ci.Dash && (dashesAvailable > 0)&&!inputQueue.Contains(input.Dash) && groundDashCooldownCurrent <= 0) // DASH
         {
             //calcDashVel();
+            groundDashCooldownCurrent = groundDashCooldown;
             inputQueue.Enqueue(input.Dash);
             states.Enqueue(new StatePair(PState.Dash, dashTime));
             tracker.dash();
