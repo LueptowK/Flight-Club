@@ -320,8 +320,6 @@ public class CreatePlayer : MonoBehaviour
 
     public void holdStats(int playerNum, StatTracker playerStats)
     {
-        Debug.Log("storing stats");
-        Debug.Log(playerStats);
         stats[playerNum].copyStats(playerStats);
     }
 

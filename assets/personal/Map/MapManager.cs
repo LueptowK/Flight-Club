@@ -139,7 +139,6 @@ public class MapManager : Manager {
     {
 
         CreatePlayer creator = GameObject.Find("PlayerCreator").GetComponent<CreatePlayer>();
-        Debug.Log(creator);
         foreach (GameObject player in Players)
         {
             creator.holdStats(player.GetComponent<PlayerMover>().playerNum, player.GetComponent<StatTracker>());
