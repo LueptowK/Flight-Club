@@ -1256,7 +1256,7 @@ public class PlayerMover : Mover {
     }
     bool tryDash()
     {
-        if (ci.Dash && (dashesAvailable > 0)&&!inputQueue.Contains(input.Dash) && groundDashCooldownCurrent <= 0) // DASH
+        if (ci.Dash && (dashesAvailable > 0)&&!inputQueue.Contains(input.Dash) && (groundDashCooldownCurrent <= 0 || !grounded)) // DASH
         {
             //calcDashVel();
             groundDashCooldownCurrent = groundDashCooldown;
