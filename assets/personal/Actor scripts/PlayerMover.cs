@@ -483,6 +483,7 @@ public class PlayerMover : Mover {
                            
                             if (!grabAtk)
                             {
+                                current.delay = 0;
                                 states.Enqueue(new StatePair(PState.Free, 0));
                                 break;
                             }
