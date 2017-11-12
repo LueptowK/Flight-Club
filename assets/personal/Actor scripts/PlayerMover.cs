@@ -1180,7 +1180,10 @@ public class PlayerMover : Mover {
                         {
                             tryJump(true);
                         }
-                        tryShoot();
+                        if (cur.endlag)
+                        {
+                            tryShoot();
+                        }
                     }
                     tryFinisher();
                     //tryAttack(!cur.endlag);
@@ -1460,9 +1463,10 @@ public class PlayerMover : Mover {
     {
         if (ci.Shoot&&!phase2&&shootCooldownCurrent<=0 && !inputQueue.Contains(input.Shoot))
         {
-            inputQueue.Enqueue(input.Shoot);
+            
             if (trySpecialDamage(5))
             {
+                inputQueue.Enqueue(input.Shoot);
                 if (onWall && !grounded)
                 {
                     states.Enqueue(new StatePair(PState.ShootWall, 2, ExecState.Shoot));
