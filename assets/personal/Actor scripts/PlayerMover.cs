@@ -388,18 +388,19 @@ public class PlayerMover : Mover {
                                 dashesAvailable = maxDashes;
                             }
 
+                            if (falling)
+                            {
+                                tempGrav *= 5;
+                            }
+                            rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+                            if (rb.velocity.y < -maxFallSpeed)
+                            {
+                                rb.velocity = desired + new Vector2(0, -maxFallSpeed);
+                            }
+                            #endregion
+                        }
 
-                        }
-                        if (falling)
-                        {
-                            tempGrav *= 5;
-                        }
-                        rb.velocity = desired + new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
-                        if (rb.velocity.y < -maxFallSpeed)
-                        {
-                            rb.velocity = desired + new Vector2(0, -maxFallSpeed);
-                        }
-                        #endregion
+
                     }
                     break;
                 #endregion
@@ -1591,13 +1592,14 @@ public class PlayerMover : Mover {
     {
         Vector3 dist = new Vector3(col.bounds.extents.x, 0);
         Vector2 box = new Vector2(col.bounds.extents.x / 2, col.bounds.extents.y / 2);
+        float range = 0.15f * dist.x;
         Vector2 dir = Vector2.right;
         if (left)
         {
             dir = -dir;
             dist = -dist;
         }
-        return Physics2D.BoxCast(transform.position + dist / 2, box, 0, dir, 0.2f, 1 << 8);
+        return Physics2D.BoxCast(transform.position + dist / 2, box, 0, dir, range, 1 << 8);
 
     }
     #endregion
