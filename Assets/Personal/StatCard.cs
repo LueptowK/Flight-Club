@@ -13,6 +13,7 @@ public class StatCard : ScriptableObject {
     public float airSpeed =0.8f;
     public float maxAirSpeed =8 ;
     public float dashMagnitude=20;
+    public PlayerMover.DashType dashT = PlayerMover.DashType.Basic;
     public float gravity = 2;
     public float jumpVel = 10;
     public float wallJumpXVel=15;

@@ -142,8 +142,10 @@
     <Compile Include="Assets\Personal\Map\TimeTrialManager.cs" />
     <Compile Include="Assets\Personal\Map\TutorialManager.cs" />
     <Compile Include="Assets\Personal\Map\VersusVictoryManager.cs" />
+    <Compile Include="Assets\Personal\Map\powerup\Move.cs" />
     <Compile Include="Assets\Personal\Map\powerup\Powerup.cs" />
     <Compile Include="Assets\Personal\Map\powerup\RestoreHP.cs" />
+    <Compile Include="Assets\Personal\Map\powerup\Teleport.cs" />
     <Compile Include="Assets\Personal\Sound\Voiceover\PlayVoiceover.cs" />
     <Compile Include="Assets\Personal\StatCard.cs" />
     <Compile Include="Assets\Personal\UI Prefabs\CharacterItem.cs" />

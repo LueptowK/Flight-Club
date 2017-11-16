@@ -71,7 +71,13 @@ public class PlayerMover : Mover {
         Segment
 
     }
-
+    public enum DashType
+    {
+        Basic,
+        Teleport,
+        //Hookshot,
+        //Additive,
+    }
     public struct StatePair
     {
         public PState state;
@@ -117,6 +123,7 @@ public class PlayerMover : Mover {
     float wallJumpYVel;
     float dashEndMomentum;
     int dashTime;
+    DashType dashT = DashType.Basic;
     int stallTime;
     bool falling = false;
     float maxFallSpeed;
@@ -183,6 +190,7 @@ public class PlayerMover : Mover {
         //{
         dashesAvailable = maxDashes;
         //}
+        dashT = card.dashT;
         moveSpeed = card.moveSpeed;
         airSpeed = card.airSpeed;
         maxAirSpeed = card.maxAirSpeed;
@@ -408,11 +416,13 @@ public class PlayerMover : Mover {
                 #endregion
                 #region Dash State
                 case PState.Dash:
-                    rb.velocity = dashVel;
+                    if(dashT == DashType.Basic)
+                    {
+                        rb.velocity = dashVel;
+                    }
                     falling = false;
-                    setLayer(true);
-                    if (current.delay == 2) { dashVel *= dashEndMomentum; }
-                    if (grounded) { dashVel.y = 0; }
+
+                    if (grounded&&dashT == DashType.Basic) { dashVel.y = 0; }
                     //if (states.Count < 1)
                     //{
                     //    if (!tryStall(false))
@@ -770,6 +780,19 @@ public class PlayerMover : Mover {
         switch (current.action)
         {
             case ExecState.None:
+                if(current.state == PState.Dash )
+                {
+                    switch (dashT)
+                    {
+                        case DashType.Basic:
+                            rb.velocity *= dashEndMomentum;
+                            break;
+                        case DashType.Teleport:
+                            Teleport.t(gameObject, dashVel);
+                            break;
+                    }
+                    
+                }
                 break;
             case ExecState.Jump:
                 Vector2 ogVel = (rb.velocity *(1f / 0.6f));
@@ -905,10 +928,11 @@ public class PlayerMover : Mover {
                 break;
             case PState.Dash:
                 digestInput(input.Dash);
+                setLayer(true);
                 if (!calcDashVel())
                 {
                     current = new StatePair(PState.Free, 0);
-                }
+                }                
                 dashesAvailable--;
                 sounds.dash();
                 tracker.dash();
@@ -1370,36 +1394,39 @@ public class PlayerMover : Mover {
 
         }
         #endregion
-        if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8))
+        if (dashT == DashType.Basic)
         {
-            if (input.x < minimum)
+            if (Physics2D.Raycast(transform.position, Vector2.left, col.bounds.extents.x + 0.5f, 1 << 8))
             {
-                if (input.x >= -marigin && input.y != 0)
+                if (input.x < minimum)
                 {
-                    input.x = minimum;
+                    if (input.x >= -marigin && input.y != 0)
+                    {
+                        input.x = minimum;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
-                {
-                    return false;
-                }
-            }
-            
 
-        }
-        else if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8))
-        {
-            if (input.x > -minimum)
+
+            }
+            else if (Physics2D.Raycast(transform.position, Vector2.right, col.bounds.extents.x + 0.5f, 1 << 8))
             {
-                if (input.x <= marigin && input.y != 0)
+                if (input.x > -minimum)
                 {
-                    input.x = -minimum;
+                    if (input.x <= marigin && input.y != 0)
+                    {
+                        input.x = -minimum;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
-                {
-                    return false;
-                }
-            }
 
+            }
         }
         input = input.normalized;
         dashVel = input * dashMagnitude;
