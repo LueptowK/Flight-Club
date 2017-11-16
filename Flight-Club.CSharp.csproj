@@ -97,6 +97,8 @@
     <Compile Include="Assets\Personal\Actor scripts\AttackManager.cs" />
     <Compile Include="Assets\Personal\Actor scripts\ComboCounter.cs" />
     <Compile Include="Assets\Personal\Actor scripts\Health.cs" />
+    <Compile Include="Assets\Personal\Actor scripts\Hook.cs" />
+    <Compile Include="Assets\Personal\Actor scripts\Hookshot.cs" />
     <Compile Include="Assets\Personal\Actor scripts\IFrames.cs" />
     <Compile Include="Assets\Personal\Actor scripts\Mover.cs" />
     <Compile Include="Assets\Personal\Actor scripts\PlayerAnimator.cs" />

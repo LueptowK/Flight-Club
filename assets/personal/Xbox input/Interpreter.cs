@@ -73,7 +73,11 @@ public abstract class Interpreter : MonoBehaviour {
     {
         get;
             }
+    public abstract bool DashHold
+    {
+        get;
+    }
 
 
-        }
+}
 

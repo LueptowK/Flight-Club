@@ -137,6 +137,14 @@ public class AIInterpreter : Interpreter
             return false;
         }
     }
+    public override bool DashHold
+    {
+        get
+        {
+            return false;
+        }
+    }
+    
 
 
 }

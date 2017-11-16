@@ -301,6 +301,13 @@ public class ControlInterpret : Interpreter {
             return false;
         }
     }
+    public override bool DashHold
+    {
+        get
+        {
+            return DashDown>0;
+        }
+    }
     public override bool Stall
     {
         get

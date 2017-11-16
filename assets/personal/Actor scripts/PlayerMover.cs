@@ -19,8 +19,7 @@ public class PlayerMover : Mover {
     StatTracker tracker;
 
 
-    public PhysicsMaterial2D neutral;//unused
-    public PhysicsMaterial2D bounce; //unused
+    public GameObject HookshotPre;
     public GameObject PhaseUpPre;
     public GameObject PhaseTintPre;
     public int playerNum;
@@ -75,7 +74,7 @@ public class PlayerMover : Mover {
     {
         Basic,
         Teleport,
-        //Hookshot,
+        Hookshot,
         //Additive,
     }
     public struct StatePair
@@ -124,6 +123,8 @@ public class PlayerMover : Mover {
     float dashEndMomentum;
     int dashTime;
     DashType dashT = DashType.Basic;
+    bool hooked = false;
+    GameObject hook;
     int stallTime;
     bool falling = false;
     float maxFallSpeed;
@@ -176,7 +177,6 @@ public class PlayerMover : Mover {
         restoreTools();
         dead = false;
         paused = false;
-        rb.sharedMaterial = neutral;
         phase2 = false;
         loadCard(cardOne);
     }
@@ -419,6 +419,22 @@ public class PlayerMover : Mover {
                     if(dashT == DashType.Basic)
                     {
                         rb.velocity = dashVel;
+                    }
+                    else if(dashT == DashType.Hookshot)
+                    {
+                        Vector2 dif =hook.GetComponent<Hookshot>().NestedUpdate();
+                        if (hooked)
+                        {
+                            rb.velocity = dashMagnitude*dif.normalized;
+                        }
+                        else
+                        {
+                            rb.velocity = new Vector2(0, rb.velocity.y - tempGrav * 9.8f * Time.fixedDeltaTime);
+                        }
+                        if (!ci.DashHold)
+                        {
+                            current.delay = 0;
+                        }
                     }
                     falling = false;
 
@@ -788,7 +804,12 @@ public class PlayerMover : Mover {
                             rb.velocity *= dashEndMomentum;
                             break;
                         case DashType.Teleport:
-                            Teleport.t(gameObject, dashVel);
+                            if(!registerHit)
+                                Teleport.t(gameObject, dashVel);
+                            break;
+                        case DashType.Hookshot:
+                            Destroy(hook);
+                            hooked = false;
                             break;
                     }
                     
@@ -928,7 +949,8 @@ public class PlayerMover : Mover {
                 break;
             case PState.Dash:
                 digestInput(input.Dash);
-                setLayer(true);
+                if(dashT!= DashType.Hookshot)
+                    setLayer(true);
                 if (!calcDashVel())
                 {
                     current = new StatePair(PState.Free, 0);
@@ -1352,7 +1374,7 @@ public class PlayerMover : Mover {
             //calcDashVel();
             groundDashCooldownCurrent = groundDashCooldown;
             inputQueue.Enqueue(input.Dash);
-            states.Enqueue(new StatePair(PState.Dash, dashTime));
+            states.Enqueue(new StatePair(PState.Dash, dashT==DashType.Hookshot?-1:dashTime));
             tracker.dash();
             return true;
         }
@@ -1430,6 +1452,11 @@ public class PlayerMover : Mover {
         }
         input = input.normalized;
         dashVel = input * dashMagnitude;
+        if(dashT == DashType.Hookshot)
+        {
+            hook = Instantiate(HookshotPre, transform.position, Quaternion.Euler(0, 0, Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg));
+            hook.GetComponent<Hookshot>().setPlayer(this);
+        }
         return true;
     }
 
@@ -2027,4 +2054,9 @@ public class PlayerMover : Mover {
         return phase2;
     }
     
+    public void hookshotHit()
+    {
+        hooked = true;
+        setLayer(true);
+    }
 }
