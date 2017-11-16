@@ -156,7 +156,8 @@ public class PlayerAnimator : MonoBehaviour {
         Flip,
         Shoot,
         LandLag,
-        Parry //16
+        Parry, //16
+        Segment
         
     }
     void LateUpdate()
@@ -255,6 +256,10 @@ public class PlayerAnimator : MonoBehaviour {
             else if (c.action == PlayerMover.ExecState.Grabbed)
             {
                 ani.SetInteger("State", (int)AnimationState.Hitstun);
+            }
+            else if (c.action == PlayerMover.ExecState.Segment)
+            {
+                ani.SetInteger("State", (int)AnimationState.Segment);
             }
             else
             {

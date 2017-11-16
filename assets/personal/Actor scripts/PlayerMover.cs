@@ -67,7 +67,8 @@ public class PlayerMover : Mover {
         mapStart,
         Shoot,
         LandLag,
-        Grabbed
+        Grabbed,
+        Segment
 
     }
 
@@ -446,6 +447,7 @@ public class PlayerMover : Mover {
                 #endregion
                 #region Delay State
                 case PState.Delay:
+                    float tempX;
                     switch (current.action)
                     {
                         case ExecState.Jump:
@@ -469,7 +471,7 @@ public class PlayerMover : Mover {
                             rb.velocity = Vector2.zero;
                             break;
                         case ExecState.LandLag:
-                            float tempX = rb.velocity.x;
+                            tempX = rb.velocity.x;
                             
                             tempX += applyFriction(tempX, 3.0f);
                             
@@ -497,6 +499,12 @@ public class PlayerMover : Mover {
                             break;
                         case ExecState.Death:
                             rb.velocity = Vector2.zero;
+                            break;
+                        case ExecState.Segment:
+                            tempX = rb.velocity.x;
+
+                            tempX += applyFriction(tempX, 3.0f);
+                            rb.velocity = new Vector2(tempX, rb.velocity.y - 9.8f * tempGrav * Time.fixedDeltaTime);
                             break;
                     }
 
@@ -1084,9 +1092,13 @@ public class PlayerMover : Mover {
            
             states.Enqueue(new StatePair(PState.Hitstun, hitStun));
         }
-        else //result is 1
+        else if(result ==1) //result is 1
         {
             phaseDownState(hitStun);
+        }
+        else  //result is 1
+        {
+            segmentState(hitStun);
         }
         actualPosition = transform.position;
         cam.screenShake = (float)damage;
@@ -1098,6 +1110,12 @@ public class PlayerMover : Mover {
         states.Enqueue(new StatePair(PState.Burnout, Mathf.Max(40, hitStun)));
         iframes.SetFrames(Mathf.Max(90, hitStun) + 25);
         combo.reset();
+    }
+    void segmentState(int hitStun)
+    {
+        states.Enqueue(new StatePair(PState.Delay, 30, ExecState.hitLag));
+        states.Enqueue(new StatePair(PState.Delay, 90, ExecState.Segment));
+        iframes.SetFrames(180);
     }
     #endregion
     #region try moves
@@ -1902,6 +1920,12 @@ public class PlayerMover : Mover {
         Instantiate(PhaseUpPre, transform);
         loadCard(cardOne);
         Destroy(PhaseTint);
+    }
+    public void segment()
+    {
+        phase2 = false;
+        Destroy(PhaseTint);
+        //VISUALS
     }
     public void phaseDown()
     {

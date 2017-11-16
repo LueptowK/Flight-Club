@@ -113,9 +113,11 @@ public class PlayerHealth : Health {
                 recharging = false;
                 //TRANSITION -- FALSE
                 shieldImg.transform.SetAsLastSibling();
-                pm.phaseUp();
+                pm.segment();
                 setShield();
                 currentSegment++;
+                img.fillAmount = (float)currentHealth / maxHealth;
+                return 2;
             }
             img.fillAmount = (float)currentHealth / maxHealth;
             return 0;
