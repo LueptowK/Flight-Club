@@ -46,7 +46,7 @@ public class VersusVictoryManager : MonoBehaviour {
                 {
                     Ready[i] = true;
                     //visual indicator of readiness?
-                    PlayerBox[i].SetActive(false);
+                    PlayerBox[i].GetComponent<SpriteRenderer>().color = Color.green;
                 }
             }
             if(g.Buttons.B == ButtonState.Pressed)
@@ -55,7 +55,7 @@ public class VersusVictoryManager : MonoBehaviour {
                 {
                     Ready[i] = false;
                     //visual indicator of unreadiness?
-                    PlayerBox[i].SetActive(true);
+                    PlayerBox[i].GetComponent<SpriteRenderer>().color = Color.white;
                 }
             }
 
@@ -64,7 +64,7 @@ public class VersusVictoryManager : MonoBehaviour {
             if (g.DPad.Up == ButtonState.Pressed && i == 0)
             {
                 Ready[1] = true;
-                PlayerBox[1].SetActive(false);
+                PlayerBox[1].GetComponent<SpriteRenderer>().color = Color.green;
             }
         }
         bool advance = true;
