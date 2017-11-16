@@ -53,7 +53,8 @@ public class PlayerMover : Mover {
         Flip,
         Shoot,
         ShootWall,
-        Parry
+        Parry,
+        Jump
     }
 
     public enum ExecState
@@ -255,11 +256,11 @@ public class PlayerMover : Mover {
                             restoreTools();
                             changeLayer(ci.move);
                             //if (ci.Jump || ci.TapJump)
-                            if(inputQueue.Count >0&& inputQueue.Peek()==input.Jump)
-                            {
-                                digestInput(input.Jump);
-                                states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
-                            }
+                            //if(inputQueue.Count >0&& inputQueue.Peek()==input.Jump)
+                            //{
+                            //    digestInput(input.Jump);
+                            //    states.Enqueue(new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump));
+                            //}
                             //if (ci.move.y >= 0)
                             //{
                             //    tryDash();
@@ -358,26 +359,26 @@ public class PlayerMover : Mover {
 
 
 
-                                if (ci.Jump) // WALLJUMP
-                                {
-                                    falling = false;
-                                    rb.velocity = Vector2.zero;
+                                //if (ci.Jump) // WALLJUMP
+                                //{
+                                //    falling = false;
+                                //    rb.velocity = Vector2.zero;
 
-                                    pani.jump();
+                                //    pani.jump();
 
+                                //    //input.jump
 
-
-                                    if (OnRightWall)
-                                    {
-                                        desired = new Vector2(-wallJumpXVel, wallJumpYVel);
-                                        FacingLeft = true;
-                                    }
-                                    else
-                                    {
-                                        desired = new Vector2(wallJumpXVel, wallJumpYVel);
-                                        FacingLeft = false;
-                                    }
-                                }
+                                //    if (OnRightWall)
+                                //    {
+                                //        desired = new Vector2(-wallJumpXVel, wallJumpYVel);
+                                //        FacingLeft = true;
+                                //    }
+                                //    else
+                                //    {
+                                //        desired = new Vector2(wallJumpXVel, wallJumpYVel);
+                                //        FacingLeft = false;
+                                //    }
+                                //}
 
                             }
                             #endregion
@@ -505,12 +506,12 @@ public class PlayerMover : Mover {
                 case PState.CeilingHold:
                     rb.velocity = new Vector2(rb.velocity.x + applyFriction(rb.velocity.x), 0f);
 
-                    if (inputQueue.Count > 0 && inputQueue.Peek() == input.Jump)
-                    {
-                        digestInput(input.Jump);
-                        rb.velocity += new Vector2(0, -maxFallSpeed);
-                        states.Enqueue(new StatePair(PState.Free, 0));
-                    }
+                    //if (inputQueue.Count > 0 && inputQueue.Peek() == input.Jump)
+                    //{
+                    //    digestInput(input.Jump);
+                    //    rb.velocity += new Vector2(0, -maxFallSpeed);
+                    //    states.Enqueue(new StatePair(PState.Free, 0));
+                    //}
                     //if (states.Count < 1)
                     //{
                     //    if (!tryDash())
@@ -855,6 +856,45 @@ public class PlayerMover : Mover {
                     current = new StatePair(PState.AirAttack, -1);
                 }
                 break;
+            case PState.Jump:
+                digestInput(input.Jump);
+                if (grounded)
+                {
+                    //print("ground");
+                    current = new StatePair(PState.Delay, jumpSquatFrames, ExecState.Jump);
+                    enterState();
+                }
+                else if (nearWall)
+                {
+                    //print("wall");
+                    falling = false;
+                    pani.jump();
+
+
+                    if (OnRightWall)
+                    {
+                        rb.velocity = new Vector2(-wallJumpXVel, wallJumpYVel);
+                        FacingLeft = true;
+                    }
+                    else
+                    {
+                        rb.velocity = new Vector2(wallJumpXVel, wallJumpYVel);
+                        FacingLeft = false;
+                    }
+                    nextState();
+                }
+                else if (onCeiling)
+                {
+                    //print("ceiling");
+                    rb.velocity += new Vector2(0, -maxFallSpeed);
+                    nextState();
+                }
+                else
+                {
+                    //print("air");
+                    nextState();
+                }
+                break;
             case PState.Dash:
                 digestInput(input.Dash);
                 if (!calcDashVel())
@@ -1080,6 +1120,10 @@ public class PlayerMover : Mover {
                 {
                     tryDash();
                     tryStall(false);
+                    if (!(inputQueue.Contains(input.Dash)))
+                    {
+                        tryJump(false);
+                    }
                 }
                 else
                 {
@@ -1106,7 +1150,7 @@ public class PlayerMover : Mover {
                 tryAttack();
                 if (current.delay < dashTime / 2)
                 {
-                    //tryJump(false);
+                    tryJump(false);
                     tryShoot();
                     tryDash();
                 }  
@@ -1230,24 +1274,24 @@ public class PlayerMover : Mover {
             else
             {
                 
-                if (j == input.Jump&& (i == input.Dash||i==input.Attack))
-                {
-                    inputQueue.Dequeue();
-                    if (inputQueue.Count > 0 &&inputQueue.Peek()==i)
-                    {
-                        inputQueue.Dequeue();
-                        print("Jump surpassed");
-                    }
-                    else
-                    {
-                        print("Fucked up -- Jump in queue but "+i+" was not the next state");
-                    }
-                }
-                else
-                {
+                //if (j == input.Jump&& (i == input.Dash||i==input.Attack))
+                //{
+                //    inputQueue.Dequeue();
+                //    if (inputQueue.Count > 0 &&inputQueue.Peek()==i)
+                //    {
+                //        inputQueue.Dequeue();
+                //        print("Jump surpassed");
+                //    }
+                //    else
+                //    {
+                //        print("Fucked up -- Jump in queue but "+i+" was not the next state");
+                //    }
+                //}
+                //else
+                //{
                     print("fucked up -- Queue wants " + inputQueue.Peek() + " while states want " + i);
                     inputQueue.Dequeue();
-                }
+                //}
                 
                 
             }
@@ -1496,6 +1540,7 @@ public class PlayerMover : Mover {
             if ((ci.Jump||ci.TapJump) && !inputQueue.Contains(input.Jump))
             {
                 inputQueue.Enqueue(input.Jump);
+                states.Enqueue(new StatePair(PState.Jump, 0));
             }
         }
         else
@@ -1503,6 +1548,7 @@ public class PlayerMover : Mover {
             if (ci.Jump && !inputQueue.Contains(input.Jump))
             {
                 inputQueue.Enqueue(input.Jump);
+                states.Enqueue(new StatePair(PState.Jump, 0));
             }
         }
         
@@ -1592,7 +1638,8 @@ public class PlayerMover : Mover {
     {
         Vector3 dist = new Vector3(col.bounds.extents.x, 0);
         Vector2 box = new Vector2(col.bounds.extents.x / 2, col.bounds.extents.y / 2);
-        float range = 0.15f * dist.x;
+        float range = 0.30f * dist.x;
+        //print(range);
         Vector2 dir = Vector2.right;
         if (left)
         {
