@@ -269,6 +269,13 @@ public class CreatePlayer : MonoBehaviour
                 }
             }
         }
+        foreach (GameObject Player in GameObject.FindGameObjectsWithTag("Player")){
+            int playerNum = Player.GetComponent<PlayerMover>().playerNum;
+            if (players[playerNum].character == -1)
+            {
+                Colors[Player.GetComponent<PlayerMover>().character][players[playerNum].colorNum].owner = -1;
+            }
+        }
     }
 
     public void createDummy()
