@@ -1858,6 +1858,7 @@ public class PlayerMover : Mover {
         
         registerHit = false;
         dead = true;
+        tracker.dead = true;
         if (combo) //enemies dont have combo
         {
             combo.reset();

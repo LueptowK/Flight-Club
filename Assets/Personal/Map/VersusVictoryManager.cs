@@ -11,17 +11,21 @@ public class VersusVictoryManager : MonoBehaviour {
     private bool[] Ready;
     private CreatePlayer creator;
     private int delay;
+    private int deadCount;
+    private int numPlayers;
 	// Use this for initialization
 	void Start () {
         delay = 30;
         Ready = new bool[4];
         creator = GameObject.Find("PlayerCreator").GetComponent<CreatePlayer>();
+        Canvas noContestCanvas = GameObject.Find("NoContestCanvas").GetComponent<Canvas>();
         stats = creator.getStats();
         for (int i = 0; i < 4; i++)
         {
             Ready[i] = false;
             if (stats[i] != null)
             {
+                numPlayers++;
                 populateStats(i);
             }
             else
@@ -29,6 +33,20 @@ public class VersusVictoryManager : MonoBehaviour {
                 PlayerBox[i].SetActive(false);
                 Ready[i] = true;
             }
+        }
+        Debug.Log(deadCount);
+        Debug.Log(numPlayers);
+        if (deadCount < numPlayers - 1)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (stats[i] != null)
+                {
+                    Canvas c = PlayerBox[i].transform.Find("Canvas").GetComponent<Canvas>();
+                    c.transform.Find("Winner").gameObject.SetActive(false);
+                }
+            }
+            noContestCanvas.transform.Find("No Contest").gameObject.SetActive(true);
         }
 	}
 
@@ -97,6 +115,12 @@ public class VersusVictoryManager : MonoBehaviour {
         else
         {
             c.transform.Find("Accuracy").GetComponent<Text>().text = 0.ToString();
+        }
+
+        if (stat.dead)
+        {
+            c.transform.Find("Winner").gameObject.SetActive(false);
+            deadCount++;
         }
         c.transform.Find("DamageDealt").GetComponent<Text>().text = stat.damageDealt.ToString();
         c.transform.Find("DamageTaken").GetComponent<Text>().text = stat.damageTaken.ToString();
